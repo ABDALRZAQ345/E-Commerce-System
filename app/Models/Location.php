@@ -9,9 +9,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Location extends Model
 {
-    use SoftDeletes;
     use HasFactory;
-    protected  $guarded=['id'];
+    use SoftDeletes;
+
+    protected $guarded = ['id'];
+
     public function object(): MorphTo
     {
         return $this->morphTo();

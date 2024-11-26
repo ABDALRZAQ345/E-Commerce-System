@@ -17,13 +17,15 @@ class SubOrderFactory extends Factory
      * @return array<string, mixed>
      */
     public function definition(): array
-    {$statuses = ['pending', 'processing', 'in_way', 'completed'];
+    {
+        $statuses = ['pending', 'processing', 'in_way', 'completed'];
         $randomStatus = $statuses[array_rand($statuses)];
+
         return [
             'order_id' => Order::factory()->create()->id,
             'status' => $randomStatus,
             'total' => $this->faker->randomFloat(2, 10),
-            'store_id'=> Store::factory()->create()->id,
+            'store_id' => Store::factory()->create()->id,
         ];
     }
 }

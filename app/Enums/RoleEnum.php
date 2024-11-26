@@ -2,8 +2,6 @@
 
 namespace App\Enums;
 
-use App\Models\Permission;
-
 enum RoleEnum
 {
     const Manager = 'manager';
@@ -23,5 +21,4 @@ enum RoleEnum
             // Add other roles as needed
         ];
     }
-
 }

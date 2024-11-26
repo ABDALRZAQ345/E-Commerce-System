@@ -3,8 +3,8 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -22,7 +22,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
             'locale' => \App\Http\Middleware\LocaleMiddleware::class,
             'xss' => \App\Http\Middleware\XssProtection::class,
-
+            'store_owner' => \App\Http\Middleware\CanEditStoreData::class,
+            'can_create_store' => \App\Http\Middleware\CanCreateStore::class,
+            'same_user' => \App\Http\Middleware\SameUser::class,
         ]);
 
     })

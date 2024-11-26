@@ -9,12 +9,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class OrderItem extends Model
 {
     use HasFactory;
-    protected  $guarded=['id'];
+
+    protected $guarded = ['id'];
 
     public function subOrders(): BelongsTo
     {
         return $this->belongsTo(SubOrder::class);
     }
+
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);

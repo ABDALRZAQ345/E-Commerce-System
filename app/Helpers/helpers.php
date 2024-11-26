@@ -7,7 +7,6 @@
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
-
 if (! function_exists('EmptyPagination')) {
 
     function EmptyPagination(): LengthAwarePaginator

@@ -2,13 +2,17 @@
 
 namespace App\Providers;
 
-
+use App\Models\Product;
+use App\Models\Store;
+use App\Observers\ProductObserver;
+use App\Observers\StoreObserver;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Meilisearch\Client;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,13 +28,12 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->observers();
         $this->rateLimiters();
+        $this->milisearch();
+
         Model::shouldBeStrict(! app()->environment('production'));
         ///
 
         Model::preventLazyLoading(! app()->environment('production'));
-
-
-
 
         Password::defaults(function () {
             return Password::min(8)
@@ -40,11 +43,24 @@ class AppServiceProvider extends ServiceProvider
                 ->symbols()
                 ->uncompromised();
         });
+
     }
 
-    public function observers(): void
+    public function milisearch()
     {
 
+// Connect to Meilisearch
+        $client = new Client('http://127.0.0.1:7700'); // Replace with your Meilisearch server URL
+        $index = $client->index('products');
+
+// Update filterable attributes to include 'id' and 'store_id'
+        $index->updateFilterableAttributes(['id', 'store_id']);
+    }
+
+
+    public function observers(): void {
+        Product::observe(ProductObserver::class);
+        Store::observe(StoreObserver::class);
     }
 
     public function rateLimiters(): void

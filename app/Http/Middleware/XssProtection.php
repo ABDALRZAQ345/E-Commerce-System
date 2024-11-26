@@ -6,7 +6,6 @@ use Closure;
 use HTMLPurifier;
 use HTMLPurifier_Config;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class XssProtection
 {
@@ -28,6 +27,7 @@ class XssProtection
         });
 
         $request->merge($userInput);
+
         return $next($request);
     }
 }

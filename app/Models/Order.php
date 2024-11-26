@@ -10,7 +10,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Order extends Model
 {
     use HasFactory;
-    protected  $guarded=['id'];
+
+    protected $guarded = ['id'];
 
     public function subOrders(): HasMany
     {

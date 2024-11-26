@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('sub_orders', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Order::class)->constrained();
-            $table->enum('status', ['pending', 'processing', 'in_way','completed'])->default('pending');
+            $table->enum('status', ['processing', 'shipped', 'delivered'])->default('processing');
             $table->unsignedBigInteger('total');
             $table->foreignIdFor(Store::class)->constrained();
             $table->timestamps();

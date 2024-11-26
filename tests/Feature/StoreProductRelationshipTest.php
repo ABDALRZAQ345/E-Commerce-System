@@ -5,8 +5,8 @@ namespace Tests\Feature;
 use App\Models\Product;
 use App\Models\Store;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+
 class StoreProductRelationshipTest extends TestCase
 {
     use RefreshDatabase;

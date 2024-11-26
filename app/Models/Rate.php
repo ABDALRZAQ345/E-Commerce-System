@@ -10,7 +10,9 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 class Rate extends Model
 {
     use HasFactory;
-    protected  $guarded=['id'];
+
+    protected $guarded = ['id'];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -20,5 +22,4 @@ class Rate extends Model
     {
         return $this->morphTo();
     }
-
 }

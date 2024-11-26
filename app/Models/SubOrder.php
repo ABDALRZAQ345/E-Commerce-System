@@ -10,7 +10,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class SubOrder extends Model
 {
     use HasFactory;
-    protected  $guarded=['id'];
+
+    protected $guarded = ['id'];
 
     public function store(): BelongsTo
     {
@@ -26,5 +27,4 @@ class SubOrder extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
-
 }

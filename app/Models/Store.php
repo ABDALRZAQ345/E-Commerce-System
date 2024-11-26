@@ -9,12 +9,30 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
-class Store extends Model
+use Illuminate\Support\Facades\Auth;
+use OwenIt\Auditing\Contracts\Auditable;
+use Laravel\Scout\Searchable;
+class Store extends Model implements Auditable
 {
     use HasFactory;
+    use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
+    use Searchable;
+    public function toSearchableArray(): array
+    {
+        return [
+            'name' => $this->name,
+        ];
+    }
     protected $guarded = ['id'];
+
+    protected $hidden = ['deleted_at', 'user_id'];
+
+    public function resolveUser(): User|\Illuminate\Contracts\Auth\Authenticatable|null
+    {
+        // Return the user from Sanctum's guard explicitly
+        return Auth::user();
+    }
 
     public function products(): HasMany
     {
@@ -45,13 +63,14 @@ class Store extends Model
     {
         return $this->hasMany(Contact::class);
     }
+
     public function photos(): MorphMany
     {
         return $this->morphMany(Photo::class, 'object');
     }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
-
 }

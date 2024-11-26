@@ -8,13 +8,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ProductDetail extends Model
 {
-    protected $table='product_detail';
+    protected $table = 'product_detail';
 
     use HasFactory;
-    protected  $guarded=['id'];
+
+    protected $guarded = ['id'];
+
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
     }
-
 }

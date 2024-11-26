@@ -11,14 +11,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Laravel\Sanctum\PersonalAccessToken;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, HasRoles,Notifiable;
 
-   protected  $guarded=['id'];
+    protected $guarded = ['id'];
 
     protected $hidden = [
         'password',
@@ -27,15 +26,17 @@ class User extends Authenticatable
 
     public function locations(): MorphMany
     {
-        return $this->morphMany(Location::class,'object');
+        return $this->morphMany(Location::class, 'object');
     }
+
     public function favoriteProducts(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class,'favorite_products','user_id','product_id');
+        return $this->belongsToMany(Product::class, 'favorite_products', 'user_id', 'product_id');
     }
+
     public function favoriteStores(): BelongsToMany
     {
-        return $this->belongsToMany(Store::class,'favorite_stores','user_id','store_id');
+        return $this->belongsToMany(Store::class, 'favorite_stores', 'user_id', 'store_id');
     }
 
     public function orders(): HasMany
@@ -47,7 +48,4 @@ class User extends Authenticatable
     {
         return $this->hasOne(Store::class);
     }
-
-
-
 }

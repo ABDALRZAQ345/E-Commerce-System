@@ -11,10 +11,11 @@ class Photo extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    protected  $guarded=['id'];
+
+    protected $guarded = ['id'];
+
     public function object(): MorphTo
     {
         return $this->morphTo();
     }
-
 }

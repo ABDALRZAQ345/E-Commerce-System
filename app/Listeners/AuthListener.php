@@ -3,9 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\RegisteredEvent;
-use App\Mail\Auth\CheckRegistration;
 use Illuminate\Events\Dispatcher;
-use Illuminate\Support\Facades\Mail;
 
 class AuthListener
 {
@@ -17,11 +15,7 @@ class AuthListener
         //
     }
 
-    public function handleUserRegistered(RegisteredEvent $event): void
-    {
-
-
-    }
+    public function handleUserRegistered(RegisteredEvent $event): void {}
 
     /**
      * Register the listeners for the subscriber.

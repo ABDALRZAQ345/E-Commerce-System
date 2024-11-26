@@ -15,8 +15,10 @@ return new class extends Migration
         Schema::create('stores', function (Blueprint $table) {
             $table->id();
             $table->string('name',50);
-            $table->foreignIdFor(User::class)->unique()->constrained()->cascadeOnDelete();
+            $table->fullText('name');
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->text('description')->nullable();
+            $table->string('photo')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
