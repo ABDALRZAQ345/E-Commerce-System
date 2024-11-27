@@ -16,10 +16,10 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, HasRoles,Notifiable;
+    use HasApiTokens, HasFactory, HasRoles,Notifiable, HasRoles;
 
-   protected  $guarded=['id'];
-
+    protected  $guarded=['id'];
+    protected $fillable = ['first_name', 'last_name', 'phone_number', 'password', 'photo'];
     protected $hidden = [
         'password',
         'remember_token',
@@ -48,6 +48,10 @@ class User extends Authenticatable
         return $this->hasOne(Store::class);
     }
 
+    public function promotions(): HasOne
+    {
+        return $this->hasOne(Promotion::class);
+    }
 
 
 }

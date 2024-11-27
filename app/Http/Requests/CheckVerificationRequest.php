@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Requests\AuthRequests;
+namespace App\Http\Requests;
 
 use App\Rules\ValidPhoneNumber;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class SignupRequest extends FormRequest
+
+class CheckVerificationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,15 +26,10 @@ class SignupRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => ['required', 'max:50'],
-            'last_name' => ['nullable', 'max:50'],
-            'password' => ['required', 'min:8', 'max:255'],
-            'phone_number' => ['required', new ValidPhoneNumber],
-            'photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif'],
-            //            'photo' => ['image']
+            'code' => ['required'],
+            'phone_number' => ['required', new ValidPhoneNumber]
         ];
     }
-
     public function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(
