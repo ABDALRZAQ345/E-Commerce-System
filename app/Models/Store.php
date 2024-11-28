@@ -10,20 +10,23 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
-use OwenIt\Auditing\Contracts\Auditable;
 use Laravel\Scout\Searchable;
+use OwenIt\Auditing\Contracts\Auditable;
+
 class Store extends Model implements Auditable
 {
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
-    use SoftDeletes;
     use Searchable;
+    use SoftDeletes;
+
     public function toSearchableArray(): array
     {
         return [
             'name' => $this->name,
         ];
     }
+
     protected $guarded = ['id'];
 
     protected $hidden = ['deleted_at', 'user_id'];

@@ -11,7 +11,7 @@ class StoreObserver
      */
     public function created(Store $store): void
     {
-        \Artisan::call('update-mili-search');
+        \Artisan::queue('update-mili-search');
     }
 
     /**
@@ -19,7 +19,7 @@ class StoreObserver
      */
     public function updated(Store $store): void
     {
-        \Artisan::call('update-mili-search');
+        \Artisan::queue('update-mili-search');
 
     }
 
@@ -28,7 +28,7 @@ class StoreObserver
      */
     public function deleted(Store $store): void
     {
-        \Artisan::call('update-mili-search');
+        \Artisan::queue('update-mili-search');
     }
 
     /**
@@ -36,7 +36,7 @@ class StoreObserver
      */
     public function restored(Store $store): void
     {
-        \Artisan::call('update-mili-search');
+        \Artisan::queue('update-mili-search');
     }
 
     /**

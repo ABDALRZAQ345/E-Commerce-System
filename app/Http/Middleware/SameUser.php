@@ -13,15 +13,17 @@ class SameUser
     /**
      * Handle an incoming request.
      *
-     * @param \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response) $next
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     *
      * @throws UNAUTHORIZED
      */
     public function handle(Request $request, Closure $next): Response
     {
         $user = Auth::user();
-        if($request->route('user')->id != $user->id){
-            throw new UNAUTHORIZED();
+        if ($request->route('user')->id != $user->id) {
+            throw new UNAUTHORIZED;
         }
+
         return $next($request);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Log;
 
 class Test extends Controller
 {
@@ -15,6 +16,11 @@ class Test extends Controller
         return response()->json([
             'access_token' => $token,
         ]);
+    }
+
+    public function index()
+    {
+        Log::info('s');
     }
     //
 }

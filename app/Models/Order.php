@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Order extends Model
 {
     use HasFactory;
-
+    public static $validStatuses = ['processing', 'shipped', 'delivered'];
     protected $guarded = ['id'];
 
     public function subOrders(): HasMany

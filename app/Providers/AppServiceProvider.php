@@ -49,16 +49,16 @@ class AppServiceProvider extends ServiceProvider
     public function milisearch()
     {
 
-// Connect to Meilisearch
+        // Connect to Meilisearch
         $client = new Client('http://127.0.0.1:7700'); // Replace with your Meilisearch server URL
         $index = $client->index('products');
 
-// Update filterable attributes to include 'id' and 'store_id'
+        // Update filterable attributes to include 'id' and 'store_id'
         $index->updateFilterableAttributes(['id', 'store_id']);
     }
 
-
-    public function observers(): void {
+    public function observers(): void
+    {
         Product::observe(ProductObserver::class);
         Store::observe(StoreObserver::class);
     }

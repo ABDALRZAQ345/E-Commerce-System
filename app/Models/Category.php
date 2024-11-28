@@ -11,6 +11,7 @@ class Category extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+    protected $hidden =['pivot'];
 
     public function stores(): BelongsToMany
     {

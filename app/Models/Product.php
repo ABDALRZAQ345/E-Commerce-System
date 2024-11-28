@@ -17,15 +17,14 @@ class Product extends Model implements Auditable
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
     use Searchable;
+
     protected $guarded = ['id'];
-
-
 
     public function toSearchableArray(): array
     {
         return [
             'name' => $this->name,
-            'store_id' => $this->store_id
+            'store_id' => $this->store_id,
         ];
     }
 
@@ -55,16 +54,17 @@ class Product extends Model implements Auditable
         return $this->morphMany(Photo::class, 'object');
     }
 
-    public function tags(): BelongsToMany
+    public function categories(): BelongsToMany
     {
-        return $this->belongsToMany(Tag::class);
+        return $this->belongsToMany(Category::class);
     }
 
     public function orderItems(): HasMany
     {
         return $this->hasMany(OrderItem::class);
     }
-    public function scopeFilter($query,$filter,$search=null): void
+
+    public function scopeFilter($query, $filter, $search = null): void
     {
 
         if ($filter === 'best_selling') {
@@ -85,7 +85,6 @@ class Product extends Model implements Auditable
         elseif ($filter === 'recommended') {
             /// todo
         }
-
 
     }
 }

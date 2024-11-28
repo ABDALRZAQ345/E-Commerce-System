@@ -9,24 +9,29 @@ use App\Models\Product;
 use App\Models\SubOrder;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
 
 class OrderController extends Controller
 {
-    public function index(User $user): JsonResponse
+    public function index(Request $request,User $user): JsonResponse
     {
+        $orders =$user->orders();
+        if($request->filled('date') && in_array($request->date, ['asc', 'desc']))
+            $orders->orderBy('created_at', $request->date);
 
-        $orders = $user->orders()->paginate(20);
+      $orders= $orders->paginate(20);
+
         return response()->json($orders);
     }
 
     public function show(User $user, Order $order): JsonResponse
     {
 
-        $order=$user->orders()->findOrFail($order->id);
+        $order = $user->orders()->findOrFail($order->id);
+
         return response()->json([
-            'order'=>$order,
+            'order' => $order,
         ]);
 
     }
@@ -55,7 +60,7 @@ class OrderController extends Controller
                 $storeId = $product->store_id; // Assuming each product belongs to a store
 
                 // Find or create suborder for the store
-                if (!isset($suborders[$storeId])) {
+                if (! isset($suborders[$storeId])) {
                     $suborders[$storeId] = Suborder::create([
                         'order_id' => $order->id,
                         'store_id' => $storeId,
@@ -65,11 +70,12 @@ class OrderController extends Controller
 
                 // Add product to suborder
                 $suborder = $suborders[$storeId];
-                if($productData['quantity']> $product->quantity){
+                if ($productData['quantity'] > $product->quantity) {
                     DB::rollBack();
+
                     return response()->json([
-                       'message' => 'product with id '.$productData['id'].' is out of stock',
-                    ],400);
+                        'message' => 'product with id '.$productData['id'].' is out of stock',
+                    ], 400);
                 }
                 $suborder->items()->create([
                     'product_id' => $product->id,
@@ -93,18 +99,16 @@ class OrderController extends Controller
             $order->save();
 
             DB::commit();
-            // Todo Create word for فاتورة
+
+            // Todo Create Invoice
             return response()->json([
                 'message' => 'Order created successfully',
-                'order' => $order,
-                'sub_orders' => $order->subOrders()->with('items')->get(),
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
+
             return response()->json(['message' => 'Failed to create order', 'error' => $e->getMessage()], 500);
         }
 
-
     }
-
 }

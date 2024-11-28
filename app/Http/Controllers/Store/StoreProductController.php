@@ -7,20 +7,18 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use App\Models\Store;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 class StoreProductController extends Controller
 {
     //
-    public function index(Request $request,Store $store): JsonResponse
+    public function index(Request $request, Store $store): JsonResponse
     {
         $search = $request->input('search');
         $products = Product::search($search)
-            ->where('store_id',$store->id)
+            ->where('store_id', $store->id)
             ->paginate(20);
-
 
         return response()->json([
             'products' => $products,
@@ -29,7 +27,7 @@ class StoreProductController extends Controller
 
     public function show(Store $store, Product $product): JsonResponse
     {
-        $product = Product::where('store_id', $store->id)->where('id', $product->id)->firstOrFail();
+        $product =$store->products()->with('categories')->findOrFail($product->id);
 
         return response()->json([
             'product' => $product,
@@ -44,7 +42,7 @@ class StoreProductController extends Controller
         try {
             if ($request->hasFile('photo')) {
                 $photoPath = $request->file('photo')->store('products', 'public');
-                $validated['photo'] = 'storage/' . $photoPath;
+                $validated['photo'] = 'storage/'.$photoPath;
             }
             $product = $store->products()->create($validated);
 
@@ -67,9 +65,10 @@ class StoreProductController extends Controller
         try {
             if ($request->hasFile('photo')) {
                 $photoPath = $request->file('photo')->store('products', 'public');
-                $validated['photo'] = 'storage/' . $photoPath;
+                $validated['photo'] = 'storage/'.$photoPath;
             }
-                $product->update($validated);
+            $product->update($validated);
+
             return response()->json([
                 'message' => 'Product updated successfully.',
                 'product' => $product,

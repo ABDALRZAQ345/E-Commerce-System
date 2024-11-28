@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StorestoreRequest;
 use App\Http\Requests\UpdatestoreRequest;
 use App\Models\Store;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class StoreController extends Controller
@@ -26,9 +26,15 @@ class StoreController extends Controller
     public function show(Store $store): JsonResponse
     {
         $store = Store::findOrFail($store->id);
+        $contacts = $store->contacts;
+        $locations = $store->locations;
+        $categories = $store->categories;
 
         return response()->json([
             'store' => $store,
+            'contacts' => $contacts,
+            'locations' => $locations,
+            'categories' => $categories,
         ]);
     }
 
@@ -58,7 +64,7 @@ class StoreController extends Controller
         try {
             if ($request->hasFile('photo')) {
                 $photoPath = $request->file('photo')->store('stores', 'public');
-                $validated['photo'] = 'storage/' . $photoPath;
+                $validated['photo'] = 'storage/'.$photoPath;
             }
             $store = \DB::transaction(function () use ($user, $validated) {
                 return $user->store()->create($validated);
@@ -83,7 +89,7 @@ class StoreController extends Controller
         try {
             if ($request->hasFile('photo')) {
                 $photoPath = $request->file('photo')->store('stores', 'public');
-                $validated['photo'] = 'storage/' . $photoPath;
+                $validated['photo'] = 'storage/'.$photoPath;
             }
             \DB::transaction(function () use ($store, $validated) {
                 $store->update($validated);

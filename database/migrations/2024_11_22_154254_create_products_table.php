@@ -21,7 +21,7 @@ return new class extends Migration
             $table->unsignedInteger('quantity');
             $table->date('expire_date')->nullable();
             $table->string('photo')->nullable();
-            $table->decimal('rate',2,1)->default(0)->checkbetween(0,5);
+            $table->decimal('rate', 2, 1)->default(0)->checkbetween(0, 5);
             $table->unsignedInteger('sales')->default(0)->comment('number of sales for that product ');
             $table->timestamps();
         });
