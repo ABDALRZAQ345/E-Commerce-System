@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('first_name', 50);
             $table->string('last_name', 50)->nullable();
             $table->string('password');
-            $table->string('phone_number', 10)->unique();
+            $table->string('phone_number', 13)->unique();
             $table->string('photo')->nullable();
             $table->rememberToken();
             $table->timestamps();

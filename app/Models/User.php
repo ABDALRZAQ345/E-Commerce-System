@@ -11,14 +11,14 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Laravel\Sanctum\PersonalAccessToken;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, HasRoles,Notifiable;
 
-    protected $guarded = ['id'];
-
+    protected  $guarded=['id'];
     protected $hidden = [
         'password',
         'remember_token',
@@ -48,4 +48,7 @@ class User extends Authenticatable
     {
         return $this->hasOne(Store::class);
     }
+
+
+
 }

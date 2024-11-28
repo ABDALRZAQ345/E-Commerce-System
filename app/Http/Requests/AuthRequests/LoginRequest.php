@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\AuthRequests;
 
+use App\Rules\ValidPhoneNumber;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -24,8 +25,8 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'email:dns'],
-            'password' => ['required', 'min:8', 'max:20'],
+            'password' => ['required'],
+            'phone_number' => ['required', new ValidPhoneNumber]
         ];
     }
 

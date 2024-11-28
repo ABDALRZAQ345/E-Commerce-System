@@ -72,7 +72,7 @@ class AppServiceProvider extends ServiceProvider
 
         RateLimiter::for('send_confirmation_code', function (Request $request) {
             return [
-                Limit::perMinutes(10, 1)->by($request->ip()), // Limit to 1 request every 30 minutes
+                Limit::perMinutes(10, 5)->by($request->ip()), // Limit to 1 request every 30 minutes
                 Limit::perDay(10)->by($request->ip()),         // Limit to 5 requests per day
             ];
         });

@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\ChangePasswordController;
+use App\Http\Controllers\PromotionController;
+use App\Http\Controllers\VerificationController;
+use App\Http\Middleware\EnsureIsAdmin;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\Order\OrderItemController;
@@ -13,7 +18,7 @@ use App\Http\Controllers\StoreOrderController;
 use App\Http\Controllers\Test;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['throttle:api', 'locale', 'xss'])->group(function () {
+Route::middleware(['throttle:api', 'locale','xss'])->group(function () {
 
     Route::middleware('auth:sanctum')->group(function () {
 
@@ -21,7 +26,7 @@ Route::middleware(['throttle:api', 'locale', 'xss'])->group(function () {
         Route::get('/stores/{store}', [StoreController::class, 'show'])->name('stores.show');
         Route::post('/stores', [StoreController::class, 'store'])->middleware('can_create_store')->name('stores.store');
         Route::post('/stores/{store}', [StoreController::class, 'update'])->middleware('store_owner')->name('stores.update');
-       // Route::get('/stores/{store}/audits', [StoreController::class, 'audits'])->name('stores.audits');
+        // Route::get('/stores/{store}/audits', [StoreController::class, 'audits'])->name('stores.audits');
         Route::get('/stores/{store}/products', [StoreProductController::class, 'index'])->name('stores.products.index');
         Route::get('/stores/{store}/products/{product}', [StoreProductController::class, 'show'])->name('stores.products.show');
         Route::post('/stores/{store}/products', [StoreProductController::class, 'store'])->middleware('store_owner')->name('stores.products.store');
@@ -48,6 +53,28 @@ Route::middleware(['throttle:api', 'locale', 'xss'])->group(function () {
         Route::get('/users/{user}/orders/{order}/suborders/{sub_order}/items', [OrderItemController::class, 'index'])->middleware('same_user')->name('orders.suborder.show');
         Route::post('/users/{user}/orders', [OrderController::class, 'store'])->middleware('same_user')->name('orders.store');
 
+    });
+
+    Route::middleware('guest')->group(function () {
+        Route::post('/send_verificationCode', [VerificationController::class, 'sendVerificationCode'])->middleware('throttle:send_confirmation_code')->name('send_verificationCode');
+        Route::post('/resend_verificationCode', [VerificationController::class, 'sendVerificationCode'])->middleware('throttle:send_confirmation_code')->name('resend_verification_code');
+        Route::post('/check_verificationCode', [VerificationController::class, 'checkVerificationCode'])->name('check_verificationCode');
+
+        Route::post('/forget_password', [VerificationController::class, 'sendVerificationCode'])->middleware('throttle:send_confirmation_code')->name('forget_password');
+        Route::patch('/change_password', [ChangePasswordController::class, 'ChangePassword'])->name('change_password');
+
+        Route::post('/login', [AuthController::class, 'login'])->name('login');
+        Route::post('/register', [AuthController::class, 'register'])->name('register');
+    });
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+        Route::put('/update', [AuthController::class, 'update'])->name('update');
+        Route::post('/promotions/create', [PromotionController::class, 'create'])->name('promotions.create');
+    });
+
+    Route::middleware(['auth:sanctum', EnsureIsAdmin::class])->group(function () {
+        Route::post('/promotions', [PromotionController::class, 'promote'])->name('promote');
+        Route::get('/promotions', [PromotionController::class, 'index'])->name('Promotions.index');
     });
 
 });
