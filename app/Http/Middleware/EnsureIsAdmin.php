@@ -2,11 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Exceptions\UNAUTHORIZED;
 use Closure;
-use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Spatie\Permission\Models\Role;
 
 class EnsureIsAdmin
 {
@@ -14,6 +13,8 @@ class EnsureIsAdmin
      * Handle an incoming request.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     *
+     * @throws UNAUTHORIZED
      */
     public function handle(Request $request, Closure $next): Response
     {
@@ -22,6 +23,6 @@ class EnsureIsAdmin
             return $next($request);
         }
 
-        abort(403, 'You do not have permission to access this resource.');
+        throw new UNAUTHORIZED;
     }
 }

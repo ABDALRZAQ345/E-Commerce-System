@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\User;
 
-use App\Rules\ValidPhoneNumber;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -25,10 +24,12 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'phone_number' => ['required', new ValidPhoneNumber],
-            'new_phone_number' => ['required', new ValidPhoneNumber],
+            'first_name' => ['required', 'max:50'],
+            'last_name' => ['nullable', 'max:50'],
+            'photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif'],
         ];
     }
+
     public function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(

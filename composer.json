@@ -7,6 +7,7 @@
     "require": {
         "php": "^8.2",
         "ezyang/htmlpurifier": "^4.18",
+        "giggsey/libphonenumber-for-php": "^8.13",
         "laravel/framework": "^11.9",
         "laravel/sanctum": "^4.0",
         "laravel/scout": "^10.11",

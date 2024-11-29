@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Order;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreOrderRequest;
+use App\Http\Requests\Store\StoreOrderRequest;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\SubOrder;
@@ -14,13 +14,14 @@ use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
-    public function index(Request $request,User $user): JsonResponse
+    public function index(Request $request, User $user): JsonResponse
     {
-        $orders =$user->orders();
-        if($request->filled('date') && in_array($request->date, ['asc', 'desc']))
+        $orders = $user->orders();
+        if ($request->filled('date') && in_array($request->date, ['asc', 'desc'])) {
             $orders->orderBy('created_at', $request->date);
+        }
 
-      $orders= $orders->paginate(20);
+        $orders = $orders->paginate(20);
 
         return response()->json($orders);
     }

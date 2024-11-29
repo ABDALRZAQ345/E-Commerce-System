@@ -3,12 +3,11 @@
 namespace App\Services;
 
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
-    public static function createUser(array $data)
+    public static function createUser(array $data): User
     {
         $user = User::create([
             'first_name' => $data['first_name'],
@@ -19,21 +18,23 @@ class UserService
         ]);
 
         $user->assignRole('user');
+
         return $user;
     }
 
-    public static function updatePhoneNumber(User $user, $newPhoneNumber)
+    public static function updatePhoneNumber(User $user, $newPhoneNumber): void
     {
         $user->update(['phone_number' => $newPhoneNumber]);
     }
 
-    public static function updatePassword($user, $newPassword) {
+    public static function updatePassword($user, $newPassword): void
+    {
         $user->update([
             'password' => Hash::make($newPassword),
         ]);
     }
 
-    public static function findUserByPhoneNumber($phoneNumber)
+    public static function findUserByPhoneNumber($phoneNumber): User
     {
         return User::where('phone_number', $phoneNumber)->firstOrFail();
     }

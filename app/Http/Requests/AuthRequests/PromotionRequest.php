@@ -25,7 +25,7 @@ class PromotionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'phone_number' => ['required', new ValidPhoneNumber, 'digits:10']
+            'phone_number' => ['required', new ValidPhoneNumber, 'digits:10'],
         ];
     }
 

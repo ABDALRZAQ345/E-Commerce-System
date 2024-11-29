@@ -7,26 +7,13 @@ use Meilisearch\Client;
 
 class RunServer extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'run-server';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Command description';
+    protected $description = 'command that run the server and MiliSearch ';
 
-    /**
-     * Execute the console command.
-     */
-    public function handle()
+    public function handle(): void
     {
-        // Connect to Meilisearch
+
         $client = new Client('http://127.0.0.1:7700'); // Replace with your Meilisearch server URL
         $index = $client->index('products'); // Ensure 'products' is your Meilisearch index
 

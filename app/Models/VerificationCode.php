@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class VerificationCode extends Model
 {
     use HasFactory;
+
     protected $fillable = ['phone_number', 'code', 'created_at', 'expires_at'];
 
     public function isExpired()

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Store;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StorestoreRequest;
-use App\Http\Requests\UpdatestoreRequest;
+use App\Http\Requests\Store\StoreStoreRequest;
+use App\Http\Requests\Store\UpdateStoreRequest;
 use App\Models\Store;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -57,7 +57,7 @@ class StoreController extends Controller
 
     }
 
-    public function store(StorestoreRequest $request): JsonResponse
+    public function store(StoreStoreRequest $request): JsonResponse
     {
         $validated = $request->validated();
         $user = Auth::user();

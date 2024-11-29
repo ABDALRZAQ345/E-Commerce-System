@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Category;
 
+use App\Http\Controllers\Controller;
 use App\Models\Category;
-use App\Models\Product;
-use App\Models\Store;
 use Illuminate\Http\JsonResponse;
 
 class CategoryController extends Controller
@@ -14,8 +13,6 @@ class CategoryController extends Controller
         return response()->json(Category::all());
 
     }
-    public function show(){
 
-    }
-
+    public function show() {}
 }

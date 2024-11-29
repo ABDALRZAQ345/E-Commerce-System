@@ -20,18 +20,13 @@ class SubOrderController extends Controller
         // Valid statuses
         $validStatuses = Order::$validStatuses;
 
-
-
         // Get sub-orders query
         $subOrders = $order->subOrders(); // Ensure the `subOrders()` relationship exists in the Order model
 
         // Filter by status
-        if ($request->filled('status') && in_array($request->status, $validStatuses) ) {
+        if ($request->filled('status') && in_array($request->status, $validStatuses)) {
             $subOrders->where('status', $request->status);
         }
-
-
-
 
         // Paginate results
         $paginatedSubOrders = $subOrders->paginate(20);

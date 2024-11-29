@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\FORBIDDEN;
 use App\Exceptions\ServerErrorException;
 use App\Http\Requests\AuthRequests\PromotionRequest;
 use App\Models\Promotion;
-use App\Models\User;
 use App\Services\UserService;
-use Illuminate\Http\Request;
 
 class PromotionController extends Controller
 {
@@ -16,6 +13,7 @@ class PromotionController extends Controller
     {
         try {
             $promotions = Promotion::orderBy('created_at', 'desc')->get();
+
             return response()->json([
                 'status' => true,
                 'message' => 'PromotionsList Created Successfully',
@@ -48,7 +46,6 @@ class PromotionController extends Controller
             throw new ServerErrorException($e->getMessage());
         }
     }
-
 
     public function promote(PromotionRequest $request)
     {

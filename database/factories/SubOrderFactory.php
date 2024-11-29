@@ -18,7 +18,7 @@ class SubOrderFactory extends Factory
      */
     public function definition(): array
     {
-        $statuses = ['pending', 'processing', 'in_way', 'completed'];
+        $statuses = Order::$validStatuses;
         $randomStatus = $statuses[array_rand($statuses)];
 
         return [

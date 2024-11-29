@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Password;
 
 use App\Rules\ValidPhoneNumber;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-class ChangePasswordRequest extends FormRequest
+use Illuminate\Validation\Rules\Password;
+
+class ForgetPasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +26,12 @@ class ChangePasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'phone_number' => ['required', new ValidPhoneNumber],
-            'current_password' => ['required'],
-            'new_password' => ['required']
+            'phone_number' => ['required', new ValidPhoneNumber, 'exists:users,phone_number'],
+            'password' => ['required', Password::defaults(), 'confirmed'],
+            'code' => ['required', 'numeric', 'digits:6'],
         ];
     }
+
     public function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(
@@ -37,5 +40,4 @@ class ChangePasswordRequest extends FormRequest
             ], 422)
         );
     }
-
 }

@@ -23,9 +23,20 @@ class ProductController extends Controller
     public function show(Product $product): JsonResponse
     {
         $product->load('categories');
+
         //todo load the photos and details
         return response()->json([
             'product' => $product,
         ]);
+    }
+
+    public function audits(Product $product): JsonResponse
+    {
+        $audits = $product->audits()->paginate(20);
+
+        return response()->json([
+            'audits' => $audits,
+        ]);
+
     }
 }

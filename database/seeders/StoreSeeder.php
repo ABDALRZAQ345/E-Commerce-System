@@ -18,10 +18,10 @@ class StoreSeeder extends Seeder
         Store::factory(10)->create();
         $stores = Store::all();
         foreach ($stores as $store) {
-            $products=Product::factory(10)->create(['store_id' => $store->id]);
-foreach ($products as $product) {
-    $product->categories()->sync(collect($categories)->random(rand(3, 7)));
-}
+            $products = Product::factory(10)->create(['store_id' => $store->id]);
+            foreach ($products as $product) {
+                $product->categories()->sync(collect($categories)->random(rand(3, 7)));
+            }
 
             // Attach the selected categories to the store
             $store->categories()->sync(collect($categories)->random(rand(3, 7)));

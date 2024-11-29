@@ -29,7 +29,7 @@ class Store extends Model implements Auditable
 
     protected $guarded = ['id'];
 
-    protected $hidden = ['deleted_at', 'user_id'];
+    protected $hidden = ['deleted_at'];
 
     public function resolveUser(): User|\Illuminate\Contracts\Auth\Authenticatable|null
     {

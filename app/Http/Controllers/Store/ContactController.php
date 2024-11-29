@@ -55,7 +55,7 @@ class ContactController extends Controller
             'type' => ['string', 'required'],
             'value' => ['string', 'required'],
         ]);
-        $contact=$store->contacts()->findOrFail($contact->id);
+        $contact = $store->contacts()->findOrFail($contact->id);
         $contact->update($validated);
 
         return response()->json([

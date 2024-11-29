@@ -6,6 +6,7 @@ use App\Rules\ValidPhoneNumber;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rules\Password;
 
 class LoginRequest extends FormRequest
 {
@@ -25,8 +26,8 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'password' => ['required'],
-            'phone_number' => ['required', new ValidPhoneNumber]
+            'password' => ['required', Password::defaults()],
+            'phone_number' => ['required', new ValidPhoneNumber, 'exists:users,phone_number'],
         ];
     }
 

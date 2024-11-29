@@ -12,6 +12,7 @@ class ServerErrorException extends Exception
     {
         parent::__construct($message);
     }
+
     public function render(Request $request)
     {
         return response()->json([

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Store;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreProductRequest;
-use App\Http\Requests\UpdateProductRequest;
+use App\Http\Requests\Product\UpdateProductRequest;
+use App\Http\Requests\Store\StoreProductRequest;
 use App\Models\Product;
 use App\Models\Store;
 use Illuminate\Http\JsonResponse;
@@ -27,7 +27,7 @@ class StoreProductController extends Controller
 
     public function show(Store $store, Product $product): JsonResponse
     {
-        $product =$store->products()->with('categories')->findOrFail($product->id);
+        $product = $store->products()->with('categories')->findOrFail($product->id);
 
         return response()->json([
             'product' => $product,

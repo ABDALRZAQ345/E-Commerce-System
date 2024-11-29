@@ -2,94 +2,110 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Events\RegisteredEvent;
-use App\Exceptions\ServerErrorException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthRequests\LoginRequest;
 use App\Http\Requests\AuthRequests\SignupRequest;
-use App\Http\Requests\UpdateUserRequest;
-use App\Http\Resources\UserResource;
-use App\Models\User;
-use App\Models\VerificationCode;
+use App\Http\Requests\User\UpdateUserRequest;
 use App\Services\UserService;
-use App\Services\VerificationService;
+use App\Services\VerificationCodeService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
 
 class AuthController extends Controller
 {
-    protected $userService;
+    protected UserService $userService;
 
-    public function __construct(UserService $userService)
+    protected VerificationCodeService $verificationCodeService;
+
+    public function __construct(UserService $userService, VerificationCodeService $verificationCodeService)
     {
         $this->userService = $userService;
+        $this->verificationCodeService = $verificationCodeService;
     }
 
-    public function register(SignupRequest $request)
+    public function register(SignupRequest $request): JsonResponse
     {
-        $validatedData = $request->validated();
-        try {
-            if(User::where('phone_number', $validatedData['phone_number'])->exists()) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Phone number has taken before',
-                ], 403);
-            }
+        $validated = $request->validated();
 
-            $user = UserService::createUser($validatedData);
+        try {
+            $this->verificationCodeService->Check($validated['phone_number'], $validated['code']);
+            $user = UserService::createUser($validated);
+            $this->verificationCodeService->delete($validated['phone_number']);
+
             return response()->json([
                 'status' => true,
                 'message' => 'User Created Successfully',
-                'token' => $user->createToken("API TOKEN")->plainTextToken,
-            ], 200);
-        } catch (\Throwable $th) {
-            throw new ServerErrorException($th->getMessage());
+                'token' => $user->createToken('API TOKEN')->plainTextToken,
+                'user' => $user,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->getMessage(),
+            ]);
         }
     }
-    public function login(LoginRequest $request)
+
+    public function login(LoginRequest $request): JsonResponse
     {
         $validatedData = $request->validated();
         try {
             $user = UserService::findUserByPhoneNumber($validatedData['phone_number']);
-            if (!Hash::check($validatedData['password'], $user->password)) {
+            if (! Hash::check($validatedData['password'], $user->password)) {
                 return response()->json([
                     'status' => false,
                     'message' => 'Phone & Password do not match our record.',
                 ], 401);
             }
+
             return response()->json([
                 'status' => true,
                 'message' => 'User logged in successfully',
-                'token' => $user->createToken("API TOKEN")->plainTextToken
+                'token' => $user->createToken('API TOKEN')->plainTextToken,
+                'user' => $user,
             ], 200);
-        } catch (\Throwable $th) {
-            throw new ServerErrorException($th);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->getMessage(),
+            ]);
         }
     }
 
-    public function logout(Request $request)
+    public function logout(Request $request): JsonResponse
     {
         try {
-            $request->user()->tokens()->delete();
+            $user = \Auth::user();
+            $user->tokens()->delete();
+
             return response()->json([
                 'message' => 'Logged out successfully',
             ]);
-        } catch (\Throwable $th) {
-            throw new ServerErrorException($th);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->getMessage(),
+            ]);
         }
     }
 
-    public function update(UpdateUserRequest $request)
+    public function update(UpdateUserRequest $request): JsonResponse
     {
-        $validatedData = $request->validated();
+        $validated = $request->validated();
         try {
-            $user = UserService::findUserByPhoneNumber($validatedData['phone_number']);
-            UserService::updatePhoneNumber($user, $validatedData['new_phone_number']);
-        } catch (\Exception $e) {
-            throw new ServerErrorException($e);
+            $user = \Auth::user();
+            $user->update($validated);
 
+            return response()->json([
+                'status' => true,
+                'message' => 'User updated successfully',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->getMessage(),
+            ]);
         }
     }
 }

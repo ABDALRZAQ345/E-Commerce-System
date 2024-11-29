@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Exceptions\UNAUTHORIZED;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,6 +13,8 @@ class EnsureIsManger
      * Handle an incoming request.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     *
+     * @throws UNAUTHORIZED
      */
     public function handle(Request $request, Closure $next): Response
     {
@@ -20,6 +23,6 @@ class EnsureIsManger
             return $next($request);
         }
 
-        abort(403, 'You do not have permission to access this resource.');
+        throw new UNAUTHORIZED;
     }
 }
