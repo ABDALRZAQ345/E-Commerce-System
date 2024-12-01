@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Product;
+use App\Models\Store;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('favorite_products', function (Blueprint $table) {
+        Schema::create('favourite_stores', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(Product::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Store::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
