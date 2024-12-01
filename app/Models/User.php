@@ -29,14 +29,14 @@ class User extends Authenticatable
         return $this->morphMany(Location::class, 'object');
     }
 
-    public function favoriteProducts(): BelongsToMany
+    public function favouriteProducts(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class, 'favorite_products', 'user_id', 'product_id');
+        return $this->belongsToMany(Product::class, 'favourite_products', 'user_id', 'product_id');
     }
 
-    public function favoriteStores(): BelongsToMany
+    public function favouriteStores(): BelongsToMany
     {
-        return $this->belongsToMany(Store::class, 'favorite_stores', 'user_id', 'store_id');
+        return $this->belongsToMany(Store::class, 'favourite_stores', 'user_id', 'store_id');
     }
 
     public function orders(): HasMany
