@@ -20,7 +20,6 @@ class StoreSeeder extends Seeder
         foreach ($stores as $store) {
             $products = Product::factory(10)->create(['store_id' => $store->id]);
 
-
             // Attach the selected categories to the store
             $store->categories()->sync(collect($categories)->random(rand(3, 7)));
         }

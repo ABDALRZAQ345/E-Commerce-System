@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests\Favourite;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+
 class AddFavouriteProductRequest extends FormRequest
 {
     /**
@@ -26,6 +27,7 @@ class AddFavouriteProductRequest extends FormRequest
             'product_id' => 'required|exists:products,id',
         ];
     }
+
     public function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(

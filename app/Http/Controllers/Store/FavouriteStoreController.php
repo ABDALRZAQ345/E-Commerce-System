@@ -21,6 +21,7 @@ class FavouriteStoreController extends Controller
     {
         try {
             $favourites = $this->favouriteStoreService->getUserFavourites(auth()->id());
+
             return response()->json(['data' => $favourites], 200);
         } catch (Exception $e) {
             return response()->json(['error' => 'Failed to retrieve favourites', 'message' => $e->getMessage()], 500);
@@ -32,6 +33,7 @@ class FavouriteStoreController extends Controller
         $validatedData = $request->validated();
         try {
             $this->favouriteStoreService->addToFavourites(auth()->id(), $validatedData['store_id']);
+
             return response()->json(['message' => 'Store added to favourites'], 201);
         } catch (Exception $e) {
             return response()->json(['error' => 'Failed to add favourite', 'message' => $e->getMessage()], 500);
@@ -43,6 +45,7 @@ class FavouriteStoreController extends Controller
         $validatedData = $request->validated();
         try {
             $this->favouriteStoreService->removeFromFavourites(auth()->id(), $validatedData['store_id']);
+
             return response()->json(['message' => 'Store removed from favourites'], 200);
         } catch (Exception $e) {
             return response()->json(['error' => 'Failed to remove favourite', 'message' => $e->getMessage()], 500);

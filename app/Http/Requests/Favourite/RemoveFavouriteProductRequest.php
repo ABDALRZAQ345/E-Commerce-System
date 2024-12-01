@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Favourite;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 class RemoveFavouriteProductRequest extends FormRequest
@@ -27,6 +27,7 @@ class RemoveFavouriteProductRequest extends FormRequest
             'product_id' => 'required|exists:products,id',
         ];
     }
+
     public function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(

@@ -18,7 +18,6 @@ class SubOrderController extends Controller
         // Ensure the order belongs to the given user
         $order = $user->orders()->findOrFail($order->id);
 
-
         $validStatuses = OrderStatusEnum::getAllStatus();
 
         // Get sub-orders query
@@ -29,9 +28,7 @@ class SubOrderController extends Controller
             $subOrders->where('status', $request->status);
         }
 
-
         $paginatedSubOrders = $subOrders->paginate(20);
-
 
         return response()->json($paginatedSubOrders);
     }

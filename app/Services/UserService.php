@@ -39,7 +39,8 @@ class UserService
     {
         return User::where('phone_number', $phoneNumber)->firstOrFail();
     }
-    function FormatRoles(User $user): User
+
+    public function FormatRoles(User $user): User
     {
         $user->load('roles:name');
         $roles = RoleEnum::getAllRoles();
@@ -50,6 +51,7 @@ class UserService
         }
         $user->roles_status = $roleStatuses;
         unset($user->roles);
+
         return $user;
     }
 }

@@ -15,7 +15,6 @@ class OrderService
     public function createOrder(int $userId, array $products): Order
     {
 
-
         try {
             DB::beginTransaction();
             // Create the main order

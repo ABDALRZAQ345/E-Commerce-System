@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\LocationController;
 use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\Order\OrderItemController;
 use App\Http\Controllers\Order\SubOrderController;
@@ -20,7 +19,7 @@ Route::middleware(['throttle:api', 'locale', 'xss'])->group(function () {
         Route::get('/users/{user}/orders/{order}/suborders', [SubOrderController::class, 'index'])->middleware('same_user')->name('orders.suborder.index');
         Route::get('/users/{user}/orders/{order}/suborders/{sub_order}/items', [OrderItemController::class, 'index'])->middleware('same_user')->name('orders.suborder.show');
         Route::post('/users/{user}/orders', [OrderController::class, 'store'])->middleware('same_user')->name('orders.store');
-        Route::get('/users/{user}/locations',[UserLocationController::class, 'index'])->middleware('same_user')->name('locations.index');
+        Route::get('/users/{user}/locations', [UserLocationController::class, 'index'])->middleware('same_user')->name('locations.index');
         Route::post('/users/{user}/locations', [UserLocationController::class, 'store'])->middleware('same_user')->name('locations.store');
     });
 

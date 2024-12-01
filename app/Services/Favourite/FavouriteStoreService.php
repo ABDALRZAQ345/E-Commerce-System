@@ -14,7 +14,7 @@ class FavouriteStoreService
                 ->with('store')
                 ->get();
         } catch (Exception $e) {
-            throw new Exception('Error retrieving user favourites: ' . $e->getMessage());
+            throw new Exception('Error retrieving user favourites: '.$e->getMessage());
         }
     }
 
@@ -25,14 +25,14 @@ class FavouriteStoreService
                 ->where('store_id', $storeId)
                 ->exists();
 
-            if (!$exists) {
+            if (! $exists) {
                 FavouriteStore::create([
                     'user_id' => $userId,
                     'store_id' => $storeId,
                 ]);
             }
         } catch (Exception $e) {
-            throw new Exception('Error adding to favourites: ' . $e->getMessage());
+            throw new Exception('Error adding to favourites: '.$e->getMessage());
         }
     }
 
@@ -43,7 +43,7 @@ class FavouriteStoreService
                 ->where('store_id', $storeId)
                 ->delete();
         } catch (Exception $e) {
-            throw new Exception('Error removing from favourites: ' . $e->getMessage());
+            throw new Exception('Error removing from favourites: '.$e->getMessage());
         }
     }
 }

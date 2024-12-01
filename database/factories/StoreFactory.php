@@ -17,9 +17,10 @@ class StoreFactory extends Factory
      */
     public function definition(): array
     {
-        $user=User::factory()->create();
+        $user = User::factory()->create();
         $user->assignRole('user');
         $user->assignRole('manager');
+
         return [
             'name' => $this->faker->name(),
             'user_id' => $user->id,

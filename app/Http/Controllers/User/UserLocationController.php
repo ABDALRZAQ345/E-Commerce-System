@@ -11,20 +11,22 @@ class UserLocationController extends Controller
 {
     public function index(User $user): JsonResponse
     {
-        $locations=$user->locations()->select(['name','longitude','latitude'])->get();
+        $locations = $user->locations()->select(['name', 'longitude', 'latitude'])->get();
+
         return response()->json([
-            'status'=>true,
-            'locations'=>$locations
+            'status' => true,
+            'locations' => $locations,
         ]);
     }
+
     public function store(Request $request, User $user): JsonResponse
     {
 
         $validated = $request->validate([
-            'locations' => ['required','array','max:5'],
-            'locations.*.longitude' => ['required', 'numeric','between:-180,180'],
-            'locations.*.latitude' => ['required','numeric','between:-90,90'],
-            'locations.*.name' => ['required','string','max:50'],
+            'locations' => ['required', 'array', 'max:5'],
+            'locations.*.longitude' => ['required', 'numeric', 'between:-180,180'],
+            'locations.*.latitude' => ['required', 'numeric', 'between:-90,90'],
+            'locations.*.name' => ['required', 'string', 'max:50'],
         ]);
 
         $user = User::findOrFail($user->id);
@@ -34,6 +36,4 @@ class UserLocationController extends Controller
 
         return response()->json(['message' => 'Locations added successfully']);
     }
-
-
 }

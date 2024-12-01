@@ -12,10 +12,12 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     protected UserService $userService;
+
     public function __construct(UserService $userService)
     {
         $this->userService = $userService;
     }
+
     public function index(Request $request): JsonResponse
     {
         $users = User::query();
@@ -26,22 +28,22 @@ class UserController extends Controller
         }
         $users = $users->with('roles:name')->paginate(20);
         $users->getCollection()->transform(function ($user) {
-          $user= $this->userService->FormatRoles($user);
-            $user->active =rand(0,1); // todo make it real value not random value
+            $user = $this->userService->FormatRoles($user);
+            $user->active = rand(0, 1); // todo make it real value not random value
+
             return $user;
-       });
+        });
 
         return response()->json($users);
     }
 
     public function show(User $user): JsonResponse
     {
-        $user=$this->userService->FormatRoles($user);
+        $user = $this->userService->FormatRoles($user);
+
         return response()->json([
             'status' => true,
             'user' => $user,
         ]);
     }
-
-
 }
