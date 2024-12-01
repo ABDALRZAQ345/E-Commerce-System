@@ -54,9 +54,9 @@ class Product extends Model implements Auditable
         return $this->morphMany(Photo::class, 'object');
     }
 
-    public function categories(): BelongsToMany
+    public function category(): BelongsTo
     {
-        return $this->belongsToMany(Category::class);
+        return $this->belongsTo(Category::class);
     }
 
     public function orderItems(): HasMany

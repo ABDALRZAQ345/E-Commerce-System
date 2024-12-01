@@ -64,7 +64,7 @@ class StoreController extends Controller
         try {
             if ($request->hasFile('photo')) {
                 $photoPath = $request->file('photo')->store('stores', 'public');
-                $validated['photo'] = 'storage/'.$photoPath;
+                $validated['photo'] = 'storage/' . $photoPath;
             }
             $store = \DB::transaction(function () use ($user, $validated) {
                 return $user->store()->create($validated);
@@ -88,8 +88,10 @@ class StoreController extends Controller
 
         try {
             if ($request->hasFile('photo')) {
+                // todo delete the old photo if exists
                 $photoPath = $request->file('photo')->store('stores', 'public');
-                $validated['photo'] = 'storage/'.$photoPath;
+
+                $validated['photo'] = 'storage/' . $photoPath;
             }
             \DB::transaction(function () use ($store, $validated) {
                 $store->update($validated);

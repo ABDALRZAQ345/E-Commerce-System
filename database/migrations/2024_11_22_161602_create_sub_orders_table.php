@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\OrderStatusEnum;
 use App\Models\Order;
 use App\Models\Store;
 use Illuminate\Database\Migrations\Migration;
@@ -16,7 +17,7 @@ return new class extends Migration
         Schema::create('sub_orders', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Order::class)->constrained();
-            $table->enum('status', ['processing', 'shipped', 'delivered'])->default('processing');
+            $table->enum('status', OrderStatusEnum::getAllStatus())->default('processing');
             $table->unsignedBigInteger('total');
             $table->foreignIdFor(Store::class)->constrained();
             $table->timestamps();

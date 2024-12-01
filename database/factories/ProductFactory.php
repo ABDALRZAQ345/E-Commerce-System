@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use App\Models\Store;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -22,6 +23,7 @@ class ProductFactory extends Factory
             'price' => $this->faker->numberBetween(1000, 10000),
             'photo' => $this->faker->imageUrl(),
             'store_id' => Store::factory()->create()->id,
+            'category_id' => rand(1, Category::all()->count()),
             'quantity' => $this->faker->numberBetween(1, 10),
         ];
     }

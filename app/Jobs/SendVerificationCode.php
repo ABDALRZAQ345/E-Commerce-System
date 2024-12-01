@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use SomarKesen\TelegramGateway\Facades\TelegramGateway;
 
 class SendVerificationCode implements ShouldQueue
 {
@@ -35,6 +36,10 @@ class SendVerificationCode implements ShouldQueue
             'expires_at' => now()->addMinutes(10),
         ]);
         Log::channel('verification_code')->info($code);
-        /// todo send code using twillo
+        TelegramGateway::sendVerificationMessage(env('TELEGRAM_NUMBER'), [
+            'code' => $code,
+            'ttl' => 300,
+            'callback_url' => 'https://yourapp.com/callback',
+        ]);
     }
 }

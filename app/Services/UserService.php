@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\RoleEnum;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
@@ -37,5 +38,18 @@ class UserService
     public static function findUserByPhoneNumber($phoneNumber): User
     {
         return User::where('phone_number', $phoneNumber)->firstOrFail();
+    }
+    function FormatRoles(User $user): User
+    {
+        $user->load('roles:name');
+        $roles = RoleEnum::getAllRoles();
+        $roleStatuses = [];
+        $userRoles = $user->roles->pluck('name')->toArray();
+        foreach ($roles as $role) {
+            $roleStatuses[$role] = in_array($role, $userRoles);
+        }
+        $user->roles_status = $roleStatuses;
+        unset($user->roles);
+        return $user;
     }
 }

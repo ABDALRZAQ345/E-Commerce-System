@@ -11,7 +11,6 @@ class Order extends Model
 {
     use HasFactory;
 
-    public static $validStatuses = ['processing', 'shipped', 'delivered'];
 
     protected $guarded = ['id'];
 

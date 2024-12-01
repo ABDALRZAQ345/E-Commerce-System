@@ -3,6 +3,7 @@
 use App\Http\Controllers\Store\ContactController;
 use App\Http\Controllers\Store\StoreCategoryController;
 use App\Http\Controllers\Store\StoreController;
+use App\Http\Controllers\Store\StoreOrderController;
 use App\Http\Controllers\Store\StoreProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,8 +27,8 @@ Route::middleware(['throttle:api', 'locale', 'xss'])->group(function () {
         Route::get('/stores/{store}/categories', [StoreCategoryController::class, 'index'])->name('stores.categories.index');
         //Route::post('/stores/{store}/categories', [StoreCategoryController::class, 'store'])->middleware('store_owner')->name('stores.categories.store');
         Route::put('/stores/{store}/categories', [StoreCategoryController::class, 'update'])->middleware('store_owner')->name('stores.categories.update');
-        //todo Route::get('/stores/{store}/orders', [StoreOrderController::class, 'index'])->middleware('store_owner')->name('stores.products.index');
-        ///
+        Route::get('/stores/{store}/orders', [StoreOrderController::class, 'index'])->middleware('store_owner')->name('stores.products.index');
+        Route::post('/stores/{store}/orders/{order}', [StoreOrderController::class, 'update'])->middleware('store_owner')->name('stores.products.update');
 
     });
 

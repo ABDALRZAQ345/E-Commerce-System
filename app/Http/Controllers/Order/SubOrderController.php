@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Order;
 
+use App\Enums\OrderStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\SubOrder;
@@ -17,21 +18,21 @@ class SubOrderController extends Controller
         // Ensure the order belongs to the given user
         $order = $user->orders()->findOrFail($order->id);
 
-        // Valid statuses
-        $validStatuses = Order::$validStatuses;
+
+        $validStatuses = OrderStatusEnum::getAllStatus();
 
         // Get sub-orders query
-        $subOrders = $order->subOrders(); // Ensure the `subOrders()` relationship exists in the Order model
+        $subOrders = $order->subOrders();
 
         // Filter by status
         if ($request->filled('status') && in_array($request->status, $validStatuses)) {
             $subOrders->where('status', $request->status);
         }
 
-        // Paginate results
+
         $paginatedSubOrders = $subOrders->paginate(20);
 
-        // Return paginated sub-orders as JSON
+
         return response()->json($paginatedSubOrders);
     }
 

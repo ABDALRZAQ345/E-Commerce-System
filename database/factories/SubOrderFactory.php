@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\OrderStatusEnum;
 use App\Models\Order;
 use App\Models\Store;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -18,7 +19,7 @@ class SubOrderFactory extends Factory
      */
     public function definition(): array
     {
-        $statuses = Order::$validStatuses;
+        $statuses = OrderStatusEnum::getAllStatus();
         $randomStatus = $statuses[array_rand($statuses)];
 
         return [

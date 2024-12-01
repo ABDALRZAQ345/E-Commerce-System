@@ -14,9 +14,11 @@
         "laravel/tinker": "^2.9",
         "meilisearch/meilisearch-php": "^1.11",
         "owen-it/laravel-auditing": "^13.6",
+        "somarkesen/telegram-gateway": "^1.2",
         "spatie/laravel-permission": "^6.9",
         "spatie/laravel-query-builder": "^6.2",
-        "spatie/laravel-searchable": "*"
+        "spatie/laravel-searchable": "*",
+        "twilio/sdk": "^8.3"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.1",

@@ -28,6 +28,7 @@ class StoreProductRequest extends FormRequest
             'quantity' => ['required', 'integer', 'min:1'],
             'expire_date' => ['nullable', 'date', 'after_or_equal:today'],
             'photo' => ['nullable', 'image', 'max:3072'],
+            'category_id' => ['required', 'integer', 'exists:categories,id'],
         ];
     }
 }

@@ -16,6 +16,7 @@ class StoreProductController extends Controller
     public function index(Request $request, Store $store): JsonResponse
     {
         $search = $request->input('search');
+
         $products = Product::search($search)
             ->where('store_id', $store->id)
             ->paginate(20);
@@ -53,7 +54,7 @@ class StoreProductController extends Controller
 
         } catch (\Exception $e) {
             return response()->json([
-                'error' => 'Failed to create product: ',
+                'error' => 'Failed to create product: '.$e->getMessage(),
             ], 500);
         }
     }
