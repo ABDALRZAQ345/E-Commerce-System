@@ -63,6 +63,9 @@ class AppServiceProvider extends ServiceProvider
         Route::prefix('api')
             ->middleware('api')
             ->group(base_path('routes/Api/category.php'));
+        Route::prefix('api')
+            ->middleware('api')
+            ->group(base_path('routes/Api/favourite.php'));
     }
 
     public function milisearch()
