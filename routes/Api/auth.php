@@ -23,13 +23,15 @@ Route::middleware(['throttle:api', 'locale', 'xss'])->group(function () {
     });
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-        Route::put('/update', [AuthController::class, 'update'])->name('update');
         Route::post('/promotions/create', [PromotionController::class, 'create'])->name('promotions.create');
+
     });
 
     Route::middleware(['auth:sanctum', EnsureIsAdmin::class])->group(function () {
-        Route::post('/promotions', [PromotionController::class, 'promote'])->name('promote');
+        Route::post('/promotions/{promotion}/accept', [PromotionController::class, 'promote'])->name('promote');
         Route::get('/promotions', [PromotionController::class, 'index'])->name('Promotions.index');
+        Route::post('/promotions/{promotion}/reject', [PromotionController::class, 'reject'])->name('reject');
+
     });
 
 });

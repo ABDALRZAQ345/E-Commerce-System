@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthRequests\LoginRequest;
 use App\Http\Requests\AuthRequests\SignupRequest;
 use App\Http\Requests\User\UpdateUserRequest;
+use App\Models\User;
 use App\Services\UserService;
 use App\Services\VerificationCodeService;
 use Illuminate\Http\JsonResponse;
@@ -90,7 +91,7 @@ class AuthController extends Controller
         }
     }
 
-    public function update(UpdateUserRequest $request): JsonResponse
+    public function update(UpdateUserRequest $request,User $user): JsonResponse
     {
         $validated = $request->validated();
         try {

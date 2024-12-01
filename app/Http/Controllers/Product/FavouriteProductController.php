@@ -3,52 +3,60 @@
 namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Favourite\AddFavouriteProductRequest;
-use App\Http\Requests\Favourite\RemoveFavouriteProductRequest;
-use App\Services\Favourite\FavouriteProductService;
+use App\Models\FavouriteProduct;
+use App\Models\Product;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 
 class FavouriteProductController extends Controller
 {
-    protected FavouriteProductService $favouriteProductService;
 
-    public function __construct(FavouriteProductService $favouriteProductService)
-    {
-        $this->favouriteProductService = $favouriteProductService;
-    }
 
     public function getFavourites()
     {
         try {
-            $favourites = $this->favouriteProductService->getUserFavourites(auth()->id());
+            $user=Auth::user();
+            $favourites=$user->favouriteProducts()->get();
 
-            return response()->json(['data' => $favourites], 200);
+            return response()->json([
+                'status' => true,
+                'favourites' => $favourites
+            ], 200);
         } catch (Exception $e) {
             return response()->json(['error' => 'Failed to retrieve favourites', 'message' => $e->getMessage()], 500);
         }
     }
 
-    public function addFavourite(AddFavouriteProductRequest $request)
+    public function addFavourite(Product $product)
     {
-        $validatedData = $request->validated();
-        try {
-            $this->favouriteProductService->addToFavourites(auth()->id(), $validatedData['product_id']);
 
-            return response()->json(['message' => 'Product added to favourites'], 201);
+        try {
+            $user=Auth::user();
+            if(FavouriteProduct::where('user_id',$user->id)->where('product_id',$product->id)->first()){
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Product is already in your favourite list'
+                ]);
+            }
+            $user->favouriteProducts()->attach($product);
+
+            return response()->json([
+                'message' => 'Product added to favourites'
+            ], 200);
         } catch (Exception $e) {
             return response()->json(['error' => 'Failed to add favourite', 'message' => $e->getMessage()], 500);
         }
     }
 
-    public function removeFavourite(RemoveFavouriteProductRequest $request)
+    public function removeFavourite(Product $product)
     {
-        $validatedData = $request->validated();
-        try {
-            $this->favouriteProductService->removeFromFavourites(auth()->id(), $validatedData['product_id']);
+
+
+            $user=Auth::user();
+            $product=$user->favouriteProducts()->findOrFail($product->id);
+            $user->favouriteProducts()->detach($product);
 
             return response()->json(['message' => 'Product removed from favourites'], 200);
-        } catch (Exception $e) {
-            return response()->json(['error' => 'Failed to remove favourite', 'message' => $e->getMessage()], 500);
-        }
+
     }
 }

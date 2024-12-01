@@ -2,21 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\RoleEnum;
 use App\Exceptions\ServerErrorException;
 use App\Http\Requests\AuthRequests\PromotionRequest;
 use App\Models\Promotion;
+use App\Models\User;
 use App\Services\UserService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PromotionController extends Controller
 {
-    public function index()
+    /**
+     * @throws ServerErrorException
+     */
+    public function index(Request $request)
     {
+
         try {
-            $promotions = Promotion::orderBy('created_at', 'desc')->get();
+            $promotions = Promotion::orderBy('created_at', 'desc');
+            if ($request->filled('accepted')) {
+                $isAccepted = filter_var($request->input('accepted'), FILTER_VALIDATE_BOOLEAN);
+                if ($isAccepted) {
+                    $promotions->where('accepted_at', '!=', null);
+                } else {
+                    $promotions->where('accepted_at', '=', null);
+                }
+            }
+            $promotions= $promotions->paginate();
+
 
             return response()->json([
                 'status' => true,
-                'message' => 'PromotionsList Created Successfully',
                 'data' => $promotions,
             ], 200);
         } catch (\Exception $th) {
@@ -24,17 +42,25 @@ class PromotionController extends Controller
         }
     }
 
-    public function create(PromotionRequest $request)
+    public function create()
     {
         try {
-            $validatedData = $request->validated();
-            $user = UserService::findUserByPhoneNumber($validatedData['phoen_number']);
+            $user = Auth::user();
+            if($user->hasRole(RoleEnum::Manager))
+            {
+                return response()->json([
+                    'status' => false,
+                    'message'=> 'you already have a manager role',
+                ]);
+            }
+            if(Promotion::where('user_id', $user->id)->exists()){
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Promotion request  already exists you cant send more than one request',
+                ]);
+            }
 
-            $promotion = Promotion::create([
-                'user_id' => $user->id,
-                'phone_number' => $validatedData['phone_number'],
-                'accepted' => 0,
-            ]);
+            $promotion = Promotion::create(['user_id' => $user->id]);
 
             return response()->json([
                 'status' => true,
@@ -47,19 +73,41 @@ class PromotionController extends Controller
         }
     }
 
-    public function promote(PromotionRequest $request)
+    /**
+     * @throws ServerErrorException
+     * @throws \Throwable
+     */
+    public function promote(Promotion $promotion)
     {
-        $validatedData = $request->validated();
+
         try {
-            $user = UserService::findUserByPhoneNumber($validatedData['phoen_number']);
+            DB::beginTransaction();
+            $user = User::findOrFail($promotion->user_id);
 
-            $user->removeRole('user');
-            $user->assignRole('manager');
-            $promotion = Promotion::where('user_id', $user->id)->update(['accepted' => true]);
+            $user->assignRole(RoleEnum::Manager);
+            $promotion->accepted_at=now();
 
+            $promotion->save();
+
+            DB::commit();
             return response()->json([
                 'status' => true,
                 'message' => 'User Promoted Successfully',
+            ], 200);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw new ServerErrorException($th);
+        }
+    }
+
+    public function reject(Promotion $promotion)
+    {
+        try {
+
+           $promotion->delete();
+            return response()->json([
+                'status' => true,
+                'message' => 'User Promotion rejected Successfully',
             ], 200);
         } catch (\Throwable $th) {
             throw new ServerErrorException($th);
