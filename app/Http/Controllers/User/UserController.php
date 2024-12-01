@@ -26,7 +26,9 @@ class UserController extends Controller
         }
         $users = $users->with('roles:name')->paginate(20);
         $users->getCollection()->transform(function ($user) {
-          return $this->userService->FormatRoles($user);
+          $user= $this->userService->FormatRoles($user);
+            $user->active =rand(0,1); // todo make it real value not random value
+            return $user;
        });
 
         return response()->json($users);

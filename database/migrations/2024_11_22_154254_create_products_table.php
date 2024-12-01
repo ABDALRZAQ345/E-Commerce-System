@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('price');
             $table->unsignedTinyInteger('discount')->default(0)->checkbetween(0, 100)->comment('discount percentage % ');
             $table->unsignedInteger('quantity');
-            $table->foreignIdFor(Category::class)->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Category::class)->constrained()->cascadeOnDelete();
             $table->date('expire_date')->nullable();
             $table->string('photo')->nullable();
             $table->decimal('rate', 2, 1)->default(0)->checkbetween(0, 5);

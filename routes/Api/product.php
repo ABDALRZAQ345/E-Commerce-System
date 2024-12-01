@@ -9,8 +9,8 @@ Route::middleware(['throttle:api', 'locale', 'xss'])->group(function () {
 
         Route::get('/products', [ProductController::class, 'index'])->name('products.index');
         Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
-        Route::get('/products/{product}/audits', [ProductController::class, 'audits'])->name('products.audits');
-
+     //   Route::get('/products/{product}/audits', [ProductController::class, 'audits'])->name('products.audits');
+        Route::post('/products/{product}/rate',[ProductController::class, 'rate'])->name('products.rate');
     });
 
 });

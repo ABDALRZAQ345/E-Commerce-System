@@ -22,11 +22,13 @@ class ProductController extends Controller
 
     public function show(Product $product): JsonResponse
     {
-        $product->load('categories');
-
+        $product->load('category');
+        $your_rate=$product->rates()->where('user_id',auth()->user()->id)->first();
+        $your_rate= $your_rate != null ? $your_rate->rate : 0;
         //todo load the photos and details
         return response()->json([
             'product' => $product,
+            'your_rate' => $your_rate,
         ]);
     }
 
@@ -36,6 +38,26 @@ class ProductController extends Controller
 
         return response()->json([
             'audits' => $audits,
+        ]);
+
+    }
+
+    public function rate(Request $request, Product $product): JsonResponse
+    {
+        $validated = $request->validate([
+            'rate' => ['required', 'integer', 'min:1', 'max:5'],
+        ]);
+
+        $product->rates()->where('user_id',  auth()->id())->delete();
+        $product->rates()->create([
+            'rate' => $validated['rate'],
+            'user_id' => auth()->id(),
+        ]);
+        $product->rate = $product->rates()->avg('rate');
+        $product->save();
+        return response()->json([
+            'status' => true,
+            'product' => $product,
         ]);
 
     }
