@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Category;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class CategoryRequest extends FormRequest
 {
@@ -25,5 +27,14 @@ class CategoryRequest extends FormRequest
             'categories' => ['required', 'array'],
             'categories.*' => ['required', 'exists:categories,id'],
         ];
+    }
+
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(
+            response()->json([
+                'errors' => $validator->errors(),
+            ], 422)
+        );
     }
 }

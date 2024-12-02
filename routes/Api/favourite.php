@@ -4,7 +4,7 @@ use App\Http\Controllers\Product\FavouriteProductController;
 use App\Http\Controllers\Store\FavouriteStoreController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['throttle:api', 'locale', 'xss','auth:sanctum'])->group(function () {
+Route::middleware(['throttle:api', 'locale', 'xss', 'auth:sanctum'])->group(function () {
 
     Route::prefix('favourites/products')->name('products.')->group(function () {
         Route::post('/{product}', [FavouriteProductController::class, 'addFavourite'])->name('addFavourite');

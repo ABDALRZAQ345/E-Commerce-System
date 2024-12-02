@@ -9,8 +9,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Promotion extends Model
 {
     use HasFactory;
-    protected $table='promotions';
-    protected $guarded=['id'];
+
+    protected $table = 'promotions';
+
+    protected $guarded = ['id'];
 
     public function user(): BelongsTo
     {

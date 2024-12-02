@@ -17,7 +17,6 @@ Route::middleware(['throttle:api', 'locale', 'xss'])->group(function () {
         Route::post('/stores/{store}', [StoreController::class, 'update'])->middleware('store_owner')->name('stores.update');
         Route::get('/stores/{store}/audits', [StoreController::class, 'audits'])->name('stores.audits');
         Route::get('/stores/{store}/products', [StoreProductController::class, 'index'])->name('stores.products.index');
-        Route::get('/stores/{store}/products/{product}', [StoreProductController::class, 'show'])->name('stores.products.show');
         Route::post('/stores/{store}/products', [StoreProductController::class, 'store'])->middleware('store_owner')->name('stores.products.store');
         Route::post('/stores/{store}/products/{product}', [StoreProductController::class, 'update'])->middleware('store_owner')->name('stores.products.update');
         Route::get('/stores/{store}/contacts', [ContactController::class, 'index'])->name('stores.products.contacts');

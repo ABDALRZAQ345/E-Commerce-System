@@ -9,19 +9,20 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['throttle:api', 'locale', 'xss'])->group(function () {
 
+    Route::post('/password/forget', [PasswordController::class, 'Forget'])->middleware('throttle:change_password')->name('forget_password');
+
     Route::middleware('guest')->group(function () {
         Route::post('/verificationCode/send', [VerificationCodeController::class, 'Send'])->middleware('throttle:send_confirmation_code')->name('verificationCode.check');
 
-        Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:register')->name('register');
-
         Route::post('/verificationCode/check', [VerificationCodeController::class, 'Check'])->name('verificationCode.check');
 
-        Route::post('/password/forget', [PasswordController::class, 'Forget'])->middleware('throttle:change_password')->name('forget_password');
+        Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:register')->name('register');
 
         Route::post('/login', [AuthController::class, 'login'])->name('login');
 
     });
     Route::middleware('auth:sanctum')->group(function () {
+        Route::post('password/reset', [PasswordController::class, 'reset'])->name('password.reset');
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
         Route::post('/promotions/create', [PromotionController::class, 'create'])->name('promotions.create');
 

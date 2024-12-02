@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Product;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UpdateProductRequest extends FormRequest
 {
@@ -30,5 +32,14 @@ class UpdateProductRequest extends FormRequest
             'photo' => ['nullable', 'image', 'max:3072'],
             'category_id' => ['nullable', 'integer', 'exists:categories,id'],
         ];
+    }
+
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(
+            response()->json([
+                'errors' => $validator->errors(),
+            ], 422)
+        );
     }
 }

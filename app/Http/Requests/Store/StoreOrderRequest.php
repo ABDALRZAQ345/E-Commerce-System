@@ -3,7 +3,9 @@
 namespace App\Http\Requests\Store;
 
 use App\Models\Product;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class StoreOrderRequest extends FormRequest
 {
@@ -37,5 +39,14 @@ class StoreOrderRequest extends FormRequest
             },
             ],
         ];
+    }
+
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(
+            response()->json([
+                'errors' => $validator->errors(),
+            ], 422)
+        );
     }
 }

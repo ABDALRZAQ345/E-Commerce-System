@@ -3,7 +3,9 @@
 namespace App\Http\Requests\Store;
 
 use App\Models\Store;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Auth;
 
 class UpdateStoreRequest extends FormRequest
@@ -32,5 +34,14 @@ class UpdateStoreRequest extends FormRequest
             'description' => ['nullable'],
             'photo' => ['nullable', 'image', 'max:3072'],
         ];
+    }
+
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(
+            response()->json([
+                'errors' => $validator->errors(),
+            ], 422)
+        );
     }
 }
