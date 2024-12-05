@@ -6,12 +6,11 @@ use App\Rules\ValidPhoneNumber;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class SendVerificationCodeRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
@@ -24,9 +23,21 @@ class SendVerificationCodeRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'phone_number' => ['required', 'string', new ValidPhoneNumber],
-        ];
+        $isRegistration = filter_var($this->input('registration'),FILTER_VALIDATE_BOOLEAN);
+
+
+            return [
+                'phone_number' => ['required', 'string', new ValidPhoneNumber,
+                    Rule::when(
+                        $isRegistration,
+                    ['unique:users,phone_number'],
+                    ['exists:users,phone_number']
+                ),],
+            ];
+
+
+
+
     }
 
     public function failedValidation(Validator $validator)

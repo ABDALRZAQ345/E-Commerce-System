@@ -11,26 +11,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use OpenApi\Annotations as OA;
 
-/**
- * @OA\Schema(
- *     schema="SubOrder",
- *     type="object",
- *
- *     @OA\Property(property="id", type="integer", example=1),
- *     @OA\Property(property="order_id", type="integer", example=101, description="ID of the main order"),
- *     @OA\Property(
- *         property="status",
- *         type="string",
- *         enum={"processing", "shipped", "delivered"},
- *         example="processing",
- *         description="Status of the sub-order"
- *     ),
- *     @OA\Property(property="total", type="integer", example=5000, description="Total amount for the sub-order"),
- *     @OA\Property(property="store_id", type="integer", example=10, description="ID of the store"),
- *     @OA\Property(property="created_at", type="string", format="date-time", example="2024-12-01T12:00:00Z", description="Creation timestamp"),
- *     @OA\Property(property="updated_at", type="string", format="date-time", example="2024-12-02T12:00:00Z", description="Last update timestamp")
- * )
- */
 class StoreOrderController extends Controller
 {
     /**

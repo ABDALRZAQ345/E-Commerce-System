@@ -18,7 +18,7 @@
                 ],
                 "summary": "Register a new user",
                 "description": "Registers a new user by validating the phone number, code, and user details.",
-                "operationId": "f367ea894b2ac44a9607f8e0a9a03537",
+                "operationId": "f90a04f663d9b69fec927558d63235b0",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -43,6 +43,10 @@
                                     },
                                     "password": {
                                         "description": "The user's password",
+                                        "type": "string"
+                                    },
+                                    "password_confirmation": {
+                                        "description": "The user's password confirmation",
                                         "type": "string"
                                     },
                                     "phone_number": {
@@ -154,7 +158,7 @@
                 ],
                 "summary": "User login",
                 "description": "Logs in a user by validating the phone number and password.",
-                "operationId": "ec9c379d2a959de66404708dd4a9322d",
+                "operationId": "77123c22c533da679a3ea08c6930a2f4",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -288,7 +292,7 @@
                 ],
                 "summary": "User logout",
                 "description": "Logs out the user by deleting their active Sanctum token.",
-                "operationId": "cc14526f9abd470d63047b1c05aef0c3",
+                "operationId": "c36499cf78723bac92cc861430b85078",
                 "responses": {
                     "200": {
                         "description": "User logged out successfully",
@@ -350,137 +354,6 @@
                 ]
             }
         },
-        "/users/{user}/update": {
-            "put": {
-                "tags": [
-                    "Users"
-                ],
-                "summary": "Update a user",
-                "description": "Updates the details of the  user. Requires authentication.",
-                "operationId": "f147f03be63cfa949647924c1405265c",
-                "parameters": [
-                    {
-                        "name": "user",
-                        "in": "path",
-                        "description": "User ID to update",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "first_name": {
-                                        "type": "string",
-                                        "maxLength": 50,
-                                        "example": "John"
-                                    },
-                                    "last_name": {
-                                        "type": "string",
-                                        "maxLength": 50,
-                                        "example": "Doe"
-                                    },
-                                    "photo": {
-                                        "description": "Photo of the user in jpg, jpeg, png, gif formats",
-                                        "type": "string",
-                                        "format": "binary"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "User updated successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "boolean",
-                                            "example": true
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "User updated successfully"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized - Invalid or missing token - not the same user",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Unauthenticated."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "errors": {
-                                            "type": "object",
-                                            "example": {
-                                                "first_name": [
-                                                    "The first name field is required."
-                                                ]
-                                            }
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Something went wrong"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
         "/password/forget": {
             "post": {
                 "tags": [
@@ -488,7 +361,7 @@
                 ],
                 "summary": "Reset user password",
                 "description": "Allows a user to reset their password by providing their phone number, verification code, and new password",
-                "operationId": "e5692a0bba7fb2d99d2b8bc18e9ca77a",
+                "operationId": "6cc8c80f79ff5443c8fd30817267169b",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -613,7 +486,7 @@
                     "Auth"
                 ],
                 "summary": "Reset user password",
-                "operationId": "86e2265d7e55bcfa2f7931a420b46c45",
+                "operationId": "96369dee33fdd8d3252521eac43a806f",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -725,7 +598,7 @@
                 ],
                 "summary": "Send a verification code to the phone number",
                 "description": "Sends a verification code to the provided phone number either for registration or password recovery.",
-                "operationId": "9b7199e1ea15ebcb2084d2aa631e93af",
+                "operationId": "d235c50d15f2a23ff665d01edb4c68ba",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -803,7 +676,7 @@
                 ],
                 "summary": "Check if the verification code is valid",
                 "description": "Validates the phone number and the verification code.",
-                "operationId": "f326f65054edddbcc1f94bda0d9e2085",
+                "operationId": "ed63ba73d2d9b59961ff8ae4daf678a5",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -894,7 +767,7 @@
                 ],
                 "summary": "Get all categories",
                 "description": "Retrieve a list of all categories. Any authorized user can access this endpoint, regardless of their role.",
-                "operationId": "587f46baa4e7c203f775335ea1533cec",
+                "operationId": "d82f3e56f248df4f92f9d8b3eb5240bc",
                 "responses": {
                     "200": {
                         "description": "Successful retrieval of categories",
@@ -956,7 +829,7 @@
                 ],
                 "summary": "Get orders for a specific user",
                 "description": "Retrieve orders for a specific user, optionally filtered by creation date. Only the authenticated user can access their own orders.",
-                "operationId": "66956db7e296268e35ae6313df643215",
+                "operationId": "77c85a4b5a762faa176a9e249e16b36e",
                 "parameters": [
                     {
                         "name": "user",
@@ -1031,7 +904,7 @@
                 ],
                 "summary": "Create a new order for a user",
                 "description": "Allows the authenticated user to create a new order with a list of products. The user must be authorized to place an order.",
-                "operationId": "0ffd0a8d42567c17e6333f529f553825",
+                "operationId": "d4e22776ce8c927b17431d8ea78286f4",
                 "parameters": [
                     {
                         "name": "user",
@@ -1157,7 +1030,7 @@
                 ],
                 "summary": "Get a specific order for the authenticated user",
                 "description": "Retrieve a specific order of the authenticated user by order ID.",
-                "operationId": "949db64c3e2330070ae2d44e3e96a074",
+                "operationId": "9a03906164e591827ce193fba97148b6",
                 "parameters": [
                     {
                         "name": "user",
@@ -1241,7 +1114,7 @@
                 ],
                 "summary": "Get paginated sub-orders for a specific order",
                 "description": "Retrieve paginated sub-orders of a specific order for the authenticated user with optional filtering by status.",
-                "operationId": "883731589522990f1073ed3a6c1fc113",
+                "operationId": "a30f0140fab2e0de17cf5b2eda5aef6a",
                 "parameters": [
                     {
                         "name": "user",
@@ -1355,7 +1228,7 @@
                 ],
                 "summary": "Get details of a specific sub-order",
                 "description": "Retrieve details of a specific sub-order for a specific order of the authenticated user.",
-                "operationId": "bc87ec406ccf9fd7661221d741b1f04e",
+                "operationId": "08679fc0763114f0a2ab557930058635",
                 "parameters": [
                     {
                         "name": "user",
@@ -1443,7 +1316,7 @@
                 ],
                 "summary": "Get user products favourites",
                 "description": "Retrieve the authenticated user's favourite products.",
-                "operationId": "48b1b1ce86b5af227228da7bbb0650c3",
+                "operationId": "7fe17cb428ee977245b1832646d9670d",
                 "responses": {
                     "200": {
                         "description": "Successfully retrieved favourite products",
@@ -1518,7 +1391,7 @@
                 ],
                 "summary": "Add a product to favourites",
                 "description": "Add a product to the authenticated user's favourite list.",
-                "operationId": "0fdde7ad97d0296594bb03c319fcd1bb",
+                "operationId": "bfcfcddcf946232b1f31230468db00e5",
                 "parameters": [
                     {
                         "name": "product",
@@ -1637,7 +1510,7 @@
                 ],
                 "summary": "Remove a product from favourites",
                 "description": "Remove a product from the authenticated user's favourite list.",
-                "operationId": "425701a74d83e5d493f0145a325a43a9",
+                "operationId": "b382498d26a64b1b531120efcdd38269",
                 "parameters": [
                     {
                         "name": "product",
@@ -1711,138 +1584,13 @@
                 ]
             }
         },
-        "/products": {
-            "get": {
-                "tags": [
-                    "Products"
-                ],
-                "summary": "Retrieve a list of products with optional search and filtering",
-                "operationId": "a2f6016e5bef16a083b1be073789b7d3",
-                "parameters": [
-                    {
-                        "name": "search",
-                        "in": "query",
-                        "description": "Search by product names to filter products",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filter",
-                        "in": "query",
-                        "description": "Filter options for products must from [best_selling,latest,top_rated,recommended]",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "List of products with additional user-specific information",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "current_page": {
-                                            "description": "Current page of the paginated results",
-                                            "type": "integer"
-                                        },
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/components/schemas/Product"
-                                            }
-                                        },
-                                        "first_page_url": {
-                                            "description": "URL for the first page of results",
-                                            "type": "string"
-                                        },
-                                        "last_page_url": {
-                                            "description": "URL for the last page of results",
-                                            "type": "string"
-                                        },
-                                        "next_page_url": {
-                                            "description": "URL for the next page of results",
-                                            "type": "string"
-                                        },
-                                        "prev_page_url": {
-                                            "description": "URL for the previous page of results",
-                                            "type": "string"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid search or filter parameters"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/products/{product}": {
-            "get": {
-                "tags": [
-                    "Products"
-                ],
-                "summary": "Retrieve a specific product by ID",
-                "operationId": "cb06f46365fbb9c65892d84a25cfb29f",
-                "parameters": [
-                    {
-                        "name": "product",
-                        "in": "path",
-                        "description": "The unique identifier for the product",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "The requested product details",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "product": {
-                                            "$ref": "#/components/schemas/Product"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Product not found"
-                    },
-                    "401": {
-                        "description": "Unauthorized - Authentication is required"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
         "/products/{product}/rate": {
             "post": {
                 "tags": [
                     "Products"
                 ],
                 "summary": "Rate a product",
-                "operationId": "dafb2d482542749df0ab2255747e323e",
+                "operationId": "a7468a70af613cc1cc95eda0826d12cf",
                 "parameters": [
                     {
                         "name": "product",
@@ -1929,6 +1677,131 @@
                 ]
             }
         },
+        "/products/{product}": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Retrieve a specific product by ID",
+                "operationId": "4a5badb76049beb12de2a8b6d4aebd42",
+                "parameters": [
+                    {
+                        "name": "product",
+                        "in": "path",
+                        "description": "The unique identifier for the product",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The requested product details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "product": {
+                                            "$ref": "#/components/schemas/Product"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Product not found"
+                    },
+                    "401": {
+                        "description": "Unauthorized - Authentication is required"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/products": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Retrieve a list of products with optional search and filtering",
+                "operationId": "c39ea4e2d55134398bf9c77fd23096df",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search by product names to filter products",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "Filter options for products must from [best_selling,latest,top_rated,recommended]",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of products with additional user-specific information",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "current_page": {
+                                            "description": "Current page of the paginated results",
+                                            "type": "integer"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Product"
+                                            }
+                                        },
+                                        "first_page_url": {
+                                            "description": "URL for the first page of results",
+                                            "type": "string"
+                                        },
+                                        "last_page_url": {
+                                            "description": "URL for the last page of results",
+                                            "type": "string"
+                                        },
+                                        "next_page_url": {
+                                            "description": "URL for the next page of results",
+                                            "type": "string"
+                                        },
+                                        "prev_page_url": {
+                                            "description": "URL for the previous page of results",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid search or filter parameters"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/promotions": {
             "get": {
                 "tags": [
@@ -1936,7 +1809,7 @@
                 ],
                 "summary": "List all promotion requests",
                 "description": "Retrieve a paginated list of promotion requests. Only accessible to admins.",
-                "operationId": "c8c045593b5a1722c3d403e44455300e",
+                "operationId": "d35402cd6f9c1efafb49dddb31bca61a",
                 "parameters": [
                     {
                         "name": "accepted",
@@ -2074,7 +1947,7 @@
                 ],
                 "summary": "Create a promotion request",
                 "description": "Allows a user to send a promotion request to become a manager. Users can only send one request, and users with an existing manager role cannot send a request.",
-                "operationId": "1bab51f30ad1982ae47624afab8784f2",
+                "operationId": "f40341ffddd80222de04c8a6df9c3dce",
                 "responses": {
                     "201": {
                         "description": "Promotion request created successfully.",
@@ -2179,7 +2052,7 @@
                 ],
                 "summary": "Promote a user to a Manager role",
                 "description": "Allows an authorized admin to promote a user by accepting their promotion request.",
-                "operationId": "4bb8e407043d57788847e89ba7b1ea9d",
+                "operationId": "2b1635094374464d75fae2de698e5891",
                 "parameters": [
                     {
                         "name": "promotion",
@@ -2288,7 +2161,7 @@
                 ],
                 "summary": "Reject a promotion request",
                 "description": "Rejects a promotion request by deleting it. Only accessible to admins.",
-                "operationId": "03b9515974b8467c1c51ef5ed83a7f9e",
+                "operationId": "00c2905ec64713c246195d80f4f13c01",
                 "parameters": [
                     {
                         "name": "promotion",
@@ -2390,6 +2263,381 @@
                 ]
             }
         },
+        "/api/favourites/stores/{store}": {
+            "delete": {
+                "tags": [
+                    "Favourites"
+                ],
+                "summary": "Remove Store from Favourites",
+                "description": "Remove a store from the user's list of favourites.",
+                "operationId": "removeFavouriteStore",
+                "parameters": [
+                    {
+                        "name": "store",
+                        "in": "path",
+                        "description": "The ID of the store to remove from favourites",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Store removed from favourites",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Store removed from favourites"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Store not found in favourites",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Object not fount"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "favourites/stores/{store}": {
+            "post": {
+                "tags": [
+                    "Favourites"
+                ],
+                "summary": "Add Store to Favourites",
+                "description": "Add a store to the user's list of favourites.",
+                "operationId": "addFavouriteStore",
+                "parameters": [
+                    {
+                        "name": "store",
+                        "in": "path",
+                        "description": "The ID of the store to add to favourites",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Store added to favourites",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Store added to favourites"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Store already in favourites",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Store is already in your favourite list"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to add favourite",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Failed to add favourite"
+                                        },
+                                        "message": {
+                                            "description": "Exception message",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/favourites/stores": {
+            "get": {
+                "tags": [
+                    "Favourites"
+                ],
+                "summary": "Get Favourite Stores",
+                "description": "Retrieve a list of the user's favourite stores.",
+                "operationId": "getFavouriteStores",
+                "responses": {
+                    "200": {
+                        "description": "List of favourite stores",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "description": "Request status",
+                                            "type": "boolean"
+                                        },
+                                        "favourites": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Store"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to retrieve favourites",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "description": "Error message",
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "description": "Exception message",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/stores/{store}/categories": {
+            "get": {
+                "tags": [
+                    "Stores",
+                    "Categories"
+                ],
+                "summary": "Get categories of a store",
+                "description": "Retrieve the list of categories for a given store. Accessible by any authorized user.",
+                "operationId": "e4d0c8d9d3476a3c2f3a4837f1b7d02f",
+                "parameters": [
+                    {
+                        "name": "store",
+                        "in": "path",
+                        "description": "The unique identifier of the store",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of store categories",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "categories": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Electronics"
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "example": "Category description"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized to access the store categories",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Stores",
+                    "Categories"
+                ],
+                "summary": "Update store categories",
+                "description": "Allows the store owner to update the categories associated with the store. The input must be an array of existing category IDs.",
+                "operationId": "ce50ac6e1e7480367c5e2994fa50658a",
+                "parameters": [
+                    {
+                        "name": "store",
+                        "in": "path",
+                        "description": "The unique identifier of the store",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "categories": {
+                                        "description": "Array of category IDs to associate with the store",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer",
+                                            "example": 1
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Categories updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Categories updated successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error during update",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Something went wrong. Please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized to update categories",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
+            }
+        },
         "/stores/{store}/contacts": {
             "get": {
                 "tags": [
@@ -2398,7 +2646,7 @@
                 ],
                 "summary": "Get all contacts for a store",
                 "description": "Retrieve all contacts associated with a specific store.",
-                "operationId": "2062ac05cb156674031fe4197a26706a",
+                "operationId": "226820bbf006d38449de05dad102eea9",
                 "parameters": [
                     {
                         "name": "store",
@@ -2475,7 +2723,7 @@
                 ],
                 "summary": "Add a new contact to a store",
                 "description": "Only the manager and owner of the store can add contacts. The store can have up to 5 contacts at most .",
-                "operationId": "016deecf05bfc9c5ee13395a28b61e39",
+                "operationId": "384ec79887d0ec3a591302ca0c6da19b",
                 "parameters": [
                     {
                         "name": "store",
@@ -2591,7 +2839,7 @@
                 ],
                 "summary": "Update a contact for a store",
                 "description": "Only the manager and owner of the store can update a contact.",
-                "operationId": "aa1b62e043d232c3592cb0aefc9419e8",
+                "operationId": "5f3cf43b8abd076ac61a4548dc64c5fa",
                 "parameters": [
                     {
                         "name": "store",
@@ -2712,7 +2960,7 @@
                 ],
                 "summary": "Delete a contact from a store",
                 "description": "Only the manager and owner of the store can delete a contact.",
-                "operationId": "68b7e2716cf3a20c4597328c36910c71",
+                "operationId": "2bbd61f78ac130dcea80293b48e30c56",
                 "parameters": [
                     {
                         "name": "store",
@@ -2790,1100 +3038,6 @@
                 ]
             }
         },
-        "/favourites/stores": {
-            "get": {
-                "tags": [
-                    "Favourites"
-                ],
-                "summary": "Get Favourite Stores",
-                "description": "Retrieve a list of the user's favourite stores.",
-                "operationId": "getFavouriteStores",
-                "responses": {
-                    "200": {
-                        "description": "List of favourite stores",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "description": "Request status",
-                                            "type": "boolean"
-                                        },
-                                        "favourites": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/components/schemas/Store"
-                                            }
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Failed to retrieve favourites",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "description": "Error message",
-                                            "type": "string"
-                                        },
-                                        "message": {
-                                            "description": "Exception message",
-                                            "type": "string"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "sanctum": []
-                    }
-                ]
-            }
-        },
-        "favourites/stores/{store}": {
-            "post": {
-                "tags": [
-                    "Favourites"
-                ],
-                "summary": "Add Store to Favourites",
-                "description": "Add a store to the user's list of favourites.",
-                "operationId": "addFavouriteStore",
-                "parameters": [
-                    {
-                        "name": "store",
-                        "in": "path",
-                        "description": "The ID of the store to add to favourites",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Store added to favourites",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Store added to favourites"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Store already in favourites",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Store is already in your favourite list"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Failed to add favourite",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "Failed to add favourite"
-                                        },
-                                        "message": {
-                                            "description": "Exception message",
-                                            "type": "string"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "sanctum": []
-                    }
-                ]
-            }
-        },
-        "/api/favourites/stores/{store}": {
-            "delete": {
-                "tags": [
-                    "Favourites"
-                ],
-                "summary": "Remove Store from Favourites",
-                "description": "Remove a store from the user's list of favourites.",
-                "operationId": "removeFavouriteStore",
-                "parameters": [
-                    {
-                        "name": "store",
-                        "in": "path",
-                        "description": "The ID of the store to remove from favourites",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Store removed from favourites",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Store removed from favourites"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Store not found in favourites",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "Object not fount"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "sanctum": []
-                    }
-                ]
-            }
-        },
-        "/stores/{store}/categories": {
-            "get": {
-                "tags": [
-                    "Stores",
-                    "Categories"
-                ],
-                "summary": "Get categories of a store",
-                "description": "Retrieve the list of categories for a given store. Accessible by any authorized user.",
-                "operationId": "d4ef63ca59ba31073a84e55bcfdc7e2f",
-                "parameters": [
-                    {
-                        "name": "store",
-                        "in": "path",
-                        "description": "The unique identifier of the store",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "List of store categories",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "categories": {
-                                            "type": "array",
-                                            "items": {
-                                                "properties": {
-                                                    "id": {
-                                                        "type": "integer",
-                                                        "example": 1
-                                                    },
-                                                    "name": {
-                                                        "type": "string",
-                                                        "example": "Electronics"
-                                                    },
-                                                    "description": {
-                                                        "type": "string",
-                                                        "example": "Category description"
-                                                    }
-                                                },
-                                                "type": "object"
-                                            }
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized to access the store categories",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Unauthorized."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ]
-            },
-            "put": {
-                "tags": [
-                    "Stores",
-                    "Categories"
-                ],
-                "summary": "Update store categories",
-                "description": "Allows the store owner to update the categories associated with the store. The input must be an array of existing category IDs.",
-                "operationId": "ad7eedee20c04e8c8fea247270925d9f",
-                "parameters": [
-                    {
-                        "name": "store",
-                        "in": "path",
-                        "description": "The unique identifier of the store",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "categories": {
-                                        "description": "Array of category IDs to associate with the store",
-                                        "type": "array",
-                                        "items": {
-                                            "type": "integer",
-                                            "example": 1
-                                        }
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Categories updated successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Categories updated successfully"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Error during update",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Something went wrong. Please try again later."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized to update categories",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Unauthorized."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/stores": {
-            "get": {
-                "tags": [
-                    "Stores"
-                ],
-                "summary": "Get a paginated list of stores",
-                "operationId": "8ae0a5173f5bf65aa536d2e4d49a10a8",
-                "parameters": [
-                    {
-                        "name": "search",
-                        "in": "query",
-                        "description": "Search query to filter stores by name",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "List of stores retrieved successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "stores": {
-                                            "properties": {
-                                                "current_page": {
-                                                    "description": "Current page number",
-                                                    "type": "integer"
-                                                },
-                                                "data": {
-                                                    "description": "List of stores",
-                                                    "type": "array",
-                                                    "items": {
-                                                        "$ref": "#/components/schemas/Store"
-                                                    }
-                                                },
-                                                "first_page_url": {
-                                                    "description": "URL of the first page",
-                                                    "type": "string"
-                                                },
-                                                "from": {
-                                                    "description": "Index of the first store in the current page",
-                                                    "type": "integer",
-                                                    "nullable": true
-                                                },
-                                                "last_page": {
-                                                    "description": "Total number of pages",
-                                                    "type": "integer"
-                                                },
-                                                "last_page_url": {
-                                                    "description": "URL of the last page",
-                                                    "type": "string"
-                                                },
-                                                "links": {
-                                                    "description": "Pagination links",
-                                                    "type": "array",
-                                                    "items": {
-                                                        "properties": {
-                                                            "url": {
-                                                                "description": "URL for the page",
-                                                                "type": "string",
-                                                                "nullable": true
-                                                            },
-                                                            "label": {
-                                                                "description": "Label for the page",
-                                                                "type": "string"
-                                                            },
-                                                            "active": {
-                                                                "description": "Indicates if the page is active",
-                                                                "type": "boolean"
-                                                            }
-                                                        },
-                                                        "type": "object"
-                                                    }
-                                                },
-                                                "next_page_url": {
-                                                    "description": "URL of the next page",
-                                                    "type": "string",
-                                                    "nullable": true
-                                                },
-                                                "path": {
-                                                    "description": "Base URL for the resource",
-                                                    "type": "string"
-                                                },
-                                                "per_page": {
-                                                    "description": "Number of items per page",
-                                                    "type": "integer"
-                                                },
-                                                "prev_page_url": {
-                                                    "description": "URL of the previous page",
-                                                    "type": "string",
-                                                    "nullable": true
-                                                },
-                                                "to": {
-                                                    "description": "Index of the last store in the current page",
-                                                    "type": "integer",
-                                                    "nullable": true
-                                                },
-                                                "total": {
-                                                    "description": "Total number of stores available",
-                                                    "type": "integer"
-                                                }
-                                            },
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "errors": {
-                                            "properties": {
-                                                "search": {
-                                                    "description": "Validation errors for the search query",
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "string"
-                                                    }
-                                                }
-                                            },
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            },
-            "post": {
-                "tags": [
-                    "Stores"
-                ],
-                "summary": "Create a new store",
-                "description": "Create a new store if the user is a manager and does not already have a store.",
-                "operationId": "836c75fd6d864bfb3c30c30d52117fb1",
-                "requestBody": {
-                    "description": "Store data",
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "name"
-                                ],
-                                "properties": {
-                                    "name": {
-                                        "description": "The name of the store",
-                                        "type": "string",
-                                        "maxLength": 50
-                                    },
-                                    "description": {
-                                        "description": "Description of the store",
-                                        "type": "string",
-                                        "nullable": true
-                                    },
-                                    "photo": {
-                                        "description": "The photo of the store",
-                                        "type": "string",
-                                        "format": "uri",
-                                        "nullable": true
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Store created successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Store created successfully"
-                                        },
-                                        "store": {
-                                            "$ref": "#/components/schemas/Store"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "errors": {
-                                            "type": "object",
-                                            "additionalProperties": {
-                                                "type": "array",
-                                                "items": {
-                                                    "type": "string"
-                                                }
-                                            }
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Forbidden: User is not authorized to create a store or already has a store",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "Unauthorized"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "Error message here"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/stores/{store}": {
-            "get": {
-                "tags": [
-                    "Stores"
-                ],
-                "summary": "Get store details",
-                "description": "Fetch the details of a specific store including its contacts, locations, and categories.",
-                "operationId": "e4a410483e46b70b41da1a70f83f5e39",
-                "parameters": [
-                    {
-                        "name": "store",
-                        "in": "path",
-                        "description": "The unique identifier of the store",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully retrieved the store details",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "store": {
-                                            "$ref": "#/components/schemas/Store"
-                                        },
-                                        "contacts": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/components/schemas/Contact"
-                                            }
-                                        },
-                                        "locations": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/components/schemas/Location"
-                                            }
-                                        },
-                                        "categories": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/components/schemas/Category"
-                                            }
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Store not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Object not found"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Server error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "Error message here"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ]
-            },
-            "post": {
-                "tags": [
-                    "Stores"
-                ],
-                "summary": "Update store details",
-                "description": "Update an existing store's details including optional photo upload.",
-                "operationId": "ca16bcb1a8292ed8f216995920121366",
-                "parameters": [
-                    {
-                        "name": "store",
-                        "in": "path",
-                        "description": "The unique identifier of the store",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "description": "Store data",
-                    "required": true,
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "required": [],
-                                "properties": {
-                                    "name": {
-                                        "description": "The name of the store",
-                                        "type": "string",
-                                        "maxLength": 50
-                                    },
-                                    "description": {
-                                        "description": "Description of the store",
-                                        "type": "string",
-                                        "nullable": true
-                                    },
-                                    "photo": {
-                                        "description": "The photo of the store (optional)",
-                                        "type": "string",
-                                        "format": "binary"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Store updated successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Store updated successfully"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "errors": {
-                                            "type": "object",
-                                            "additionalProperties": {
-                                                "type": "array",
-                                                "items": {
-                                                    "type": "string"
-                                                }
-                                            }
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Forbidden: User is not authorized to update this store",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "Unauthorized"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "Error message here"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/stores/{store}/orders": {
-            "get": {
-                "tags": [
-                    "Stores"
-                ],
-                "summary": "Get paginated orders of a store",
-                "description": "Retrieve orders for a specific store with optional filtering by status and sorting by date. User must be the owner of the store.",
-                "operationId": "2a196f02482cc6eade073f762fb3eb2d",
-                "parameters": [
-                    {
-                        "name": "store",
-                        "in": "path",
-                        "description": "ID of the store",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "status",
-                        "in": "query",
-                        "description": "Filter orders by status (processing, shipped, delivered)",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "enum": [
-                                "processing",
-                                "shipped",
-                                "delivered"
-                            ]
-                        }
-                    },
-                    {
-                        "name": "date",
-                        "in": "query",
-                        "description": "Sort orders by creation date (asc or desc)",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "enum": [
-                                "asc",
-                                "desc"
-                            ]
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Paginated list of sub-orders",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/components/schemas/SubOrder"
-                                            }
-                                        },
-                                        "current_page": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "last_page": {
-                                            "type": "integer",
-                                            "example": 5
-                                        },
-                                        "per_page": {
-                                            "type": "integer",
-                                            "example": 20
-                                        },
-                                        "total": {
-                                            "type": "integer",
-                                            "example": 100
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized to view sub-orders",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Unauthorized."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Store not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Object not found."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/stores/{store}/orders/{order}": {
-            "post": {
-                "tags": [
-                    "Stores"
-                ],
-                "summary": "Update order status",
-                "description": "Update the status of an order. Only the owner of the store can update the status to the next status in the flow.",
-                "operationId": "9d357acf6fe10b3188f851c5f4f33848",
-                "parameters": [
-                    {
-                        "name": "store",
-                        "in": "path",
-                        "description": "ID of the store",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "order",
-                        "in": "path",
-                        "description": "ID of the order",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "status",
-                        "in": "query",
-                        "description": "The new status for the order. Must be the next status in the flow.",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "enum": [
-                                "processing",
-                                "shipped",
-                                "delivered"
-                            ]
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Order status updated successfully.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "boolean",
-                                            "example": true
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Order status updated successfully."
-                                        },
-                                        "order": {
-                                            "$ref": "#/components/schemas/SubOrder"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid status transition. Can only move to the next status.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Invalid status transition. Can only move to the next status."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized to update order status",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Unauthorized."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Store or order not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Store or order not found."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/stores/{store}/products": {
             "get": {
                 "tags": [
@@ -3892,7 +3046,7 @@
                 ],
                 "summary": "Get products for a specific store paginated",
                 "description": "Fetch a list of products from a specific store, with an optional search filter.",
-                "operationId": "740044c4c1b1f70a68f4fbb56ec6b2aa",
+                "operationId": "eaeb2d67c7c16f97e0ddf60eaa362ed6",
                 "parameters": [
                     {
                         "name": "store",
@@ -3994,7 +3148,7 @@
                 ],
                 "summary": "Create a new product for a store",
                 "description": "Create a new product within a specific store. The user must be a manager and the store owner. Validation for fields such as name, price, discount, quantity, and category is applied.",
-                "operationId": "189a337476524890f38eb4fbe54ab27e",
+                "operationId": "fc1763f47260f745191e6967354aa373",
                 "parameters": [
                     {
                         "name": "store",
@@ -4142,7 +3296,7 @@
                 ],
                 "summary": "Update an existing product",
                 "description": "Update the details of an existing product within a store. The user must be the store's manager and owner to update the product.",
-                "operationId": "168748c70cb7cf2893a9d1c232c1573e",
+                "operationId": "c086b8cdea90318c3be52cb1deb53a1e",
                 "parameters": [
                     {
                         "name": "store",
@@ -4307,58 +3461,112 @@
                 ]
             }
         },
-        "/users": {
+        "/stores": {
             "get": {
                 "tags": [
-                    "Users"
+                    "Stores"
                 ],
-                "summary": "Get paginated list of users",
-                "description": "Retrieve users with optional filtering by role. Only accessible by admin.",
-                "operationId": "1ac7a967d2134b8502ddb9f7a2addc4e",
+                "summary": "Get a paginated list of stores",
+                "operationId": "2d5622449430f64ce725c28b1252ca3e",
                 "parameters": [
                     {
-                        "name": "role",
+                        "name": "search",
                         "in": "query",
-                        "description": "Filter users by role",
+                        "description": "Search query to filter stores by name",
                         "required": false,
                         "schema": {
-                            "type": "string",
-                            "enum": [
-                                "admin",
-                                "user",
-                                "manager"
-                            ]
+                            "type": "string"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Paginated list of users",
+                        "description": "List of stores retrieved successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/components/schemas/User"
-                                            }
-                                        },
-                                        "current_page": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "last_page": {
-                                            "type": "integer",
-                                            "example": 5
-                                        },
-                                        "per_page": {
-                                            "type": "integer",
-                                            "example": 20
-                                        },
-                                        "total": {
-                                            "type": "integer",
-                                            "example": 100
+                                        "stores": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "description": "Current page number",
+                                                    "type": "integer"
+                                                },
+                                                "data": {
+                                                    "description": "List of stores",
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/Store"
+                                                    }
+                                                },
+                                                "first_page_url": {
+                                                    "description": "URL of the first page",
+                                                    "type": "string"
+                                                },
+                                                "from": {
+                                                    "description": "Index of the first store in the current page",
+                                                    "type": "integer",
+                                                    "nullable": true
+                                                },
+                                                "last_page": {
+                                                    "description": "Total number of pages",
+                                                    "type": "integer"
+                                                },
+                                                "last_page_url": {
+                                                    "description": "URL of the last page",
+                                                    "type": "string"
+                                                },
+                                                "links": {
+                                                    "description": "Pagination links",
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "url": {
+                                                                "description": "URL for the page",
+                                                                "type": "string",
+                                                                "nullable": true
+                                                            },
+                                                            "label": {
+                                                                "description": "Label for the page",
+                                                                "type": "string"
+                                                            },
+                                                            "active": {
+                                                                "description": "Indicates if the page is active",
+                                                                "type": "boolean"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "next_page_url": {
+                                                    "description": "URL of the next page",
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "path": {
+                                                    "description": "Base URL for the resource",
+                                                    "type": "string"
+                                                },
+                                                "per_page": {
+                                                    "description": "Number of items per page",
+                                                    "type": "integer"
+                                                },
+                                                "prev_page_url": {
+                                                    "description": "URL of the previous page",
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "to": {
+                                                    "description": "Index of the last store in the current page",
+                                                    "type": "integer",
+                                                    "nullable": true
+                                                },
+                                                "total": {
+                                                    "description": "Total number of stores available",
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
                                         }
                                     },
                                     "type": "object"
@@ -4366,15 +3574,23 @@
                             }
                         }
                     },
-                    "401": {
-                        "description": "Unauthorized: Authentication required",
+                    "422": {
+                        "description": "Validation error",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Unauthenticated."
+                                        "errors": {
+                                            "properties": {
+                                                "search": {
+                                                    "description": "Validation errors for the search query",
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
                                         }
                                     },
                                     "type": "object"
@@ -4388,40 +3604,80 @@
                         "bearerAuth": []
                     }
                 ]
-            }
-        },
-        "/users/{user}": {
-            "get": {
+            },
+            "post": {
                 "tags": [
-                    "Users"
+                    "Stores"
                 ],
-                "summary": "Get a user by ID",
-                "description": "Retrieve a user by their ID. Only accessible by the user themselves or an admin.",
-                "operationId": "b3ee55cd13394829c1233a608b64c7c6",
-                "parameters": [
-                    {
-                        "name": "user",
-                        "in": "path",
-                        "description": "ID of the user",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
+                "summary": "Create a new store",
+                "description": "Create a new store if the user is a manager and does not already have a store.",
+                "operationId": "4474eac3c511f4450d374d90b19d482e",
+                "requestBody": {
+                    "description": "Store data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "The name of the store",
+                                        "type": "string",
+                                        "maxLength": 50
+                                    },
+                                    "description": {
+                                        "description": "Description of the store",
+                                        "type": "string",
+                                        "nullable": true
+                                    },
+                                    "photo": {
+                                        "description": "The photo of the store",
+                                        "type": "string",
+                                        "format": "uri",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
                         }
                     }
-                ],
+                },
                 "responses": {
-                    "200": {
-                        "description": "User details successfully retrieved",
+                    "201": {
+                        "description": "Store created successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "status": {
-                                            "type": "boolean",
-                                            "example": true
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Store created successfully"
                                         },
-                                        "user": {
-                                            "$ref": "#/components/schemas/User"
+                                        "store": {
+                                            "$ref": "#/components/schemas/Store"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            }
                                         }
                                     },
                                     "type": "object"
@@ -4430,14 +3686,14 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthorized: Authentication required",
+                        "description": "Forbidden: User is not authorized to create a store or already has a store",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "message": {
+                                        "error": {
                                             "type": "string",
-                                            "example": "Unauthorized."
+                                            "example": "Unauthorized"
                                         }
                                     },
                                     "type": "object"
@@ -4445,15 +3701,15 @@
                             }
                         }
                     },
-                    "404": {
-                        "description": "User not found",
+                    "500": {
+                        "description": "Internal server error",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "message": {
+                                        "error": {
                                             "type": "string",
-                                            "example": "User not found."
+                                            "example": "Error message here"
                                         }
                                     },
                                     "type": "object"
@@ -4464,7 +3720,224 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "BearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/stores/{store}": {
+            "get": {
+                "tags": [
+                    "Stores"
+                ],
+                "summary": "Get store details",
+                "description": "Fetch the details of a specific store including its contacts, locations, and categories.",
+                "operationId": "e420766067517b4905029230b7a1e73a",
+                "parameters": [
+                    {
+                        "name": "store",
+                        "in": "path",
+                        "description": "The unique identifier of the store",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved the store details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "store": {
+                                            "$ref": "#/components/schemas/Store"
+                                        },
+                                        "contacts": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Contact"
+                                            }
+                                        },
+                                        "locations": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Location"
+                                            }
+                                        },
+                                        "categories": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Category"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Store not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Object not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Error message here"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Stores"
+                ],
+                "summary": "Update store details",
+                "description": "Update an existing store's details including optional photo upload.",
+                "operationId": "c636b7f44c0db499a2ac81bc0dc5222d",
+                "parameters": [
+                    {
+                        "name": "store",
+                        "in": "path",
+                        "description": "The unique identifier of the store",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Store data",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [],
+                                "properties": {
+                                    "name": {
+                                        "description": "The name of the store",
+                                        "type": "string",
+                                        "maxLength": 50
+                                    },
+                                    "description": {
+                                        "description": "Description of the store",
+                                        "type": "string",
+                                        "nullable": true
+                                    },
+                                    "photo": {
+                                        "description": "The photo of the store (optional)",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Store updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Store updated successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Forbidden: User is not authorized to update this store",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Error message here"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAuth": []
                     }
                 ]
             }
@@ -4477,7 +3950,7 @@
                 ],
                 "summary": "Get locations of a user",
                 "description": "Retrieve the locations (name, longitude, and latitude) for a specific user.",
-                "operationId": "dc8b927ad770c7bd6b8f21fc9bb9d261",
+                "operationId": "178ffafe3d13681d13708249d4927a9f",
                 "parameters": [
                     {
                         "name": "user",
@@ -4569,7 +4042,7 @@
                 ],
                 "summary": "Add locations for a user",
                 "description": "Allows the authenticated user to add locations with longitude, latitude, and name. A maximum of 5 locations can be added.",
-                "operationId": "2d58885eb5fb2868b0a847e3776cb30f",
+                "operationId": "a79305b030bcb66148b21501f7410aa8",
                 "parameters": [
                     {
                         "name": "user",
@@ -4692,78 +4165,303 @@
                     }
                 }
             }
+        },
+        "/users/{user}/update": {
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Update a user",
+                "description": "Updates the details of the  user. Requires authentication.",
+                "operationId": "04afd9aa915e6e826be026d6039a8f7b",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "User ID to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "first_name": {
+                                        "type": "string",
+                                        "maxLength": 50,
+                                        "example": "John"
+                                    },
+                                    "last_name": {
+                                        "type": "string",
+                                        "maxLength": 50,
+                                        "example": "Doe"
+                                    },
+                                    "photo": {
+                                        "description": "Photo of the user in jpg, jpeg, png, gif formats",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User updated successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - Invalid or missing token - not the same user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "first_name": [
+                                                    "The first name field is required."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Something went wrong"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/users/{user}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get a user by ID",
+                "description": "Retrieve a user by their ID. Only accessible by the user themselves or an admin.",
+                "operationId": "a024122e6e2859b8a209defcebe3d6d5",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "ID of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User details successfully retrieved",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "user": {
+                                            "$ref": "#/components/schemas/User"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized: Authentication required",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get paginated list of users",
+                "description": "Retrieve users with optional filtering by role. Only accessible by admin.",
+                "operationId": "c6edec870078770466358302bced86ad",
+                "parameters": [
+                    {
+                        "name": "role",
+                        "in": "query",
+                        "description": "Filter users by role",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "admin",
+                                "user",
+                                "manager"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Paginated list of users",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/User"
+                                            }
+                                        },
+                                        "current_page": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "last_page": {
+                                            "type": "integer",
+                                            "example": 5
+                                        },
+                                        "per_page": {
+                                            "type": "integer",
+                                            "example": 20
+                                        },
+                                        "total": {
+                                            "type": "integer",
+                                            "example": 100
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized: Authentication required",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
         "schemas": {
-            "User": {
-                "required": [
-                    "id",
-                    "first_name",
-                    "last_name",
-                    "phone_number",
-                    "created_at",
-                    "updated_at",
-                    "roles_status"
-                ],
-                "properties": {
-                    "id": {
-                        "description": "The user's unique ID",
-                        "type": "integer"
-                    },
-                    "first_name": {
-                        "description": "The user's first name",
-                        "type": "string"
-                    },
-                    "last_name": {
-                        "description": "The user's last name",
-                        "type": "string"
-                    },
-                    "phone_number": {
-                        "description": "The user's phone number",
-                        "type": "string"
-                    },
-                    "photo": {
-                        "description": "Profile photo URL or base64 encoded (optional)",
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "created_at": {
-                        "description": "Timestamp of when the user was created",
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "updated_at": {
-                        "description": "Timestamp of when the user was last updated",
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "roles_status": {
-                        "description": "The user's roles status",
-                        "required": [
-                            "manager",
-                            "admin",
-                            "user"
-                        ],
-                        "properties": {
-                            "manager": {
-                                "description": "Indicates if the user is a manager",
-                                "type": "boolean"
-                            },
-                            "admin": {
-                                "description": "Indicates if the user is an admin",
-                                "type": "boolean"
-                            },
-                            "user": {
-                                "description": "Indicates if the user is a regular user",
-                                "type": "boolean"
-                            }
-                        },
-                        "type": "object"
-                    }
-                },
-                "type": "object"
-            },
             "Category": {
                 "required": [
                     "id",
@@ -4816,6 +4514,52 @@
                         "type": "string",
                         "format": "date-time",
                         "example": "2024-12-02T14:00:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "SubOrder": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "order_id": {
+                        "description": "ID of the main order",
+                        "type": "integer",
+                        "example": 101
+                    },
+                    "status": {
+                        "description": "Status of the sub-order",
+                        "type": "string",
+                        "enum": [
+                            "processing",
+                            "shipped",
+                            "delivered"
+                        ],
+                        "example": "processing"
+                    },
+                    "total": {
+                        "description": "Total amount for the sub-order",
+                        "type": "integer",
+                        "example": 5000
+                    },
+                    "store_id": {
+                        "description": "ID of the store",
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "created_at": {
+                        "description": "Creation timestamp",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-12-01T12:00:00Z"
+                    },
+                    "updated_at": {
+                        "description": "Last update timestamp",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-12-02T12:00:00Z"
                     }
                 },
                 "type": "object"
@@ -4912,49 +4656,6 @@
                 },
                 "type": "object"
             },
-            "Contact": {
-                "required": [
-                    "id",
-                    "store_id",
-                    "type",
-                    "value"
-                ],
-                "properties": {
-                    "id": {
-                        "description": "The unique identifier for the contact",
-                        "type": "integer"
-                    },
-                    "store_id": {
-                        "description": "The ID of the store the contact belongs to",
-                        "type": "integer"
-                    },
-                    "type": {
-                        "description": "The type of contact (e.g., phone, email)",
-                        "type": "string"
-                    },
-                    "value": {
-                        "description": "The contact value (e.g., phone number, email address)",
-                        "type": "string"
-                    },
-                    "created_at": {
-                        "description": "Timestamp when the contact was created",
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "updated_at": {
-                        "description": "Timestamp when the contact was last updated",
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "deleted_at": {
-                        "description": "Timestamp when the contact was soft deleted",
-                        "type": "string",
-                        "format": "date-time",
-                        "nullable": true
-                    }
-                },
-                "type": "object"
-            },
             "Store": {
                 "required": [
                     "id",
@@ -5006,87 +4707,137 @@
                 },
                 "type": "object"
             },
-            "Location": {
+            "Contact": {
                 "required": [
-                    "name",
-                    "latitude",
-                    "longitude"
+                    "id",
+                    "store_id",
+                    "type",
+                    "value"
                 ],
                 "properties": {
                     "id": {
-                        "description": "The unique identifier for the location",
+                        "description": "The unique identifier for the contact",
                         "type": "integer"
                     },
-                    "name": {
-                        "description": "The name of the location",
+                    "store_id": {
+                        "description": "The ID of the store the contact belongs to",
+                        "type": "integer"
+                    },
+                    "type": {
+                        "description": "The type of contact (e.g., phone, email)",
+                        "type": "string"
+                    },
+                    "value": {
+                        "description": "The contact value (e.g., phone number, email address)",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "Timestamp when the contact was created",
                         "type": "string",
-                        "maxLength": 50
+                        "format": "date-time"
                     },
-                    "latitude": {
-                        "description": "Latitude of the location",
-                        "type": "decimal",
-                        "format": "float"
-                    },
-                    "longitude": {
-                        "description": "Longitude of the location",
-                        "type": "decimal",
-                        "format": "float"
-                    },
-                    "object_id": {
-                        "description": "An optional ID of an associated object",
-                        "type": "integer",
-                        "nullable": true
-                    },
-                    "object_type": {
-                        "description": "An optional type for the associated object",
+                    "updated_at": {
+                        "description": "Timestamp when the contact was last updated",
                         "type": "string",
+                        "format": "date-time"
+                    },
+                    "deleted_at": {
+                        "description": "Timestamp when the contact was soft deleted",
+                        "type": "string",
+                        "format": "date-time",
                         "nullable": true
                     }
                 },
                 "type": "object"
             },
-            "SubOrder": {
+            "Location": {
                 "properties": {
                     "id": {
-                        "type": "integer",
-                        "example": 1
+                        "description": "The unique identifier for the location",
+                        "type": "integer"
                     },
-                    "order_id": {
-                        "description": "ID of the main order",
-                        "type": "integer",
-                        "example": 101
+                    "latitude": {
+                        "description": "Latitude of the location",
+                        "type": "number",
+                        "format": "float"
                     },
-                    "status": {
-                        "description": "Status of the sub-order",
+                    "longitude": {
+                        "description": "Longitude of the location",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "name": {
+                        "description": "Name of the location",
                         "type": "string",
-                        "enum": [
-                            "processing",
-                            "shipped",
-                            "delivered"
-                        ],
-                        "example": "processing"
+                        "maxLength": 50
+                    }
+                },
+                "type": "object"
+            },
+            "User": {
+                "required": [
+                    "id",
+                    "first_name",
+                    "last_name",
+                    "phone_number",
+                    "created_at",
+                    "updated_at",
+                    "roles_status"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "The user's unique ID",
+                        "type": "integer"
                     },
-                    "total": {
-                        "description": "Total amount for the sub-order",
-                        "type": "integer",
-                        "example": 5000
+                    "first_name": {
+                        "description": "The user's first name",
+                        "type": "string"
                     },
-                    "store_id": {
-                        "description": "ID of the store",
-                        "type": "integer",
-                        "example": 10
+                    "last_name": {
+                        "description": "The user's last name",
+                        "type": "string"
+                    },
+                    "phone_number": {
+                        "description": "The user's phone number",
+                        "type": "string"
+                    },
+                    "photo": {
+                        "description": "Profile photo URL or base64 encoded (optional)",
+                        "type": "string",
+                        "nullable": true
                     },
                     "created_at": {
-                        "description": "Creation timestamp",
+                        "description": "Timestamp of when the user was created",
                         "type": "string",
-                        "format": "date-time",
-                        "example": "2024-12-01T12:00:00Z"
+                        "format": "date-time"
                     },
                     "updated_at": {
-                        "description": "Last update timestamp",
+                        "description": "Timestamp of when the user was last updated",
                         "type": "string",
-                        "format": "date-time",
-                        "example": "2024-12-02T12:00:00Z"
+                        "format": "date-time"
+                    },
+                    "roles_status": {
+                        "description": "The user's roles status",
+                        "required": [
+                            "manager",
+                            "admin",
+                            "user"
+                        ],
+                        "properties": {
+                            "manager": {
+                                "description": "Indicates if the user is a manager",
+                                "type": "boolean"
+                            },
+                            "admin": {
+                                "description": "Indicates if the user is an admin",
+                                "type": "boolean"
+                            },
+                            "user": {
+                                "description": "Indicates if the user is a regular user",
+                                "type": "boolean"
+                            }
+                        },
+                        "type": "object"
                     }
                 },
                 "type": "object"
@@ -5107,16 +4858,16 @@
             "description": "Auth"
         },
         {
-            "name": "Users",
-            "description": "Users"
-        },
-        {
             "name": "Verification",
             "description": "Verification"
         },
         {
             "name": "Categories",
             "description": "Categories"
+        },
+        {
+            "name": "Users",
+            "description": "Users"
         },
         {
             "name": "Orders",

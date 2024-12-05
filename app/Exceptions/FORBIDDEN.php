@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 class FORBIDDEN extends Exception
 {
@@ -12,6 +12,7 @@ class FORBIDDEN extends Exception
 
     public function __construct($message = 'Forbidden')
     {
+        parent::__construct($message);
         $this->message = $message;
     }
 
@@ -19,7 +20,8 @@ class FORBIDDEN extends Exception
     {
         //
         return response()->json([
-            'message' => $this->message,
+            'status' => false,
+            'error' => $this->message,
         ], Response::HTTP_FORBIDDEN);
     }
 }

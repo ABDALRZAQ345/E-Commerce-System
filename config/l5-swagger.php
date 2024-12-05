@@ -44,7 +44,7 @@ return [
                  * Absolute paths to directory containing the swagger annotations are stored.
                  */
                 'annotations' => [
-                    base_path('app'),
+                    base_path('app\Http\ManualOpenApi'),
                 ],
             ],
         ],
@@ -121,14 +121,14 @@ return [
             ],
 
             /**
-             * analyser: defaults to \OpenApi\StaticAnalyser .
+             * analyser: defaults to \ManualOpenApi\StaticAnalyser .
              *
              * @see \OpenApi\scan
              */
             'analyser' => null,
 
             /**
-             * analysis: defaults to a new \OpenApi\Analysis .
+             * analysis: defaults to a new \ManualOpenApi\Analysis .
              *
              * @see \OpenApi\scan
              */
@@ -154,7 +154,7 @@ return [
             /*
              * Absolute path to directories that should be excluded from scanning
              * @note This option overwrites `paths.excludes`
-             * @see \OpenApi\scan
+             * @see \ManualOpenApi\scan
              */
             'exclude' => [],
 

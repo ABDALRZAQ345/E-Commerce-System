@@ -35,10 +35,7 @@ class UserService
         ]);
     }
 
-    public static function findUserByPhoneNumber($phoneNumber): User
-    {
-        return User::where('phone_number', $phoneNumber)->firstOrFail();
-    }
+
 
     public function FormatRoles(User $user): User
     {

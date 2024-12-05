@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Product;
 
+use App\Exceptions\BadRequestException;
+use App\Exceptions\ServerErrorException;
 use App\Http\Controllers\Controller;
 use App\Models\FavouriteProduct;
 use App\Models\Product;
 use App\Services\ProductService;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
-use OpenApi\Annotations as OA;
 
 class FavouriteProductController extends Controller
 {
@@ -20,53 +22,9 @@ class FavouriteProductController extends Controller
     }
 
     /**
-     * @OA\Get(
-     *     path="/favourites/products",
-     *     tags={"Favourites"},
-     *     summary="Get user products favourites",
-     *     description="Retrieve the authenticated user's favourite products.",
-     *     security={{"bearerAuth": {}}},
-     *
-     *     @OA\Response(
-     *         response=200,
-     *         description="Successfully retrieved favourite products",
-     *
-     *         @OA\JsonContent(
-     *             type="object",
-     *
-     *             @OA\Property(property="status", type="boolean", example=true),
-     *             @OA\Property(
-     *                 property="favourites",
-     *                 type="array",
-     *
-     *                 @OA\Items(ref="#/components/schemas/Product")
-     *             )
-     *         )
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=401,
-     *         description="Unauthorized - Authentication is required",
-     *
-     *         @OA\JsonContent(
-     *
-     *             @OA\Property(property="message", type="string", example="Unauthorized")
-     *         )
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=500,
-     *         description="Failed to retrieve favourites",
-     *
-     *         @OA\JsonContent(
-     *
-     *             @OA\Property(property="error", type="string", example="Failed to retrieve favourites"),
-     *             @OA\Property(property="message", type="string", example="Server error message")
-     *         )
-     *     )
-     * )
+     * @throws ServerErrorException
      */
-    public function getFavourites()
+    public function index(): JsonResponse
     {
         try {
             $user = Auth::user();
@@ -77,167 +35,64 @@ class FavouriteProductController extends Controller
 
             return response()->json([
                 'status' => true,
+                'count' => count($favourites),
                 'favourites' => $favourites,
-            ], 200);
+            ]);
         } catch (Exception $e) {
-            return response()->json(['error' => 'Failed to retrieve favourites', 'message' => $e->getMessage()], 500);
+            throw new ServerErrorException('Failed to retrieve favourites ');
         }
     }
 
     /**
-     * @OA\Post(
-     *     path="/favourites/products/{product}",
-     *     tags={"Favourites"},
-     *     summary="Add a product to favourites",
-     *     description="Add a product to the authenticated user's favourite list.",
-     *     security={{"bearerAuth": {}}},
-     *
-     *     @OA\Parameter(
-     *         name="product",
-     *         in="path",
-     *         required=true,
-     *         description="The ID of the product to be added to favourites",
-     *
-     *         @OA\Schema(type="integer", example=1)
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=200,
-     *         description="Product added to favourites successfully",
-     *
-     *         @OA\JsonContent(
-     *             type="object",
-     *
-     *             @OA\Property(property="message", type="string", example="Product added to favourites")
-     *         )
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=400,
-     *         description="Product is already in the favourite list",
-     *
-     *         @OA\JsonContent(
-     *             type="object",
-     *
-     *             @OA\Property(property="status", type="boolean", example=false),
-     *             @OA\Property(property="message", type="string", example="Product is already in your favourite list")
-     *         )
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=401,
-     *         description="Unauthorized - Authentication is required",
-     *
-     *         @OA\JsonContent(
-     *
-     *             @OA\Property(property="message", type="string", example="Unauthorized")
-     *         )
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=500,
-     *         description="Failed to add favourite",
-     *
-     *         @OA\JsonContent(
-     *
-     *             @OA\Property(property="error", type="string", example="Failed to add favourite"),
-     *             @OA\Property(property="message", type="string", example="Server error message")
-     *         )
-     *     ),
-     *
-     *      @OA\Response(
-     *          response=404,
-     *          description="Product not found in favourites",
-     *
-     *          @OA\JsonContent(
-     *              type="object",
-     *
-     *              @OA\Property(property="error", type="string", example="Not Found"),
-     *              @OA\Property(property="message", type="string", example="Object not fount ")
-     *          )
-     *      )
-     * )
+     * @throws BadRequestException
+     * @throws ServerErrorException
      */
-    public function addFavourite(Product $product)
+    public function store(Product $product): JsonResponse
     {
 
+
+        $user = Auth::user();
+        if (FavouriteProduct::where('user_id', $user->id)->where('product_id', $product->id)->first()) {
+            throw new BadRequestException('Product is already in your favourite list');
+        }
+        if($user->favouriteProducts()->count() == config('app.data.max_favourites')) {
+            throw new BadRequestException('you cant add more than 100 favourite stores');
+        }
+
         try {
-            $user = Auth::user();
-            if (FavouriteProduct::where('user_id', $user->id)->where('product_id', $product->id)->first()) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Product is already in your favourite list',
-                ], 400);
-            }
             $user->favouriteProducts()->attach($product);
 
             return response()->json([
+                'status' => true,
                 'message' => 'Product added to favourites',
-            ], 200);
+            ]);
         } catch (Exception $e) {
-            return response()->json(['error' => 'Failed to add favourite', 'message' => $e->getMessage()], 500);
+            throw new ServerErrorException($e->getMessage());
         }
+
+
     }
 
-    /**
-     * @OA\Delete(
-     *     path="/favourites/products/{product}",
-     *     tags={"Favourites"},
-     *     summary="Remove a product from favourites",
-     *     description="Remove a product from the authenticated user's favourite list.",
-     *     security={{"bearerAuth": {}}},
-     *
-     *     @OA\Parameter(
-     *         name="product",
-     *         in="path",
-     *         required=true,
-     *         description="The ID of the product to be removed from favourites",
-     *
-     *         @OA\Schema(type="integer", example=1)
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=200,
-     *         description="Product removed from favourites successfully",
-     *
-     *         @OA\JsonContent(
-     *             type="object",
-     *
-     *             @OA\Property(property="message", type="string", example="Product removed from favourites")
-     *         )
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=404,
-     *         description="Product not found in favourites",
-     *
-     *         @OA\JsonContent(
-     *             type="object",
-     *
-     *             @OA\Property(property="error", type="string", example="Not Found"),
-     *             @OA\Property(property="message", type="string", example="Object not fount")
-     *         )
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=401,
-     *         description="Unauthorized - Authentication is required",
-     *
-     *         @OA\JsonContent(
-     *
-     *             @OA\Property(property="message", type="string", example="Unauthorized")
-     *         )
-     *     )
-     * )
-     */
-    public function removeFavourite(Product $product)
+    public function delete(Product $product): JsonResponse
     {
 
-        $user = Auth::user();
-        $product = $user->favouriteProducts()->findOrFail($product->id);
-        $user->favouriteProducts()->detach($product);
+        try{
+            $user = Auth::user();
+            $product = $user->favouriteProducts()->findOrFail($product->id);
+            $user->favouriteProducts()->detach($product);
 
-        return response()->json(['message' => 'Product removed from favourites'], 200);
+            return response()->json([
+                'status' => true,
+                'message' => 'Product removed from favourite list'
+            ]);
+        }
+        catch (Exception $e) {
+            return  response()->json([
+                'status' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+
 
     }
 }
