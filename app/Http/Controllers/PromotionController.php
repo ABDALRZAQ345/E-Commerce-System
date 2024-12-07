@@ -34,6 +34,7 @@ class PromotionController extends Controller
 
             return response()->json([
                 'status' => true,
+                'message' => 'promotions retrieved successfully',
                 'promotions' => $promotions,
             ], 200);
         } catch (\Exception $e) {
@@ -49,10 +50,10 @@ class PromotionController extends Controller
     {
         $user = Auth::user();
         if ($user->hasRole(RoleEnum::Manager)) {
-            throw  new BadRequestException('you already have a manager role');
+            throw new BadRequestException('you already have a manager role');
         }
         if (Promotion::where('user_id', $user->id)->exists()) {
-            throw  new BadRequestException('Promotion request  already exists you can not send more than one request');
+            throw new BadRequestException('Promotion request  already exists you can not send more than one request');
         }
 
         try {
@@ -112,7 +113,7 @@ class PromotionController extends Controller
                 'status' => true,
                 'message' => 'User Promotion rejected Successfully',
             ], 200);
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             throw new ServerErrorException($e->getMessage());
         }
     }

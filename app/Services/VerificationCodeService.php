@@ -6,7 +6,6 @@ use App\Exceptions\VerificationCodeException;
 use App\Jobs\SendVerificationCode;
 use App\Models\VerificationCode;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 
 class VerificationCodeService
 {
@@ -37,11 +36,10 @@ class VerificationCodeService
     public function delete($phoneNumber): void
     {
 
-            VerificationCode::where(
-                'phone_number',
-                $phoneNumber
-            )->delete();
-
+        VerificationCode::where(
+            'phone_number',
+            $phoneNumber
+        )->delete();
 
     }
 }

@@ -124,6 +124,6 @@ return [
     ],
     'data' => [
         'max_favourites' => env('APP_MAX_FAVOURITES', 100),
-    ]
+    ],
 
 ];

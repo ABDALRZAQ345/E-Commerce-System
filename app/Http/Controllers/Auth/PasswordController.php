@@ -11,7 +11,6 @@ use App\Models\User;
 use App\Services\UserService;
 use App\Services\VerificationCodeService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -44,7 +43,7 @@ class PasswordController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => 'Password changed successfully!'
+                'message' => 'Password changed successfully!',
             ]);
         } catch (\Exception $e) {
             throw new ServerErrorException($e->getMessage());
@@ -65,20 +64,17 @@ class PasswordController extends Controller
 
                 UserService::updatePassword($user, $validated['new_password']);
 
-
                 return response()->json([
                     'status' => true,
                     'message' => 'Password reset successfully!',
                 ]);
             }
 
-
             return response()->json([
                 'status' => false,
-                'error' => 'Wrong old password!',
+                'message' => 'Wrong old password!',
             ], 403);
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             throw new ServerErrorException($e->getMessage());
         }
 

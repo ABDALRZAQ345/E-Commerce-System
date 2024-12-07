@@ -14,5 +14,4 @@ class ProductService
         $product->your_rate = $your_rate;
         $product->your_favourite = $your_favourite != null;
     }
-
 }

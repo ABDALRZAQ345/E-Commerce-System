@@ -35,8 +35,6 @@ class UserService
         ]);
     }
 
-
-
     public function FormatRoles(User $user): User
     {
         $user->load('roles:name');

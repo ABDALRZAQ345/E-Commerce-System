@@ -13,12 +13,12 @@ use App\Services\VerificationCodeService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
     protected UserService $userService;
+
     protected VerificationCodeService $verificationCodeService;
 
     public function __construct(UserService $userService, VerificationCodeService $verificationCodeService)
@@ -41,12 +41,11 @@ class AuthController extends Controller
             $user = UserService::createUser($validated);
             $this->verificationCodeService->delete($validated['phone_number']);
 
-
             return response()->json([
                 'status' => true,
                 'message' => 'User Created Successfully',
                 'token' => $user->createToken('API TOKEN')->plainTextToken,
-                'user' =>  $this->userService->FormatRoles($user),
+                'user' => $this->userService->FormatRoles($user),
             ]);
         } catch (\Exception $e) {
             throw new ServerErrorException($e->getMessage());
@@ -64,7 +63,7 @@ class AuthController extends Controller
             if (! Hash::check($validatedData['password'], $user->password)) {
                 return response()->json([
                     'status' => false,
-                    'error' => 'Phone & Password do not match our record.',
+                    'message' => 'Phone & Password do not match our record.',
                 ], 401);
             }
 

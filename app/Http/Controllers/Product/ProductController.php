@@ -2,47 +2,76 @@
 
 namespace App\Http\Controllers\Product;
 
+use App\Exceptions\ServerErrorException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RateRequest;
 use App\Models\Product;
 use App\Services\ProductService;
+use App\Services\RateService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Mockery\Exception;
 
 class ProductController extends Controller
 {
+    protected RateService $rateService;
+
     protected ProductService $productService;
 
-    public function __construct(ProductService $productService)
+    public function __construct(RateService $rateService, ProductService $productService)
     {
+        $this->rateService = $rateService;
         $this->productService = $productService;
     }
 
+    /**
+     * @throws ServerErrorException
+     */
     public function index(Request $request): JsonResponse
     {
-        if ($request->has('search')) {
-            $products = Product::search($request->input('search'))->paginate(20);
-        } else {
-            $products = Product::filter($request->input('filter'))->paginate(20);
-        }
-        $user = Auth::user();
-        foreach ($products as $product) {
+        try {
+            if ($request->has('search')) {
+                $products = Product::search($request->input('search'))->paginate(20);
+            } else {
+                $products = Product::filter($request->input('filter'))->paginate(20);
+            }
+            $user = Auth::user();
+            foreach ($products as $product) {
+                $this->productService->get_the_user_info_for_product($product, $user);
+            }
 
-            $this->productService->get_the_user_info_for_product($product, $user);
+            return response()->json([
+                'status' => true,
+                'message' => 'products retrieved successfully',
+                'products' => $products,
+            ]);
+        } catch (Exception $e) {
+            throw new ServerErrorException($e->getMessage());
         }
 
-        return response()->json($products);
     }
 
+    /**
+     * @throws ServerErrorException
+     */
     public function show(Product $product): JsonResponse
     {
-        $product->load('category');
-        $user = Auth::user();
-        $this->productService->get_the_user_info_for_product($product, $user);
+        try {
+            $product->load('category');
+            // todo load photos and details
+            $user = Auth::user();
+            $this->productService->get_the_user_info_for_product($product, $user);
 
-        return response()->json([
-            'product' => $product,
-        ]);
+            return response()->json([
+                'status' => true,
+                'message' => 'product retrieved successfully',
+                'product' => $product,
+            ]);
+        } catch (Exception $e) {
+            throw new ServerErrorException($e->getMessage());
+        }
+
     }
 
     public function audits(Product $product): JsonResponse
@@ -55,24 +84,28 @@ class ProductController extends Controller
 
     }
 
-    public function rate(Request $request, Product $product): JsonResponse
+    /**
+     * @throws ServerErrorException
+     * @throws \Throwable
+     */
+    public function rate(RateRequest $request, Product $product): JsonResponse
     {
-        $validated = $request->validate([
-            'rate' => ['required', 'integer', 'min:1', 'max:5'],
-        ]);
+        $validated = $request->validated();
+        try {
 
-        $product->rates()->where('user_id', auth()->id())->delete();
-        $product->rates()->create([
-            'rate' => $validated['rate'],
-            'user_id' => auth()->id(),
-        ]);
-        $product->rate = $product->rates()->avg('rate');
-        $product->save();
+            $user = Auth::user();
+            $this->rateService->Rate($user, $product, $validated['rate']);
+            $this->productService->get_the_user_info_for_product($product, $user);
 
-        return response()->json([
-            'status' => true,
-            'product' => $product,
-        ]);
+            return response()->json([
+                'status' => true,
+                'message' => 'product rated successfully',
+                'product' => $product,
+            ]);
+        } catch (\Exception $e) {
+
+            throw new ServerErrorException($e->getMessage());
+        }
 
     }
 }

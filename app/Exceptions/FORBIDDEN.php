@@ -21,7 +21,7 @@ class FORBIDDEN extends Exception
         //
         return response()->json([
             'status' => false,
-            'error' => $this->message,
+            'message' => $this->message,
         ], Response::HTTP_FORBIDDEN);
     }
 }

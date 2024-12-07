@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,8 +16,6 @@ class Product extends Model implements Auditable
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
     use Searchable;
-
-
 
     protected $guarded = ['id'];
 
@@ -66,7 +63,7 @@ class Product extends Model implements Auditable
         return $this->hasMany(OrderItem::class);
     }
 
-    public function scopeFilter($query, $filter, $search = null): void
+    public function scopeFilter($query, $filter): void
     {
 
         if ($filter === 'best_selling') {
@@ -81,10 +78,7 @@ class Product extends Model implements Auditable
         // filter as top rated products
         elseif ($filter === 'top_rated') {
             $query->orderBy('rate', 'desc');
-        }
-
-
-        elseif ($filter === 'recommended') {
+        } elseif ($filter === 'recommended') {
             /// todo
         }
 

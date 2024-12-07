@@ -6,7 +6,6 @@ use App\Rules\ValidPhoneNumber;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class SendVerificationCodeRequest extends FormRequest
@@ -23,20 +22,16 @@ class SendVerificationCodeRequest extends FormRequest
      */
     public function rules(): array
     {
-        $isRegistration = filter_var($this->input('registration'),FILTER_VALIDATE_BOOLEAN);
+        $isRegistration = filter_var($this->input('registration'), FILTER_VALIDATE_BOOLEAN);
 
-
-            return [
-                'phone_number' => ['required', 'string', new ValidPhoneNumber,
-                    Rule::when(
-                        $isRegistration,
+        return [
+            'phone_number' => ['required', 'string', new ValidPhoneNumber,
+                Rule::when(
+                    $isRegistration,
                     ['unique:users,phone_number'],
                     ['exists:users,phone_number']
-                ),],
-            ];
-
-
-
+                ), ],
+        ];
 
     }
 

@@ -15,6 +15,7 @@ class UserLocationController extends Controller
 
         return response()->json([
             'status' => true,
+            'message' => 'locations retrieved successfully',
             'locations' => $locations,
         ]);
     }
@@ -34,6 +35,9 @@ class UserLocationController extends Controller
         $user->locations()->delete();
         $user->locations()->createMany($validated['locations']);
 
-        return response()->json(['message' => 'Locations added successfully']);
+        return response()->json([
+            'status' => true,
+            'message' => 'Locations added successfully',
+        ]);
     }
 }

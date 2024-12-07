@@ -76,4 +76,25 @@ class Store extends Model implements Auditable
     {
         return $this->belongsTo(User::class);
     }
+
+    public function scopeFilter($query, $filter): void
+    {
+
+        if ($filter === 'best_selling') {
+            $query->orderBy('sales', 'desc');
+        }
+
+        // latest products
+        elseif ($filter === 'latest') {
+            $query->orderBy('created_at', 'desc');
+        }
+
+        // filter as top rated products
+        elseif ($filter === 'top_rated') {
+            $query->orderBy('rate', 'desc');
+        } elseif ($filter === 'recommended') {
+            /// todo
+        }
+
+    }
 }

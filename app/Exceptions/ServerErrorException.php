@@ -16,13 +16,13 @@ class ServerErrorException extends Exception
 
     public function render(Request $request): JsonResponse
     {
-        if(app()->environment('production')){
-            $this->message= "something went wrong we will fix it as soon as possible try again later";
+        if (app()->environment('production')) {
+            $this->message = 'something went wrong we will fix it as soon as possible try again later';
         }
 
         return response()->json([
             'status' => false,
-            'error' => $this->message,
+            'message' => $this->message,
         ], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 }

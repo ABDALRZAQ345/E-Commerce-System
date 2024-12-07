@@ -28,6 +28,7 @@ Route::middleware(['throttle:api', 'locale', 'xss'])->group(function () {
         Route::put('/stores/{store}/categories', [StoreCategoryController::class, 'update'])->middleware('store_owner')->name('stores.categories.update');
         Route::get('/stores/{store}/orders', [StoreOrderController::class, 'index'])->middleware('store_owner')->name('stores.products.index');
         Route::post('/stores/{store}/orders/{order}', [StoreOrderController::class, 'update'])->middleware('store_owner')->name('stores.products.update');
+        Route::post('/stores/{store}/rate', [StoreController::class, 'rate'])->name('products.rate');
 
     });
 

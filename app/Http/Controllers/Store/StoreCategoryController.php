@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Store;
 
+use App\Exceptions\ServerErrorException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\CategoryRequest;
 use App\Models\Store;
@@ -12,13 +13,21 @@ class StoreCategoryController extends Controller
 {
     //
 
-    public function index(Store $store)
+    public function index(Store $store): JsonResponse
     {
         $storeCategoryService = new StoreCategoryService($store->id);
 
-        return $storeCategoryService->getCategories()->get();
+        return response()->json([
+            'status' => true,
+            'message' => 'category list retrieved successfully',
+            'categories' => $storeCategoryService->getCategories()->get(),
+        ]);
+
     }
 
+    /**
+     * @throws ServerErrorException
+     */
     public function store(CategoryRequest $request, Store $store): JsonResponse
     {
         $validated = $request->validated();
@@ -28,16 +37,19 @@ class StoreCategoryController extends Controller
             $storeCategoryService->AddCategories($validated['categories']);
 
             return response()->json([
-                'message' => 'success',
+                'status' => true,
+                'message' => 'category added successfully',
             ]);
         } catch (\Exception|\Throwable $exception) {
-            return response()->json([
-                'message' => 'some thing went wrong please try again later',
-            ], 400);
+            throw new ServerErrorException($exception->getMessage());
         }
 
     }
 
+    /**
+     * @throws ServerErrorException
+     * @throws \Throwable
+     */
     public function update(CategoryRequest $request, Store $store): JsonResponse
     {
         $validated = $request->validated();
@@ -46,12 +58,11 @@ class StoreCategoryController extends Controller
             $storeCategoryService->UpdateCategories($validated['categories']);
 
             return response()->json([
+                'status' => true,
                 'message' => 'categories updated successfully',
             ]);
         } catch (\Exception $exception) {
-            return response()->json([
-                'message' => 'some thing went wrong please try again later',
-            ], 400);
+            throw new ServerErrorException($exception->getMessage());
         }
 
     }

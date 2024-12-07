@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Enums\RoleEnum;
+use App\Exceptions\ServerErrorException;
 use App\Exceptions\UNAUTHORIZED;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UpdateUserRequest;
@@ -52,10 +53,14 @@ class UserController extends Controller
 
         return response()->json([
             'status' => true,
+            'message' => 'user retrieved successfully',
             'user' => $user,
         ]);
     }
 
+    /**
+     * @throws ServerErrorException
+     */
     public function update(UpdateUserRequest $request, User $user): JsonResponse
     {
         $validated = $request->validated();
@@ -68,10 +73,7 @@ class UserController extends Controller
                 'message' => 'User updated successfully',
             ]);
         } catch (\Exception $e) {
-            return response()->json([
-                'status' => false,
-                'message' => $e->getMessage(),
-            ]);
+            throw new ServerErrorException($e->getMessage());
         }
     }
 }

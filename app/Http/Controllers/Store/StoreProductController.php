@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Store;
 
+use App\Exceptions\ServerErrorException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\UpdateProductRequest;
 use App\Http\Requests\Store\StoreProductRequest;
@@ -21,10 +22,15 @@ class StoreProductController extends Controller
             ->paginate(20);
 
         return response()->json([
+            'status' => true,
+            'message' => 'product list retrieved successfully',
             'products' => $products,
         ]);
     }
 
+    /**
+     * @throws ServerErrorException
+     */
     public function store(StoreProductRequest $request, Store $store): JsonResponse
     {
         $validated = $request->validated();
@@ -37,14 +43,13 @@ class StoreProductController extends Controller
             $product = $store->products()->create($validated);
 
             return response()->json([
+                'status' => true,
                 'message' => 'Product created successfully.',
                 'product' => $product,
             ], 201);
 
         } catch (\Exception $e) {
-            return response()->json([
-                'error' => 'Failed to create product: '.$e->getMessage(),
-            ], 500);
+            throw new ServerErrorException($e->getMessage());
         }
     }
 
@@ -60,14 +65,13 @@ class StoreProductController extends Controller
             $product->update($validated);
 
             return response()->json([
+                'status' => true,
                 'message' => 'Product updated successfully.',
                 'product' => $product,
             ]);
 
         } catch (\Exception $e) {
-            return response()->json([
-                'error' => 'Failed to update product: ',
-            ], 500);
+            throw new ServerErrorException($e->getMessage());
         }
     }
 }

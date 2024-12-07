@@ -19,6 +19,3 @@ Route::middleware(['throttle:api', 'locale', 'xss', 'auth:sanctum'])->group(func
     });
 
 });
-
-
-

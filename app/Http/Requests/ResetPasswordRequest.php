@@ -26,9 +26,10 @@ class ResetPasswordRequest extends FormRequest
     {
         return [
             'old_password' => ['required', 'string', Password::defaults()],
-            'new_password' => ['required', 'string', Password::defaults(),'confirmed','different:old_password'],
+            'new_password' => ['required', 'string', Password::defaults(), 'confirmed', 'different:old_password'],
         ];
     }
+
     public function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(

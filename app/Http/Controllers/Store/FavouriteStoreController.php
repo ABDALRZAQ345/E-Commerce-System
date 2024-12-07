@@ -24,6 +24,8 @@ class FavouriteStoreController extends Controller
 
             return response()->json([
                 'status' => true,
+                'message' => 'favourite list retrieved successfully',
+                'count' => count($favourites),
                 'favourites' => $favourites,
             ]);
         } catch (Exception $e) {
@@ -43,7 +45,7 @@ class FavouriteStoreController extends Controller
             throw new BadRequestException('Store is already in your favourite list');
         }
 
-        if($user->favouriteStores()->count() == config('app.data.max_favourites') ) {
+        if ($user->favouriteStores()->count() == config('app.data.max_favourites')) {
             throw new BadRequestException('you cant add more than 100 favourite stores');
         }
         try {
@@ -52,7 +54,7 @@ class FavouriteStoreController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => 'Store added to favourites'
+                'message' => 'Store added to favourites',
             ]);
         } catch (Exception $e) {
             throw new ServerErrorException($e->getMessage());
@@ -69,15 +71,14 @@ class FavouriteStoreController extends Controller
             $user = Auth::user();
             $store = $user->favouriteStores()->findOrFail($store->id);
             $user->favouriteStores()->detach($store);
+
             return response()->json([
                 'status' => true,
-                'message' => 'Store deleted from favourite list'
+                'message' => 'Store deleted from favourite list',
             ]);
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             throw new ServerErrorException($e->getMessage());
         }
-
 
     }
 }

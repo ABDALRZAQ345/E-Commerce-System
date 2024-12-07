@@ -15,10 +15,13 @@ class CategoryController extends Controller
     public function index(): JsonResponse
     {
         try {
-            return response()->json(Category::all());
-        }
-        catch (\Exception $exception){
-           throw  new  ServerErrorException($exception->getMessage());
+            return response()->json(
+                [
+                    'status' => true,
+                    'categories' => Category::all(),
+                ]);
+        } catch (\Exception $exception) {
+            throw new ServerErrorException($exception->getMessage());
         }
 
     }

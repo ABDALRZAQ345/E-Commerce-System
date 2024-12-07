@@ -21,7 +21,7 @@ class VerificationCodeException extends Exception
     {
         return response()->json([
             'status' => false,
-            'error' => $this->getMessage(),
+            'message' => $this->getMessage(),
         ], Response::HTTP_UNAUTHORIZED);
     }
 }

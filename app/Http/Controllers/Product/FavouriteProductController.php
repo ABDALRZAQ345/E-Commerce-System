@@ -7,16 +7,16 @@ use App\Exceptions\ServerErrorException;
 use App\Http\Controllers\Controller;
 use App\Models\FavouriteProduct;
 use App\Models\Product;
-use App\Services\ProductService;
+use App\Services\RateService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
 class FavouriteProductController extends Controller
 {
-    protected ProductService $productService;
+    protected RateService $productService;
 
-    public function __construct(ProductService $productService)
+    public function __construct(RateService $productService)
     {
         $this->productService = $productService;
     }
@@ -50,12 +50,11 @@ class FavouriteProductController extends Controller
     public function store(Product $product): JsonResponse
     {
 
-
         $user = Auth::user();
         if (FavouriteProduct::where('user_id', $user->id)->where('product_id', $product->id)->first()) {
             throw new BadRequestException('Product is already in your favourite list');
         }
-        if($user->favouriteProducts()->count() == config('app.data.max_favourites')) {
+        if ($user->favouriteProducts()->count() == config('app.data.max_favourites')) {
             throw new BadRequestException('you cant add more than 100 favourite stores');
         }
 
@@ -70,29 +69,26 @@ class FavouriteProductController extends Controller
             throw new ServerErrorException($e->getMessage());
         }
 
-
     }
 
+    /**
+     * @throws ServerErrorException
+     */
     public function delete(Product $product): JsonResponse
     {
 
-        try{
+        try {
             $user = Auth::user();
             $product = $user->favouriteProducts()->findOrFail($product->id);
             $user->favouriteProducts()->detach($product);
 
             return response()->json([
                 'status' => true,
-                'message' => 'Product removed from favourite list'
+                'message' => 'Product removed from favourite list',
             ]);
+        } catch (Exception $e) {
+            throw new ServerErrorException($e->getMessage());
         }
-        catch (Exception $e) {
-            return  response()->json([
-                'status' => false,
-                'message' => $e->getMessage()
-            ]);
-        }
-
 
     }
 }

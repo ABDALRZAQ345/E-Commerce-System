@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->text('description')->nullable();
             $table->string('photo')->nullable();
+            $table->decimal('rate', 2, 1)->default(0)->checkbetween(0, 5);
             $table->softDeletes();
             $table->timestamps();
         });

@@ -29,7 +29,11 @@ class SubOrderController extends Controller
 
         $paginatedSubOrders = $subOrders->paginate(20);
 
-        return response()->json($paginatedSubOrders);
+        return response()->json([
+            'status' => true,
+            'message' => 'orders retrieved successfully',
+            'orders' => $paginatedSubOrders,
+        ]);
     }
 
     public function show(User $user, Order $order, SubOrder $subOrder): JsonResponse
@@ -38,6 +42,8 @@ class SubOrderController extends Controller
         $sub_order = $order->subOrders()->findOrFail($subOrder->id);
 
         return response()->json([
+            'status' => true,
+            'message' => 'order retrieved successfully',
             'sub_order' => $sub_order,
         ]);
     }

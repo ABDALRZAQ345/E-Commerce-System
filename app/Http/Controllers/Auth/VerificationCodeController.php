@@ -28,14 +28,14 @@ class VerificationCodeController extends Controller
         $validated = $request->validated();
         try {
             $this->verificationCodeService->Send($validated['phone_number']);
+
             return response()->json([
                 'status' => true,
-                'message' => 'Verification code send successfully to ' . $validated['phone_number'],
+                'message' => 'Verification code send successfully to '.$validated['phone_number'],
             ]);
         } catch (\Exception $exception) {
             throw new ServerErrorException($exception->getMessage());
         }
-
 
     }
 
@@ -52,7 +52,6 @@ class VerificationCodeController extends Controller
             'status' => true,
             'message' => 'Verification code is valid ',
         ]);
-
 
     }
 }
