@@ -8,7 +8,7 @@ class UpdateMiliSearch extends Command
 {
     protected $signature = 'update-mili-search';
 
-    protected $description = 'Update milisearch data';
+    protected $description = 'Update meilisearch data';
 
     public function handle(): void
     {

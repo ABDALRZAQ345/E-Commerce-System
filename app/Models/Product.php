@@ -78,7 +78,8 @@ class Product extends Model implements Auditable
         // filter as top rated products
         elseif ($filter === 'top_rated') {
             $query->orderBy('rate', 'desc');
-        } elseif ($filter === 'recommended') {
+        }
+        elseif ($filter === 'recommended') {
             /// todo
         }
 

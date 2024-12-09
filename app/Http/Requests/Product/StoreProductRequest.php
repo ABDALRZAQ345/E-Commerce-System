@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Store;
+namespace App\Http\Requests\Product;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
@@ -28,9 +28,11 @@ class StoreProductRequest extends FormRequest
             'price' => ['required', 'numeric', 'gt:0'],
             'discount' => ['required', 'numeric', 'gte:0', 'lte:100'],
             'quantity' => ['required', 'integer', 'min:1'],
+            'description' => ['required', 'string'],
             'expire_date' => ['nullable', 'date', 'after_or_equal:today'],
-            'photo' => ['nullable', 'image', 'max:3072'],
             'category_id' => ['required', 'integer', 'exists:categories,id'],
+            'photos' =>['nullable', 'array','max:5'],
+            'photos.*' => ['image', 'max:3072'],
         ];
     }
 

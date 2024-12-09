@@ -36,6 +36,9 @@ class ProductController extends Controller
             } else {
                 $products = Product::filter($request->input('filter'))->paginate(20);
             }
+            foreach ($products as $product) {
+                $product->photo=$product->photos()->first() !=null?$product->photos()->first()->photo: null; ;
+            }
             $user = Auth::user();
             foreach ($products as $product) {
                 $this->productService->get_the_user_info_for_product($product, $user);
@@ -58,11 +61,11 @@ class ProductController extends Controller
     public function show(Product $product): JsonResponse
     {
         try {
-            $product->load('category');
-            // todo load photos and details
+            $product->load(['category','photos']);
+
             $user = Auth::user();
             $this->productService->get_the_user_info_for_product($product, $user);
-
+            $product->photo=$product->photos()->first() !=null?$product->photos()->first()->photo: null;
             return response()->json([
                 'status' => true,
                 'message' => 'product retrieved successfully',

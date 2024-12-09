@@ -5,12 +5,11 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Meilisearch\Client;
 
-class RunServer extends Command
+class RunServerCommand extends Command
 {
     protected $signature = 'run-server';
 
-    protected $description = 'command that run the server and MiliSearch ';
-
+    protected $description = 'command that run the server and MeiliSearch ';
     public function handle(): void
     {
 

@@ -95,6 +95,11 @@ class Store extends Model implements Auditable
         } elseif ($filter === 'recommended') {
             /// todo
         }
+        else if(Category::where('name', $filter)->exists()) {
+            $query->whereHas('categories', function ($query) use ($filter) {
+                $query->where('name', $filter);
+            });
+        }
 
     }
 }

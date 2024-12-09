@@ -21,7 +21,6 @@ class ProductFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'price' => $this->faker->numberBetween(1000, 10000),
-            'photo' => $this->faker->imageUrl(),
             'store_id' => Store::factory()->create()->id,
             'category_id' => rand(1, Category::all()->count()),
             'quantity' => $this->faker->numberBetween(1, 10),

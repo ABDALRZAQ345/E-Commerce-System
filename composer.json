@@ -12,14 +12,13 @@
         "laravel/framework": "^11.9",
         "laravel/sanctum": "^4.0",
         "laravel/scout": "^10.11",
-        "laravel/tinker": "^2.9",
+        "laravel/tinker": "^2.10",
         "meilisearch/meilisearch-php": "^1.11",
         "owen-it/laravel-auditing": "^13.6",
         "somarkesen/telegram-gateway": "^1.2",
         "spatie/laravel-permission": "^6.9",
         "spatie/laravel-query-builder": "^6.2",
-        "spatie/laravel-searchable": "*",
-        "twilio/sdk": "^8.3"
+        "spatie/laravel-searchable": "*"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.1",

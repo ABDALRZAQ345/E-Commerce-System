@@ -9,6 +9,7 @@ use App\Observers\StoreObserver;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -68,26 +69,26 @@ class AppServiceProvider extends ServiceProvider
 
     public function rateLimiters(): void
     {
-        if (! app()->environment('production')) {
-            \Artisan::call('cache:clear');
-        }
+        if ( app()->environment('production')) {}
+            RateLimiter::for('api', function (Request $request) {
+                return Limit::perMinute(30)->by($request->user()?->id ?: $request->ip());
+            });
 
-        RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(30)->by($request->user()?->id ?: $request->ip());
-        });
+            RateLimiter::for('send_confirmation_code', function (Request $request) {
+                return [
+                    Limit::perMinutes(30, 5)->by($request->ip()), // Limit to 1 request every 30 minutes
+                    Limit::perDay(10)->by($request->ip()),         // Limit to 5 requests per day
+                ];
+            });
+            RateLimiter::for('register', function (Request $request) {
+                return Limit::perMinutes(30, 2)->by($request->user()?->id ?: $request->ip());
+            });
+            RateLimiter::for('change_password', function (Request $request) {
+                return Limit::perDay(5)->by($request->user()?->id);
+            });
 
-        RateLimiter::for('send_confirmation_code', function (Request $request) {
-            return [
-                Limit::perMinutes(30, 5)->by($request->ip()), // Limit to 1 request every 30 minutes
-                Limit::perDay(10)->by($request->ip()),         // Limit to 5 requests per day
-            ];
-        });
-        RateLimiter::for('register', function (Request $request) {
-            return Limit::perMinutes(30, 2)->by($request->user()?->id ?: $request->ip());
-        });
-        RateLimiter::for('change_password', function (Request $request) {
-            return Limit::perDay(5)->by($request->user()?->id);
-        });
+
+
     }
 
     public function productionConfigurations(): void
