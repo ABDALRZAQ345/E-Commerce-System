@@ -12,6 +12,7 @@ class Rate extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+    protected $hidden=['object_id','object_type'];
 
     public function user(): BelongsTo
     {

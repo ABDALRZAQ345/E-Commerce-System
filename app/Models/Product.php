@@ -23,6 +23,7 @@ class Product extends Model implements Auditable
     {
         return [
             'name' => $this->name,
+            'description' => $this->description,
             'store_id' => $this->store_id,
         ];
     }
@@ -38,10 +39,7 @@ class Product extends Model implements Auditable
         return $this->belongsTo(Store::class);
     }
 
-    public function details(): HasMany
-    {
-        return $this->hasMany(ProductDetail::class);
-    }
+
 
     public function rates(): MorphMany
     {
@@ -78,6 +76,9 @@ class Product extends Model implements Auditable
         // filter as top rated products
         elseif ($filter === 'top_rated') {
             $query->orderBy('rate', 'desc');
+        }
+        else if(Category::where('name', $filter)->exists()){
+            $query->whereRelation('category', 'name', $filter);
         }
         elseif ($filter === 'recommended') {
             /// todo

@@ -34,11 +34,11 @@ class StoreOrderController extends Controller
      *         name="status",
      *         in="query",
      *         required=false,
-     *         description="Filter orders by status (processing, shipped, delivered)",
+     *         description="Filter orders by status (pending, canceled, delivered)",
      *
      *         @OA\Schema(
      *             type="string",
-     *             enum={"processing", "shipped", "delivered"}
+     *             enum={"pending", "canceled", "delivered"}
      *         )
      *     ),
      *
@@ -150,7 +150,7 @@ class StoreOrderController extends Controller
      *
      *         @OA\Schema(
      *             type="string",
-     *             enum={"processing", "shipped", "delivered"}
+     *             enum={"pending", "canceled", "delivered"}
      *         )
      *     ),
      *

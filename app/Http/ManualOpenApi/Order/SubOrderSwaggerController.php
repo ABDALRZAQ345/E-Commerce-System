@@ -14,8 +14,8 @@ use OpenApi\Annotations as OA;
  *     @OA\Property(
  *         property="status",
  *         type="string",
- *         enum={"processing", "shipped", "delivered"},
- *         example="processing",
+ *         enum={"pending", "canceled", "delivered"},
+ *         example="pending",
  *         description="Status of the sub-order"
  *     ),
  *     @OA\Property(property="total", type="integer", example=5000, description="Total amount for the sub-order"),
@@ -55,11 +55,11 @@ class SubOrderSwaggerController
      *         name="status",
      *         in="query",
      *         required=false,
-     *         description="Filter sub-orders by status (processing, shipped, delivered)",
+     *         description="Filter sub-orders by status (pending, canceled, delivered)",
      *
      *         @OA\Schema(
      *             type="string",
-     *             enum={"processing", "shipped", "delivered"}
+     *             enum={"pending", "canceled", "delivered"}
      *         )
      *     ),
      *

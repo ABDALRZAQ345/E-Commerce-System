@@ -88,7 +88,6 @@ class Store extends Model implements Auditable
         elseif ($filter === 'latest') {
             $query->orderBy('created_at', 'desc');
         }
-
         // filter as top rated products
         elseif ($filter === 'top_rated') {
             $query->orderBy('rate', 'desc');

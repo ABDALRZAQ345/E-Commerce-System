@@ -4,9 +4,9 @@ namespace App\Enums;
 
 enum OrderStatusEnum
 {
-    const Processing = 'processing';
+    const Pending = 'pending';
 
-    const Shipped = 'shipped';
+    const Canceled   = 'canceled';
 
     const Delivered = 'delivered';
 
@@ -15,8 +15,8 @@ enum OrderStatusEnum
     public static function getAllStatus(): array
     {
         return [
-            self::Processing,
-            self::Shipped,
+            self::Pending,
+            self::Canceled,
             self::Delivered,
             // Add other status as needed
         ];

@@ -4,16 +4,16 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 
 class LocaleMiddleware
 {
     public function handle($request, Closure $next)
     {
-        $locale = $request->header('Accept-Language') ?: $request->query('locale');
-
-        // Validate and set the locale if available
-        if ($locale && in_array($locale, ['en', 'ar'])) {
-            App::setLocale($locale);
+        if(Auth::user()){
+            $user=Auth::user();
+            $user->last_login=now();
+            $user->save();
         }
 
         return $next($request);

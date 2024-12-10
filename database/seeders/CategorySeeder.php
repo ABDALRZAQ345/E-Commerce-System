@@ -43,6 +43,7 @@ class CategorySeeder extends Seeder
             'Appliances',
             'Furniture',
             'Industrial and Scientific',
+            'Anime',
             'Other',
         ];
 

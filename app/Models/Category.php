@@ -18,4 +18,9 @@ class Category extends Model
     {
         return $this->belongsToMany(Store::class, 'category_store');
     }
+
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'category_user');
+    }
 }

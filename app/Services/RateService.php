@@ -14,7 +14,7 @@ class RateService
      * @throws ServerErrorException
      * @throws \Throwable
      */
-    public function Rate(User $user, Product|Store $object, $rate): void
+    public function Rate(User $user, Product|Store $object, $rate,$comment=null): void
     {
         try {
             DB::beginTransaction();
@@ -22,6 +22,7 @@ class RateService
             $object->rates()->where('user_id', $user->id)->delete();
             $object->rates()->create([
                 'rate' => $rate,
+                'comment' => $comment,
                 'user_id' => $user->id,
             ]);
             $object->rate = $object->rates()->avg('rate');

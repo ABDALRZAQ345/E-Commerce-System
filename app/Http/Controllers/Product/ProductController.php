@@ -31,18 +31,22 @@ class ProductController extends Controller
     public function index(Request $request): JsonResponse
     {
         try {
+
+            $query = Product::query();
+
             if ($request->has('search')) {
-                $products = Product::search($request->input('search'))->paginate(20);
-            } else {
-                $products = Product::filter($request->input('filter'))->paginate(20);
+                $query->whereIn('id', Product::search($request->input('search'))->get()->pluck('id'));
             }
-            foreach ($products as $product) {
-                $product->photo=$product->photos()->first() !=null?$product->photos()->first()->photo: null; ;
-            }
+            $query->filter($request->input('filter'));
+            $products = $query->paginate(20);
+
             $user = Auth::user();
             foreach ($products as $product) {
+                $product->photo=$product->photos()->first() !=null?$product->photos()->first()->photo: null; ;
                 $this->productService->get_the_user_info_for_product($product, $user);
             }
+
+
 
             return response()->json([
                 'status' => true,
@@ -103,7 +107,6 @@ class ProductController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'product rated successfully',
-                'product' => $product,
             ]);
         } catch (\Exception $e) {
 

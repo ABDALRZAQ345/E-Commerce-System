@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('rates', function (Blueprint $table) {
             $table->id();
             $table->unsignedTinyInteger('rate')->checkBetween(1, 5);
+            $table->string('comment', 255)->nullable();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->unsignedBigInteger('object_id')->nullable();
             $table->string('object_type')->nullable();

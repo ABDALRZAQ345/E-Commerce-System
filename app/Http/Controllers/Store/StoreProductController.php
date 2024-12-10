@@ -9,27 +9,45 @@ use App\Http\Requests\Product\UpdateProductRequest;
 use App\Models\Product;
 use App\Models\Store;
 use App\Services\PhotosService;
+use App\Services\ProductService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 
 class StoreProductController extends Controller
 {
+    protected ProductService $productService;
     protected PhotosService $photosService;
-    public function __construct(PhotosService $photosService)
+    public function __construct(PhotosService $photosService,ProductService $productService)
     {
         $this->photosService = $photosService;
+        $this->productService = $productService;;
     }
     public function index(Request $request, Store $store): JsonResponse
     {
-        $search = $request->input('search');
 
-        $products = Product::search($search)
-            ->where('store_id', $store->id)
-            ->paginate(20);
+        $query = Product::where('store_id', $store->id);
 
+        if ($request->has('search')) {
+            $searchResults = Product::search($request->input('search'));
+            $productIds = $searchResults->get()->pluck('id');
+            $query->whereIn('id', $productIds);
+        }
+
+        $query->filter($request->input('filter'));
+        $products = $query->paginate(20);
+
+//        $search = $request->input('search');
+//
+//        $products = Product::search($search)
+//            ->where('store_id', $store->id)
+//            ->paginate(20);
+//
+        $user=Auth::user();
         foreach ($products as $product) {
-            $product->photo=$product->photos()->first() !=null?$product->photos()->first()->photo: null; ;
+            $product->photo=$product->photos()->first() !=null?$product->photos()->first()->photo: null;
+            $this->productService->get_the_user_info_for_product($product, $user);
         }
 
         return response()->json([
@@ -53,7 +71,8 @@ class StoreProductController extends Controller
             $data = Arr::except($validated, 'photos');
             $product = $store->products()->create($data);
 
-                $this->photosService->AddPhotos($validated['photos'], $product);
+            if ($validated['photos']!=null )
+            $this->photosService->AddPhotos($validated['photos'], $product);
 
             return response()->json([
                 'status' => true,

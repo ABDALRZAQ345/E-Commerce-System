@@ -33,7 +33,7 @@ class UserController extends Controller
         $users = $users->with('roles:name')->paginate(20);
         $users->getCollection()->transform(function ($user) {
             $user = $this->userService->FormatRoles($user);
-            $user->active = rand(0, 1); // todo make it real value not random value
+            $user->active = now()->subMinutes(5) <= $user->last_login ;
 
             return $user;
         });
