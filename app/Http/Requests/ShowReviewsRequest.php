@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RateRequest extends FormRequest
+class ShowReviewsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,7 @@ class RateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'rate' => ['required', 'integer', 'min:1', 'max:5'],
-            'comment' => ['nullable', 'string', 'max:255'],
+            'rate' => ['nullable', 'integer', 'min:1', 'max:5']
         ];
     }
 }

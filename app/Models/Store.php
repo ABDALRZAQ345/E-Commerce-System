@@ -57,9 +57,9 @@ class Store extends Model implements Auditable
         return $this->hasMany(SubOrder::class);
     }
 
-    public function rates(): MorphMany
+    public function reviews(): MorphMany
     {
-        return $this->morphMany(Rate::class, 'object');
+        return $this->morphMany(Review::class, 'object');
     }
 
     public function contacts(): HasMany
@@ -80,15 +80,12 @@ class Store extends Model implements Auditable
     public function scopeFilter($query, $filter): void
     {
 
-        if ($filter === 'best_selling') {
-            $query->orderBy('sales', 'desc');
-        }
 
-        // latest products
-        elseif ($filter === 'latest') {
+
+        if ($filter === 'latest') {
             $query->orderBy('created_at', 'desc');
         }
-        // filter as top rated products
+        // filter as top rated stores
         elseif ($filter === 'top_rated') {
             $query->orderBy('rate', 'desc');
         } elseif ($filter === 'recommended') {

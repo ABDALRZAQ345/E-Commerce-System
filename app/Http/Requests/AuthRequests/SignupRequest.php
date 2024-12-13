@@ -27,7 +27,7 @@ class SignupRequest extends FormRequest
             'last_name' => ['nullable', 'max:50'],
             'password' => ['required', 'confirmed', Password::defaults()],
             'phone_number' => ['required', new ValidPhoneNumber, 'unique:users,phone_number'],
-            'photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif', 'max:3072'],
+            'photo' => ['nullable', 'image', 'max:3072'],
             'code' => ['required', 'numeric', 'digits:6'],
         ];
     }

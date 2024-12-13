@@ -12,10 +12,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('category_user', function (Blueprint $table) {
-            $table->id();
+        Schema::create('user_category_interests', function (Blueprint $table) {
+
             $table->foreignIdFor(\App\Models\User::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Category::class)->constrained()->cascadeOnDelete();
+            $table->integer('interest_level')->default(0);
+            $table->boolean('checked')->default(false)->comment(' when the user check that category as his interests');// when the user check that category as his interests
+            $table->primary(['user_id', 'category_id']);
             $table->timestamps();
         });
     }
@@ -25,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_category');
+        Schema::dropIfExists('user_category_interests');
     }
 };

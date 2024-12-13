@@ -1,18 +1,15 @@
 <?php
 
-namespace Database\Seeders;
+namespace App\Enums;
 
-use App\Models\Category;
-use Illuminate\Database\Seeder;
-
-class CategorySeeder extends Seeder
+enum CategoryEnum
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+
+
+    public static function getCategories(): array
     {
-        $categories = [
+
+        return [
             'Electronics',
             'Fashion',
             'Home and Kitchen',
@@ -34,10 +31,5 @@ class CategorySeeder extends Seeder
             'Furniture',
             'Other',
         ];
-
-        foreach ($categories as $category) {
-            Category::create(['name' => $category]);
-
-        }
     }
 }

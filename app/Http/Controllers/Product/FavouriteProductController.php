@@ -7,16 +7,18 @@ use App\Exceptions\ServerErrorException;
 use App\Http\Controllers\Controller;
 use App\Models\FavouriteProduct;
 use App\Models\Product;
-use App\Services\RateService;
+use App\Services\InterestService;
+use App\Services\ProductService;
+use App\Services\ReviewService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
 class FavouriteProductController extends Controller
 {
-    protected RateService $productService;
+    protected ProductService $productService;
 
-    public function __construct(RateService $productService)
+    public function __construct(ProductService $productService)
     {
         $this->productService = $productService;
     }
@@ -57,7 +59,7 @@ class FavouriteProductController extends Controller
         if ($user->favouriteProducts()->count() == config('app.data.max_favourites')) {
             throw new BadRequestException('you cant add more than 100 favourite stores');
         }
-
+        $this->EditInterests($product,1);
         try {
             $user->favouriteProducts()->attach($product);
 
@@ -81,7 +83,7 @@ class FavouriteProductController extends Controller
             $user = Auth::user();
             $product = $user->favouriteProducts()->findOrFail($product->id);
             $user->favouriteProducts()->detach($product);
-
+            $this->EditInterests($product,-1);
             return response()->json([
                 'status' => true,
                 'message' => 'Product removed from favourite list',
@@ -89,6 +91,17 @@ class FavouriteProductController extends Controller
         } catch (Exception $e) {
             throw new ServerErrorException($e->getMessage());
         }
+
+    }
+    public function EditInterests($product,$value): void
+    {
+        $interestService=new InterestService();
+            $product = Product::findOrFail($product['id']);
+            $category=$product->category_id;
+            if(!$interestService->CheckUserInterest(Auth::id(), $category)){
+                $interestService->CreateUserInterest(Auth::id(),$category);
+            }
+            $interestService->increaseInterestLevel(Auth::id(), $category,$value);
 
     }
 }

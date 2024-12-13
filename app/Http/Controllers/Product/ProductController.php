@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Product;
 
 use App\Exceptions\ServerErrorException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\RateRequest;
+use App\Http\Requests\ReviewRequest;
 use App\Models\Product;
 use App\Services\ProductService;
-use App\Services\RateService;
+use App\Services\ReviewService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,11 +15,11 @@ use Mockery\Exception;
 
 class ProductController extends Controller
 {
-    protected RateService $rateService;
+    protected ReviewService $rateService;
 
     protected ProductService $productService;
 
-    public function __construct(RateService $rateService, ProductService $productService)
+    public function __construct(ReviewService $rateService, ProductService $productService)
     {
         $this->rateService = $rateService;
         $this->productService = $productService;
@@ -91,27 +91,5 @@ class ProductController extends Controller
 
     }
 
-    /**
-     * @throws ServerErrorException
-     * @throws \Throwable
-     */
-    public function rate(RateRequest $request, Product $product): JsonResponse
-    {
-        $validated = $request->validated();
-        try {
 
-            $user = Auth::user();
-            $this->rateService->Rate($user, $product, $validated['rate']);
-            $this->productService->get_the_user_info_for_product($product, $user);
-
-            return response()->json([
-                'status' => true,
-                'message' => 'product rated successfully',
-            ]);
-        } catch (\Exception $e) {
-
-            throw new ServerErrorException($e->getMessage());
-        }
-
-    }
 }

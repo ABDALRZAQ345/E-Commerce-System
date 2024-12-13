@@ -32,7 +32,7 @@ class ProductSwaggerController
     /**
      * @OA\Post(
      *     path="/products/{product}/rate",
-     *     summary="Rate a product",
+     *     summary="Review a product",
      *     tags={"Products"},
      *
      *     @OA\Parameter(

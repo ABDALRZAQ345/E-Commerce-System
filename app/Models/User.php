@@ -49,8 +49,9 @@ class User extends Authenticatable
         return $this->hasOne(Store::class);
     }
 
-    public function categories(): BelongsToMany
+    public function interests(): BelongsToMany
     {
-        return $this->belongsToMany(Category::class);
+        return $this->belongsToMany(Category::class, 'user_category_interests')
+            ->withPivot('interest_level');
     }
 }

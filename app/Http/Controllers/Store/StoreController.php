@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Store;
 
 use App\Exceptions\ServerErrorException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\RateRequest;
+use App\Http\Requests\ReviewRequest;
 use App\Http\Requests\Store\StoreStoreRequest;
 use App\Http\Requests\Store\UpdateStoreRequest;
 use App\Models\Store;
 use App\Services\PhotosService;
-use App\Services\RateService;
+use App\Services\ReviewService;
 use App\Services\StoreService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -20,9 +20,9 @@ class StoreController extends Controller
 {
     protected StoreService $storeService;
     protected PhotosService $photosService;
-    protected RateService $rateService;
+    protected ReviewService $rateService;
 
-    public function __construct(StoreService $storeService, RateService $rateService, PhotosService $photosService, StoreService $storeServiceService)
+    public function __construct(StoreService $storeService, ReviewService $rateService, PhotosService $photosService, StoreService $storeServiceService)
     {
         $this->storeService = $storeService;
         $this->rateService = $rateService;
@@ -107,8 +107,8 @@ class StoreController extends Controller
             }
             $data = Arr::except($validated, 'photos');
             $store = $user->store()->create($data);
-            if ($validated['photos']!=null )
-            $this->photosService->AddPhotos($validated['photos'], $store);
+//            if ($validated['photos']!=null )
+//            $this->photosService->AddPhotos($validated['photos'], $store);
 
 
             return response()->json([
@@ -161,27 +161,6 @@ class StoreController extends Controller
         ]);
     }
 
-    /**
-     * @throws ServerErrorException
-     * @throws \Throwable
-     */
-    public function rate(RateRequest $request, Store $store): JsonResponse
-    {
-        $validated = $request->validated();
-        try {
-
-            $user = Auth::user();
-            $this->rateService->Rate($user, $store, $validated['rate']);
 
 
-            return response()->json([
-                'status' => true,
-                'message' => 'store rated successfully',
-
-            ]);
-        } catch (\Exception $e) {
-            throw new ServerErrorException($e->getMessage());
-        }
-
-    }
 }

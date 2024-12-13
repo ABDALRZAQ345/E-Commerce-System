@@ -5,6 +5,7 @@ use App\Http\Controllers\Store\StoreCategoryController;
 use App\Http\Controllers\Store\StoreController;
 use App\Http\Controllers\Store\StoreOrderController;
 use App\Http\Controllers\Store\StoreProductController;
+use App\Http\Controllers\Store\StoreReviewController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['throttle:api', 'locale', 'xss'])->group(function () {
@@ -28,8 +29,8 @@ Route::middleware(['throttle:api', 'locale', 'xss'])->group(function () {
         Route::put('/stores/{store}/categories', [StoreCategoryController::class, 'update'])->middleware('store_owner')->name('stores.categories.update');
         Route::get('/stores/{store}/orders', [StoreOrderController::class, 'index'])->middleware('store_owner')->name('stores.products.index');
         Route::post('/stores/{store}/orders/{order}', [StoreOrderController::class, 'update'])->middleware('store_owner')->name('stores.products.update');
-        Route::post('/stores/{store}/rate', [StoreController::class, 'rate'])->name('products.rate');
-
+        Route::post('/stores/{store}/review', [StoreReviewController::class, 'review'])->name('products.rate');
+        Route::get('/stores/{store}/reviews', [StoreReviewController::class, 'index'])->name('stores.reviews.index');
     });
 
 });

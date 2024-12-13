@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('rates', function (Blueprint $table) {
+        Schema::create('reviews', function (Blueprint $table) {
             $table->id();
             $table->unsignedTinyInteger('rate')->checkBetween(1, 5);
             $table->string('comment', 255)->nullable();

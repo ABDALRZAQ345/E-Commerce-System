@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\InterestService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -41,9 +42,9 @@ class Product extends Model implements Auditable
 
 
 
-    public function rates(): MorphMany
+    public function reviews(): MorphMany
     {
-        return $this->morphMany(Rate::class, 'object');
+        return $this->morphMany(Review::class, 'object');
     }
 
     public function photos(): MorphMany
@@ -81,7 +82,11 @@ class Product extends Model implements Auditable
             $query->whereRelation('category', 'name', $filter);
         }
         elseif ($filter === 'recommended') {
-            /// todo
+
+            $interestService=new InterestService();
+            $ids = collect($interestService->recommendProducts(Auth::id()))->pluck('id');
+            $query->wherein('id',$ids);
+
         }
 
     }

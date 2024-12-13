@@ -15,7 +15,7 @@ class UserService
             'last_name' => $data['last_name'] ?? null,
             'password' => Hash::make($data['password']),
             'phone_number' => $data['phone_number'],
-            'photo' => $data['photo'] ?? null,
+            'photo' => $data['photo'] !=null ? NewPublicPhoto($data['photo'],'profiles') :null,
         ]);
 
         $user->assignRole('user');

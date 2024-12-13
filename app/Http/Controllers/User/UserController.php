@@ -65,7 +65,9 @@ class UserController extends Controller
     {
         $validated = $request->validated();
         try {
-
+            if($request->has('photo') && $validated['photo']!=null){
+                $validated['photo']=NewPublicPhoto($validated['photo'],'profiles');
+            }
             $user->update($validated);
 
             return response()->json([
