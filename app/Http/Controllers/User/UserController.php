@@ -66,6 +66,8 @@ class UserController extends Controller
         $validated = $request->validated();
         try {
             if($request->has('photo') && $validated['photo']!=null){
+                if($user->photo)
+                DeletePublicPhoto($user->photo);
                 $validated['photo']=NewPublicPhoto($validated['photo'],'profiles');
             }
             $user->update($validated);
