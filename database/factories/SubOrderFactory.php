@@ -21,12 +21,16 @@ class SubOrderFactory extends Factory
     {
         $statuses = OrderStatusEnum::getAllStatus();
         $randomStatus = $statuses[array_rand($statuses)];
+        $createdAt = $this->faker->dateTimeBetween('-1 year', 'now');
+        $updatedAt = $this->faker->dateTimeBetween($createdAt, 'now');
 
         return [
             'order_id' => Order::factory()->create()->id,
             'status' => $randomStatus,
-            'total' => $this->faker->randomFloat(2, 10),
+            'total' => $this->faker->randomFloat(2, 10, 100),
             'store_id' => Store::factory()->create()->id,
+            'created_at' => $createdAt,
+            'updated_at' => $updatedAt,
         ];
     }
 }

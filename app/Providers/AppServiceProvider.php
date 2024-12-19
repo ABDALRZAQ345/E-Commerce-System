@@ -43,7 +43,6 @@ class AppServiceProvider extends ServiceProvider
                 ->symbols()
                 ->uncompromised();
         });
-
     }
 
     public function routes()
@@ -66,6 +65,9 @@ class AppServiceProvider extends ServiceProvider
         Route::prefix('api')
             ->middleware('api')
             ->group(base_path('routes/Api/favourite.php'));
+        Route::prefix('api')
+            ->middleware('api')
+            ->group(base_path('routes/Api/statistics.php'));
     }
 
     public function milisearch()
