@@ -25,8 +25,10 @@ class StoreCategoryController extends Controller
 
     }
 
+
     /**
      * @throws ServerErrorException
+     * @throws \Throwable
      */
     public function store(CategoryRequest $request, Store $store): JsonResponse
     {
@@ -40,7 +42,7 @@ class StoreCategoryController extends Controller
                 'status' => true,
                 'message' => 'category added successfully',
             ]);
-        } catch (\Exception|\Throwable $exception) {
+        } catch (\Exception $exception) {
             throw new ServerErrorException($exception->getMessage());
         }
 

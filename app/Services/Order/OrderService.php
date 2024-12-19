@@ -4,7 +4,8 @@ namespace App\Services\Order;
 
 use App\Models\Order;
 use App\Models\Product;
-use App\Models\Suborder;
+
+use App\Models\SubOrder;
 use App\Services\InterestService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;

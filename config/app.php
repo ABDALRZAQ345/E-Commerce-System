@@ -124,6 +124,7 @@ return [
     ],
     'data' => [
         'max_favourites' => env('APP_MAX_FAVOURITES', 100),
+        'telegram_number' => env('TELEGRAM_NUMBER'),
     ],
 
 ];

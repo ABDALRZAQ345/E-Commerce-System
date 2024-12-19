@@ -30,15 +30,18 @@ class FavouriteProductController extends Controller
     {
         try {
             $user = Auth::user();
-            $favourites = $user->favouriteProducts()->get();
-            foreach ($favourites as $favourite) {
-                $this->productService->get_the_user_info_for_product($favourite, $user);
+            $favourites = $user->favouriteProducts()->paginate(20);
+            //todo check its work
+            foreach ($favourites as $product) {
+                $product->photo=$product->photos()->first() !=null?$product->photos()->first()->photo: null; ;
+                $this->productService->get_the_user_info_for_product($product, $user);
             }
+
 
             return response()->json([
                 'status' => true,
-                'count' => count($favourites),
-                'favourites' => $favourites,
+
+                'products' => $favourites,
             ]);
         } catch (Exception $e) {
             throw new ServerErrorException('Failed to retrieve favourites ');

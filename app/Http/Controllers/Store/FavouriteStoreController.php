@@ -20,13 +20,12 @@ class FavouriteStoreController extends Controller
     {
         try {
             $user = Auth::user();
-            $favourites = $user->favouriteStores()->get();
+            $favourites = $user->favouriteStores()->paginate(20);
 
             return response()->json([
                 'status' => true,
                 'message' => 'favourite list retrieved successfully',
-                'count' => count($favourites),
-                'favourites' => $favourites,
+                'stores' => $favourites,
             ]);
         } catch (Exception $e) {
             throw new ServerErrorException($e->getMessage());

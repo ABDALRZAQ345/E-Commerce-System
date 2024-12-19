@@ -22,7 +22,7 @@ class StoreController extends Controller
     protected PhotosService $photosService;
     protected ReviewService $rateService;
 
-    public function __construct(StoreService $storeService, ReviewService $rateService, PhotosService $photosService, StoreService $storeServiceService)
+    public function __construct(StoreService $storeService, ReviewService $rateService, PhotosService $photosService)
     {
         $this->storeService = $storeService;
         $this->rateService = $rateService;
