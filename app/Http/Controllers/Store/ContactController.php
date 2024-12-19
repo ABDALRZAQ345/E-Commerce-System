@@ -2,39 +2,43 @@
 
 namespace App\Http\Controllers\Store;
 
+use App\Exceptions\BadRequestException;
+use App\Exceptions\ServerErrorException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ContactRequest;
 use App\Models\Contact;
 use App\Models\Store;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Mockery\Exception;
 
 class ContactController extends Controller
 {
-    //
     public function index(Store $store): JsonResponse
     {
         $contacts = $store->contacts;
 
         return response()->json([
+            'status' => true,
+            'message' => 'contacts retrieved successfully',
+            'count' => count($contacts),
             'contacts' => $contacts,
         ]);
     }
 
-    public function store(Request $request, Store $store): JsonResponse
+    /**
+     * @throws BadRequestException
+     */
+    public function store(ContactRequest $request, Store $store): JsonResponse
     {
         if ($store->contacts()->count() >= 5) {
-            return response()->json([
-                'message' => 'you cant add more than 5  contacts ',
-            ], 400);
+            throw new BadRequestException('you cant add more than 5  contacts ');
         }
 
-        $validated = $request->validate([
-            'type' => ['string', 'required'],
-            'value' => ['string', 'required'],
-        ]);
+        $validated = $request->validated();
         $store->contacts()->create($validated);
 
         return response()->json([
+            'status' => true,
             'message' => 'contact created successfully',
         ]);
     }
@@ -45,21 +49,28 @@ class ContactController extends Controller
         $contact->delete();
 
         return response()->json([
+            'status' => true,
             'message' => 'contact deleted successfully',
         ]);
     }
 
-    public function update(Request $request, Store $store, Contact $contact): JsonResponse
+    /**
+     * @throws ServerErrorException
+     */
+    public function update(ContactRequest $request, Store $store, Contact $contact): JsonResponse
     {
-        $validated = $request->validate([
-            'type' => ['string', 'required'],
-            'value' => ['string', 'required'],
-        ]);
+        $validated = $request->validated();
         $contact = $store->contacts()->findOrFail($contact->id);
-        $contact->update($validated);
+        try {
+            $contact->update($validated);
 
-        return response()->json([
-            'message' => 'contact updated successfully',
-        ]);
+            return response()->json([
+                'status' => true,
+                'message' => 'contact updated successfully',
+            ]);
+        } catch (Exception $e) {
+            throw new ServerErrorException($e->getMessage());
+        }
+
     }
 }

@@ -2,39 +2,63 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\RoleEnum;
+use App\Exceptions\BadRequestException;
 use App\Exceptions\ServerErrorException;
-use App\Http\Requests\AuthRequests\PromotionRequest;
 use App\Models\Promotion;
-use App\Services\UserService;
+use App\Models\User;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PromotionController extends Controller
 {
-    public function index()
+    /**
+     * @throws ServerErrorException
+     */
+    public function index(Request $request): JsonResponse
     {
+
         try {
-            $promotions = Promotion::orderBy('created_at', 'desc')->get();
+            $promotions = Promotion::orderBy('created_at', 'desc');
+            if ($request->filled('accepted')) {
+                $isAccepted = filter_var($request->input('accepted'), FILTER_VALIDATE_BOOLEAN);
+                if ($isAccepted) {
+                    $promotions->where('accepted_at', '!=', null);
+                } else {
+                    $promotions->where('accepted_at', '=', null);
+                }
+            }
+            $promotions = $promotions->paginate(20);
 
             return response()->json([
                 'status' => true,
-                'message' => 'PromotionsList Created Successfully',
-                'data' => $promotions,
+                'message' => 'promotions retrieved successfully',
+                'promotions' => $promotions,
             ], 200);
-        } catch (\Exception $th) {
-            throw new ServerErrorException($th);
+        } catch (\Exception $e) {
+            throw new ServerErrorException($e);
         }
     }
 
-    public function create(PromotionRequest $request)
+    /**
+     * @throws ServerErrorException
+     * @throws BadRequestException
+     */
+    public function create(): JsonResponse
     {
-        try {
-            $validatedData = $request->validated();
-            $user = UserService::findUserByPhoneNumber($validatedData['phoen_number']);
+        $user = Auth::user();
+        if ($user->hasRole(RoleEnum::Manager)) {
+            throw new BadRequestException('you already have a manager role');
+        }
+        if (Promotion::where('user_id', $user->id)->exists()) {
+            throw new BadRequestException('Promotion request  already exists you can not send more than one request');
+        }
 
-            $promotion = Promotion::create([
-                'user_id' => $user->id,
-                'phone_number' => $validatedData['phone_number'],
-                'accepted' => 0,
-            ]);
+        try {
+
+            $promotion = Promotion::create(['user_id' => $user->id]);
 
             return response()->json([
                 'status' => true,
@@ -47,22 +71,50 @@ class PromotionController extends Controller
         }
     }
 
-    public function promote(PromotionRequest $request)
+    /**
+     * @throws ServerErrorException
+     * @throws \Throwable
+     */
+    public function promote(Promotion $promotion): JsonResponse
     {
-        $validatedData = $request->validated();
-        try {
-            $user = UserService::findUserByPhoneNumber($validatedData['phoen_number']);
 
-            $user->removeRole('user');
-            $user->assignRole('manager');
-            $promotion = Promotion::where('user_id', $user->id)->update(['accepted' => true]);
+        try {
+            DB::beginTransaction();
+            $user = User::findOrFail($promotion->user_id);
+
+            $user->assignRole(RoleEnum::Manager);
+
+            $promotion->accepted_at = now();
+
+            $promotion->save();
+
+            DB::commit();
 
             return response()->json([
                 'status' => true,
                 'message' => 'User Promoted Successfully',
             ], 200);
-        } catch (\Throwable $th) {
-            throw new ServerErrorException($th);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new ServerErrorException($e->getMessage());
+        }
+    }
+
+    /**
+     * @throws ServerErrorException
+     */
+    public function reject(Promotion $promotion): JsonResponse
+    {
+        try {
+
+            $promotion->delete();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'User Promotion rejected Successfully',
+            ], 200);
+        } catch (\Exception $e) {
+            throw new ServerErrorException($e->getMessage());
         }
     }
 }

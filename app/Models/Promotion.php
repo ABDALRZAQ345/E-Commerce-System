@@ -10,7 +10,9 @@ class Promotion extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'phone_number', 'w'];
+    protected $table = 'promotions';
+
+    protected $guarded = ['id'];
 
     public function user(): BelongsTo
     {

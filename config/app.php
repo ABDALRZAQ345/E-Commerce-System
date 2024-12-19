@@ -122,5 +122,9 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+    'data' => [
+        'max_favourites' => env('APP_MAX_FAVOURITES', 100),
+        'telegram_number' => env('TELEGRAM_NUMBER'),
+    ],
 
 ];

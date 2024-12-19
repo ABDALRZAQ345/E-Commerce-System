@@ -13,7 +13,10 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(10)->create();
+        $users = User::factory(10)->create();
+        foreach ($users as $user) {
+            $user->assignRole('user');
+        }
         User::create([
             'first_name' => 'admin',
             'phone_number' => '0912345678',

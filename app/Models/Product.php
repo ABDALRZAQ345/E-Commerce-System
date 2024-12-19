@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use App\Services\InterestService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Facades\Auth;
@@ -24,6 +24,7 @@ class Product extends Model implements Auditable
     {
         return [
             'name' => $this->name,
+            'description' => $this->description,
             'store_id' => $this->store_id,
         ];
     }
@@ -39,14 +40,11 @@ class Product extends Model implements Auditable
         return $this->belongsTo(Store::class);
     }
 
-    public function details(): HasMany
-    {
-        return $this->hasMany(ProductDetail::class);
-    }
 
-    public function rates(): MorphMany
+
+    public function reviews(): MorphMany
     {
-        return $this->morphMany(Rate::class, 'object');
+        return $this->morphMany(Review::class, 'object');
     }
 
     public function photos(): MorphMany
@@ -64,7 +62,7 @@ class Product extends Model implements Auditable
         return $this->hasMany(OrderItem::class);
     }
 
-    public function scopeFilter($query, $filter, $search = null): void
+    public function scopeFilter($query, $filter): void
     {
 
         if ($filter === 'best_selling') {
@@ -80,10 +78,15 @@ class Product extends Model implements Auditable
         elseif ($filter === 'top_rated') {
             $query->orderBy('rate', 'desc');
         }
-
-        // مقترح لك (منطق مخصص بناءً على تفضيلات المستخدم)
+        else if(Category::where('name', $filter)->exists()){
+            $query->whereRelation('category', 'name', $filter);
+        }
         elseif ($filter === 'recommended') {
-            /// todo
+
+            $interestService=new InterestService();
+            $ids = collect($interestService->recommendProducts(Auth::id()))->pluck('id');
+            $query->wherein('id',$ids);
+
         }
 
     }

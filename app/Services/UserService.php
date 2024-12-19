@@ -15,7 +15,7 @@ class UserService
             'last_name' => $data['last_name'] ?? null,
             'password' => Hash::make($data['password']),
             'phone_number' => $data['phone_number'],
-            'photo' => $data['photo'] ?? null,
+            'photo' => $data['photo'] !=null ? NewPublicPhoto($data['photo'],'profiles') :null,
         ]);
 
         $user->assignRole('user');
@@ -35,11 +35,7 @@ class UserService
         ]);
     }
 
-    public static function findUserByPhoneNumber($phoneNumber): User
-    {
-        return User::where('phone_number', $phoneNumber)->firstOrFail();
-    }
-    function FormatRoles(User $user): User
+    public function FormatRoles(User $user): User
     {
         $user->load('roles:name');
         $roles = RoleEnum::getAllRoles();
@@ -50,6 +46,7 @@ class UserService
         }
         $user->roles_status = $roleStatuses;
         unset($user->roles);
+
         return $user;
     }
 }

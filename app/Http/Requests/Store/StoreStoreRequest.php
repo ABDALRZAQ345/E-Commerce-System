@@ -3,7 +3,9 @@
 namespace App\Http\Requests\Store;
 
 use App\Models\Store;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class StoreStoreRequest extends FormRequest
 {
@@ -30,7 +32,17 @@ class StoreStoreRequest extends FormRequest
             }],
             'description' => ['nullable'],
             'photo' => ['nullable', 'image', 'max:3072'],
-
+            'photos' => ['nullable', 'array','max:5'],
+            'photos.*' => ['required', 'image', 'max:3072'],
         ];
+    }
+
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(
+            response()->json([
+                'errors' => $validator->errors(),
+            ], 422)
+        );
     }
 }

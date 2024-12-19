@@ -2,39 +2,74 @@
 
 namespace App\Http\Controllers\Store;
 
+use App\Exceptions\ServerErrorException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ReviewRequest;
 use App\Http\Requests\Store\StoreStoreRequest;
 use App\Http\Requests\Store\UpdateStoreRequest;
 use App\Models\Store;
+use App\Services\PhotosService;
+use App\Services\ReviewService;
+use App\Services\StoreService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 
 class StoreController extends Controller
 {
+    protected StoreService $storeService;
+    protected PhotosService $photosService;
+    protected ReviewService $rateService;
+
+    public function __construct(StoreService $storeService, ReviewService $rateService, PhotosService $photosService)
+    {
+        $this->storeService = $storeService;
+        $this->rateService = $rateService;
+        $this->photosService = $photosService;
+    }
+
+    /**
+     * @throws ServerErrorException
+     */
     public function index(Request $request): JsonResponse
     {
-        $search = $request->input('search');
+        try {
 
-        $stores = Store::search($search)->paginate(20);
+            if ($request->has('search')) {
+                $stores = Store::search($request->input('search'))->paginate(20);
+            } else {
+                $stores = Store::filter($request->input('filter'))->paginate(20);
+            }
+            $user = Auth::user();
+            foreach ($stores as $store) {
+                $this->storeService->get_the_user_info_for_store($store, $user);
+            }
 
-        return response()->json([
-            'stores' => $stores,
-        ]);
+            return response()->json([
+                'status' => true,
+                'message' => 'stores retrieved successfully',
+                'stores' => $stores,
+            ]);
+        } catch (\Exception $e) {
+            throw new ServerErrorException($e->getMessage());
+        }
+
     }
 
     public function show(Store $store): JsonResponse
     {
         $store = Store::findOrFail($store->id);
-        $contacts = $store->contacts;
-        $locations = $store->locations;
-        $categories = $store->categories;
+
+        $store->load(['contacts', 'locations', 'categories', 'photos']);
+        $user = Auth::user();
+        $this->storeService->get_the_user_info_for_store($store, $user);
 
         return response()->json([
+            'status' => true,
+            'message' => 'stores retrieved successfully',
             'store' => $store,
-            'contacts' => $contacts,
-            'locations' => $locations,
-            'categories' => $categories,
+
         ]);
     }
 
@@ -57,53 +92,62 @@ class StoreController extends Controller
 
     }
 
+    /**
+     * @throws ServerErrorException
+     * @throws \Throwable
+     */
     public function store(StoreStoreRequest $request): JsonResponse
     {
         $validated = $request->validated();
         $user = Auth::user();
         try {
+
             if ($request->hasFile('photo')) {
-                $photoPath = $request->file('photo')->store('stores', 'public');
-                $validated['photo'] = 'storage/' . $photoPath;
+                $validated['photo'] = NewPublicPhoto($request->file('photo'), 'stores');
             }
-            $store = \DB::transaction(function () use ($user, $validated) {
-                return $user->store()->create($validated);
-            });
+            $data = Arr::except($validated, 'photos');
+            $store = $user->store()->create($data);
+//            if ($validated['photos']!=null )
+//            $this->photosService->AddPhotos($validated['photos'], $store);
+
 
             return response()->json([
+                'status' => true,
                 'message' => 'store created successfully',
-                'store' => $store,
             ], 201);
-        } catch (\Exception $exception) {
-            return response()->json([
-                'error' => $exception->getMessage(),
-            ], 500);
+        } catch (\Exception $e) {
+            throw new ServerErrorException($e->getMessage());
         }
 
     }
 
+    /**
+     * @throws ServerErrorException
+     * @throws \Throwable
+     */
     public function update(UpdateStoreRequest $request, Store $store): JsonResponse
     {
         $validated = $request->validated();
 
         try {
             if ($request->hasFile('photo')) {
-                // todo delete the old photo if exists
-                $photoPath = $request->file('photo')->store('stores', 'public');
-
-                $validated['photo'] = 'storage/' . $photoPath;
+                DeletePublicPhoto($store->photo);
+                $validated['photo'] = NewPublicPhoto($request->file('photo'), 'stores');
             }
-            \DB::transaction(function () use ($store, $validated) {
-                $store->update($validated);
-            });
+            $data = Arr::except($validated, 'photos');
+            $store->update($data);
+            if ($validated['photos']!=null ) {
+                $this->photosService->DeletePhotos($store);
+                $this->photosService->AddPhotos($validated['photos'], $store);
+            }
 
             return response()->json([
+                'status' => true,
+
                 'message' => 'store updated successfully',
             ]);
-        } catch (\Exception $exception) {
-            return response()->json([
-                'error' => $exception->getMessage(),
-            ]);
+        } catch (\Exception $e) {
+            throw new ServerErrorException($e->getMessage());
         }
 
     }
@@ -116,4 +160,7 @@ class StoreController extends Controller
             'audits' => $audits,
         ]);
     }
+
+
+
 }

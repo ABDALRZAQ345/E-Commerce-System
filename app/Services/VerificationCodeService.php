@@ -19,10 +19,7 @@ class VerificationCodeService
      */
     public static function Check($phoneNumber, $code): void
     {
-        $verificationCode = VerificationCode::where(
-            'phone_number',
-            $phoneNumber
-        )->first();
+        $verificationCode = VerificationCode::where('phone_number', $phoneNumber)->first();
 
         if (! $verificationCode || ! Hash::check($code, $verificationCode->code)) {
             throw new VerificationCodeException;
@@ -33,8 +30,12 @@ class VerificationCodeService
 
     }
 
+    /**
+     * @throws VerificationCodeException
+     */
     public function delete($phoneNumber): void
     {
+
         VerificationCode::where(
             'phone_number',
             $phoneNumber

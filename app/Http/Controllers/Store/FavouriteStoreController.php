@@ -2,50 +2,82 @@
 
 namespace App\Http\Controllers\Store;
 
+use App\Exceptions\BadRequestException;
+use App\Exceptions\ServerErrorException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Favourite\AddFavouriteStoreRequest;
-use App\Http\Requests\Favourite\RemoveFavouriteStoreRequest;
-use App\Services\Favourite\FavouriteStoreService;
+use App\Models\FavouriteStore;
+use App\Models\Store;
 use Exception;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 class FavouriteStoreController extends Controller
 {
-    protected FavouriteStoreService $favouriteStoreService;
-
-    public function __construct(FavouriteStoreService $favouriteStoreService)
-    {
-        $this->favouriteStoreService = $favouriteStoreService;
-    }
-
-    public function getFavourites()
+    /**
+     * @throws ServerErrorException
+     */
+    public function index(): JsonResponse
     {
         try {
-            $favourites = $this->favouriteStoreService->getUserFavourites(auth()->id());
-            return response()->json(['data' => $favourites], 200);
+            $user = Auth::user();
+            $favourites = $user->favouriteStores()->paginate(20);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'favourite list retrieved successfully',
+                'stores' => $favourites,
+            ]);
         } catch (Exception $e) {
-            return response()->json(['error' => 'Failed to retrieve favourites', 'message' => $e->getMessage()], 500);
+            throw new ServerErrorException($e->getMessage());
         }
     }
 
-    public function addFavourite(AddFavouriteStoreRequest $request)
+    /**
+     * @throws BadRequestException
+     * @throws ServerErrorException
+     */
+    public function store(Store $store): JsonResponse
     {
-        $validatedData = $request->validated();
+        $user = Auth::user();
+
+        if (FavouriteStore::where('user_id', $user->id)->where('store_id', $store->id)->first()) {
+            throw new BadRequestException('Store is already in your favourite list');
+        }
+
+        if ($user->favouriteStores()->count() == config('app.data.max_favourites')) {
+            throw new BadRequestException('you cant add more than 100 favourite stores');
+        }
         try {
-            $this->favouriteStoreService->addToFavourites(auth()->id(), $validatedData['store_id']);
-            return response()->json(['message' => 'Store added to favourites'], 201);
+
+            $user->favouriteStores()->attach($store);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Store added to favourites',
+            ]);
         } catch (Exception $e) {
-            return response()->json(['error' => 'Failed to add favourite', 'message' => $e->getMessage()], 500);
+            throw new ServerErrorException($e->getMessage());
         }
     }
 
-    public function removeFavourite(RemoveFavouriteStoreRequest $request)
+    /**
+     * @throws ServerErrorException
+     */
+    public function delete(Store $store): JsonResponse
     {
-        $validatedData = $request->validated();
+
         try {
-            $this->favouriteStoreService->removeFromFavourites(auth()->id(), $validatedData['store_id']);
-            return response()->json(['message' => 'Store removed from favourites'], 200);
+            $user = Auth::user();
+            $store = $user->favouriteStores()->findOrFail($store->id);
+            $user->favouriteStores()->detach($store);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Store deleted from favourite list',
+            ]);
         } catch (Exception $e) {
-            return response()->json(['error' => 'Failed to remove favourite', 'message' => $e->getMessage()], 500);
+            throw new ServerErrorException($e->getMessage());
         }
+
     }
 }

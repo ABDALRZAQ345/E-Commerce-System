@@ -2,44 +2,42 @@
 
 namespace App\Http\Controllers\Order;
 
+use App\Exceptions\ServerErrorException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Store\StoreOrderRequest;
 use App\Models\Order;
-use App\Models\Product;
-use App\Models\SubOrder;
 use App\Models\User;
-
 use App\Services\Order\OrderService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
-    protected  OrderService $orderService;
-    public function __construct(OrderService $orderService){
+    protected OrderService $orderService;
+
+    public function __construct(OrderService $orderService)
+    {
         $this->orderService = $orderService;
     }
+
     public function index(Request $request, User $user): JsonResponse
     {
         $validated = $request->validate([
             'date' => ['nullable', 'in:asc,desc'],
         ]);
 
-
         $query = $user->orders();
 
-
-        if (!empty($validated['date'])) {
+        if (! empty($validated['date'])) {
             $query->orderBy('created_at', $validated['date']);
         }
 
         $orders = $query->paginate(20);
 
-
         return response()->json([
             'status' => true,
+            'message' => 'orders retrieved successfully',
             'orders' => $orders,
         ]);
     }
@@ -51,6 +49,7 @@ class OrderController extends Controller
 
         return response()->json([
             'status' => true,
+            'message' => 'order retrieved successfully',
             'order' => $order,
         ]);
 
@@ -68,13 +67,11 @@ class OrderController extends Controller
             $this->orderService->createOrder(Auth::id(), $products);
 
             return response()->json([
+                'status' => true,
                 'message' => 'Order created successfully',
             ], 201);
         } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Failed to create order',
-                'error' => $e->getMessage(),
-            ], 500);
+            throw new ServerErrorException($e->getMessage());
         }
 
     }

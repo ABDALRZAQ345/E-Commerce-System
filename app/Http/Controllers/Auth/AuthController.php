@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Exceptions\ServerErrorException;
+use App\Exceptions\VerificationCodeException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthRequests\LoginRequest;
 use App\Http\Requests\AuthRequests\SignupRequest;
-use App\Http\Requests\User\UpdateUserRequest;
+use App\Models\User;
 use App\Services\UserService;
 use App\Services\VerificationCodeService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -24,12 +27,17 @@ class AuthController extends Controller
         $this->verificationCodeService = $verificationCodeService;
     }
 
+    /**
+     * @throws ServerErrorException
+     * @throws VerificationCodeException
+     */
     public function register(SignupRequest $request): JsonResponse
     {
         $validated = $request->validated();
+        $this->verificationCodeService->Check($validated['phone_number'], $validated['code']);
 
         try {
-            $this->verificationCodeService->Check($validated['phone_number'], $validated['code']);
+
             $user = UserService::createUser($validated);
             $this->verificationCodeService->delete($validated['phone_number']);
 
@@ -37,21 +45,21 @@ class AuthController extends Controller
                 'status' => true,
                 'message' => 'User Created Successfully',
                 'token' => $user->createToken('API TOKEN')->plainTextToken,
-                'user' => $user,
+                'user' => $this->userService->FormatRoles($user),
             ]);
         } catch (\Exception $e) {
-            return response()->json([
-                'status' => false,
-                'message' => $e->getMessage(),
-            ]);
+            throw new ServerErrorException($e->getMessage());
         }
     }
 
+    /**
+     * @throws ServerErrorException
+     */
     public function login(LoginRequest $request): JsonResponse
     {
         $validatedData = $request->validated();
         try {
-            $user = UserService::findUserByPhoneNumber($validatedData['phone_number']);
+            $user = User::where('phone_number', $validatedData['phone_number'])->firstOrFail();
             if (! Hash::check($validatedData['password'], $user->password)) {
                 return response()->json([
                     'status' => false,
@@ -63,49 +71,28 @@ class AuthController extends Controller
                 'status' => true,
                 'message' => 'User logged in successfully',
                 'token' => $user->createToken('API TOKEN')->plainTextToken,
-                'user' => $user,
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => false,
-                'message' => $e->getMessage(),
+                'user' => $this->userService->FormatRoles($user),
             ]);
+        } catch (\Exception $e) {
+            throw new ServerErrorException($e->getMessage());
         }
     }
 
+    /**
+     * @throws ServerErrorException
+     */
     public function logout(Request $request): JsonResponse
     {
         try {
-            $user = \Auth::user();
+            $user = Auth::user();
             $user->tokens()->delete();
 
             return response()->json([
+                'status' => true,
                 'message' => 'Logged out successfully',
             ]);
         } catch (\Exception $e) {
-            return response()->json([
-                'status' => false,
-                'message' => $e->getMessage(),
-            ]);
-        }
-    }
-
-    public function update(UpdateUserRequest $request): JsonResponse
-    {
-        $validated = $request->validated();
-        try {
-            $user = \Auth::user();
-            $user->update($validated);
-
-            return response()->json([
-                'status' => true,
-                'message' => 'User updated successfully',
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => false,
-                'message' => $e->getMessage(),
-            ]);
+            throw new ServerErrorException($e->getMessage());
         }
     }
 }

@@ -23,7 +23,7 @@ class CanEditStoreData
         if (! $user->hasRole('manager')) {
             throw new UNAUTHORIZED;
         }
-        if ($user->hasRole('manager') && $user->store->id != $request->route('store')->id) {
+        if ( $user->store->id != $request->route('store')->id) {
             throw new UNAUTHORIZED;
         }
 

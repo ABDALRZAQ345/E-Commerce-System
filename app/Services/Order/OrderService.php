@@ -4,7 +4,10 @@ namespace App\Services\Order;
 
 use App\Models\Order;
 use App\Models\Product;
-use App\Models\Suborder;
+
+use App\Models\SubOrder;
+use App\Services\InterestService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class OrderService
@@ -14,7 +17,6 @@ class OrderService
      */
     public function createOrder(int $userId, array $products): Order
     {
-
 
         try {
             DB::beginTransaction();
@@ -55,7 +57,7 @@ class OrderService
             // Update the main order price
             $order->total = $totalPrice;
             $order->save();
-
+            $this->EditInterests($products);
             DB::commit();
             // Todo Create Invoice
 
@@ -89,5 +91,18 @@ class OrderService
             'sales' => $product->sales + $productData['quantity'],
             'quantity' => $product->quantity - $productData['quantity'],
         ]);
+    }
+
+    public function EditInterests($products)
+    {
+        $interestService=new InterestService();
+     foreach ($products as $product) {
+         $product = Product::findOrFail($product['id']);
+         $category=$product->category_id;
+         if(!$interestService->CheckUserInterest(Auth::id(), $category)){
+             $interestService->CreateUserInterest(Auth::id(),$category);
+         }
+         $interestService->increaseInterestLevel(Auth::id(), $category,1);
+     }
     }
 }

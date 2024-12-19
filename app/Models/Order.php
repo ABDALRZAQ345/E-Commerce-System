@@ -11,7 +11,6 @@ class Order extends Model
 {
     use HasFactory;
 
-
     protected $guarded = ['id'];
 
     public function subOrders(): HasMany

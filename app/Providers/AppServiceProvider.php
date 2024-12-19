@@ -9,6 +9,7 @@ use App\Observers\StoreObserver;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -17,64 +18,43 @@ use Meilisearch\Client;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void {}
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
         $this->observers();
         $this->rateLimiters();
-        $this->milisearch();
+        $this->meilisearch();
         $this->routes();
+        $this->productionConfigurations();
+        $this->PassWordConfigurations();
 
-        Model::shouldBeStrict(! app()->environment('production'));
-        Model::preventLazyLoading(! app()->environment('production'));
-
-        Password::defaults(function () {
-            return Password::min(8)
-                ->letters()
-                ->mixedCase()
-                ->numbers()
-                ->symbols()
-                ->uncompromised();
-        });
     }
 
-    public function routes()
+    public function routes(): void
     {
-        Route::prefix('api')
-            ->middleware('api')
-            ->group(base_path('routes/Api/auth.php'));
-        Route::prefix('api')
-            ->middleware('api')
-            ->group(base_path('routes/Api/store.php'));
-        Route::prefix('api')
-            ->middleware('api')
-            ->group(base_path('routes/Api/product.php'));
-        Route::prefix('api')
-            ->middleware('api')
-            ->group(base_path('routes/Api/user.php'));
-        Route::prefix('api')
-            ->middleware('api')
-            ->group(base_path('routes/Api/category.php'));
-        Route::prefix('api')
-            ->middleware('api')
-            ->group(base_path('routes/Api/favourite.php'));
-        Route::prefix('api')
-            ->middleware('api')
-            ->group(base_path('routes/Api/statistics.php'));
+        $apiRouteFiles = [
+            'auth.php',
+            'store.php',
+            'product.php',
+            'user.php',
+            'category.php',
+            'favourite.php',
+        ];
+
+        foreach ($apiRouteFiles as $routeFile) {
+            Route::prefix('api')
+                ->middleware('api')
+                ->group(base_path("routes/Api/{$routeFile}"));
+        }
+
     }
 
-    public function milisearch()
+    public function meilisearch(): void
     {
 
         // Connect to Meilisearch
-        $client = new Client('http://127.0.0.1:7700'); // Replace with your Meilisearch server URL
+        $client = new Client(env('MEILISEARCH_URL', 'http://127.0.0.1:7700')); // Replace with your Meilisearch server URL
         $index = $client->index('products');
 
         // Update filterable attributes to include 'id' and 'store_id'
@@ -89,7 +69,7 @@ class AppServiceProvider extends ServiceProvider
 
     public function rateLimiters(): void
     {
-
+        if ( app()->environment('production')) {}
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(30)->by($request->user()?->id ?: $request->ip());
         });
@@ -105,6 +85,28 @@ class AppServiceProvider extends ServiceProvider
         });
         RateLimiter::for('change_password', function (Request $request) {
             return Limit::perDay(5)->by($request->user()?->id);
+        });
+
+
+
+    }
+
+    public function productionConfigurations(): void
+    {
+        Model::shouldBeStrict(! app()->environment('production'));
+        Model::preventLazyLoading(! app()->environment('production'));
+
+    }
+
+    public function PassWordConfigurations(): void
+    {
+        Password::defaults(function () {
+            return Password::min(8)
+                ->letters()
+                ->mixedCase()
+                ->numbers()
+                ->symbols()
+                ->uncompromised();
         });
     }
 }

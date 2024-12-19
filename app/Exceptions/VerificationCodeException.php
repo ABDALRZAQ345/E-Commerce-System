@@ -20,6 +20,7 @@ class VerificationCodeException extends Exception
     public function render(Request $request): JsonResponse
     {
         return response()->json([
+            'status' => false,
             'message' => $this->getMessage(),
         ], Response::HTTP_UNAUTHORIZED);
     }

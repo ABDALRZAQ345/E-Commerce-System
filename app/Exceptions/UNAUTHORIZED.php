@@ -3,7 +3,9 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class UNAUTHORIZED extends Exception
 {
@@ -12,11 +14,12 @@ class UNAUTHORIZED extends Exception
         parent::__construct($message);
     }
 
-    public function render(Request $request): \Illuminate\Http\JsonResponse
+    public function render(Request $request): JsonResponse
     {
         //
         return response()->json([
+            'status' => false,
             'message' => $this->message,
-        ], \Symfony\Component\HttpFoundation\Response::HTTP_UNAUTHORIZED);
+        ], Response::HTTP_UNAUTHORIZED);
     }
 }

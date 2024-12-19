@@ -18,4 +18,6 @@ class Category extends Model
     {
         return $this->belongsToMany(Store::class, 'category_store');
     }
+
+
 }

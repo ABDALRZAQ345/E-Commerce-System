@@ -36,7 +36,7 @@ class SendVerificationCode implements ShouldQueue
             'expires_at' => now()->addMinutes(10),
         ]);
         Log::channel('verification_code')->info($code);
-        TelegramGateway::sendVerificationMessage(env('TELEGRAM_NUMBER'), [
+        TelegramGateway::sendVerificationMessage(config('app.data.telegram_number'), [
             'code' => $code,
             'ttl' => 300,
             'callback_url' => 'https://yourapp.com/callback',

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('phone_number', 13)->unique();
             $table->string('photo')->nullable();
+            $table->dateTime('last_login')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

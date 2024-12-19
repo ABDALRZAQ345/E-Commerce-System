@@ -10,9 +10,6 @@ use Illuminate\Validation\Rules\Password;
 
 class SignupRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
@@ -30,7 +27,7 @@ class SignupRequest extends FormRequest
             'last_name' => ['nullable', 'max:50'],
             'password' => ['required', 'confirmed', Password::defaults()],
             'phone_number' => ['required', new ValidPhoneNumber, 'unique:users,phone_number'],
-            'photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif'],
+            'photo' => ['nullable', 'image', 'max:3072'],
             'code' => ['required', 'numeric', 'digits:6'],
         ];
     }
