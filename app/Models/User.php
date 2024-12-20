@@ -54,4 +54,9 @@ class User extends Authenticatable
         return $this->belongsToMany(Category::class, 'user_category_interests')
             ->withPivot('interest_level');
     }
+
+    public function subOrders()
+    {
+        return $this->hasManyThrough(SubOrder::class, Order::class);
+    }
 }

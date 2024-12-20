@@ -8,6 +8,7 @@ use App\Http\Requests\Store\StoreOrderRequest;
 use App\Models\Order;
 use App\Models\User;
 use App\Services\Order\OrderService;
+use App\Services\StripeService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -62,8 +63,21 @@ class OrderController extends Controller
     {
         $validated = $request->validated();
         $products = $validated['products'];
-
+        $paymentMethodId = $validated['payment_method_id'];
         try {
+            $stripeService = new StripeService(); // خدمة الدفع
+            $paymentIntent = $stripeService->createPaymentIntent(
+                $this->calculateOrderAmount($products), // حساب المبلغ الكلي
+                'usd', // العملة
+                $paymentMethodId // معرف طريقة الدفع من الجهة الأمامية
+            );
+
+            if ($paymentIntent->status !== 'succeeded') {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Payment failed. Please try again.',
+                ], 400);
+            }
             $this->orderService->createOrder(Auth::id(), $products,$validated['location_id']);
 
             return response()->json([
@@ -75,4 +89,16 @@ class OrderController extends Controller
         }
 
     }
+    private function calculateOrderAmount(array $products): int
+    {
+        $totalAmount = 0;
+
+        foreach ($products as $product) {
+            $totalAmount += $product['price'] * $product['quantity'];
+        }
+
+    // التحويل لسنت لان الدفع بلدولار
+        return $totalAmount * 100;
+    }
+
 }
