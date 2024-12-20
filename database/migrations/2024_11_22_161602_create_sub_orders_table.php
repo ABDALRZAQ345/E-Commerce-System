@@ -19,7 +19,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Order::class)->constrained();
             $table->enum('status', OrderStatusEnum::getAllStatus())->default(OrderStatusEnum::Pending);
-            $table->unsignedBigInteger('total');
+            $table->decimal('total', 10, 2)->comment('Total price for the sub-order');
             $table->foreignIdFor(Store::class)->constrained();
             $table->foreignIdFor(Location::class)->nullable()->constrained()->nullOnDelete();
             $table->timestamps();

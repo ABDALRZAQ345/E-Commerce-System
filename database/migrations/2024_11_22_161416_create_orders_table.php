@@ -1,5 +1,4 @@
 <?php
-
 use App\Models\Location;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -16,8 +15,8 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained();
-            $table->unsignedBigInteger('total');
             $table->foreignIdFor(Location::class)->nullable()->constrained()->nullOnDelete();
+            $table->decimal('total', 10, 2)->comment('total price');
             $table->timestamps();
         });
     }

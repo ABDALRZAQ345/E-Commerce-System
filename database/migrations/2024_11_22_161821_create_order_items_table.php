@@ -18,8 +18,8 @@ return new class extends Migration
             $table->foreignIdFor(SubOrder::class)->constrained();
             $table->foreignIdFor(Product::class)->constrained();
             $table->unsignedBigInteger('quantity');
-            $table->unsignedBigInteger('price')->comment('price per item');
-            $table->unsignedBigInteger('total')->comment('total price');
+            $table->decimal('price', 10, 2)->comment('price per item');
+            $table->decimal('total', 10, 2)->comment('total price');
             $table->timestamps();
         });
     }
