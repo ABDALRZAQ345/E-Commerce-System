@@ -21,6 +21,8 @@ Route::middleware(['throttle:api', 'locale', 'xss'])->group(function () {
                 'top_stores'=>$top_stores,
             ]);
         });
+        Route::post('/create-payment-intent', [\App\Http\Controllers\StripeController::class, 'createPaymentIntent']);
     });
+
 
 });
