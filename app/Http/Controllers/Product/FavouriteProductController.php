@@ -59,9 +59,9 @@ class FavouriteProductController extends Controller
         if (FavouriteProduct::where('user_id', $user->id)->where('product_id', $product->id)->first()) {
             throw new BadRequestException('Product is already in your favourite list');
         }
-        if ($user->favouriteProducts()->count() == config('app.data.max_favourites')) {
-            throw new BadRequestException('you cant add more than 100 favourite stores');
-        }
+//        if ($user->favouriteProducts()->count() == config('app.data.max_favourites')) {
+//            throw new BadRequestException('you cant add more than 100 favourite stores');
+//        }
         $this->EditInterests($product,1);
         try {
             $user->favouriteProducts()->attach($product);

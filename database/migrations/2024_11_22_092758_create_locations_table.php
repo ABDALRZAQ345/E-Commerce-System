@@ -16,6 +16,7 @@ return new class extends Migration
             $table->decimal('longitude', 10, 8);
             $table->decimal('latitude', 10, 8);
             $table->string('name', 50);
+            $table->string('key')->nullable();
             $table->unsignedBigInteger('object_id')->nullable();
             $table->string('object_type')->nullable();
             $table->index(['object_id', 'object_type']);

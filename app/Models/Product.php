@@ -19,6 +19,7 @@ class Product extends Model implements Auditable
     use Searchable;
 
     protected $guarded = ['id'];
+    protected  $hidden=['pivot'];
 
     public function toSearchableArray(): array
     {

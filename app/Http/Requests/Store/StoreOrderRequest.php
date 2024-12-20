@@ -6,6 +6,7 @@ use App\Models\Product;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Auth;
 
 class StoreOrderRequest extends FormRequest
 {
@@ -37,7 +38,14 @@ class StoreOrderRequest extends FormRequest
                     $fail("The quantity for product ID $productId must not exceed the available stock ({$product->quantity}).");
                 }
             },
+
             ],
+            'location_id'=> ['required',function ($attribute, $value, $fail) {
+                $locations=Auth::user()->locations()->pluck('id')->toArray();
+                if (!in_array($value, $locations)) {
+                    $fail('no such location exist for that user ');
+                }
+            }],
         ];
     }
 

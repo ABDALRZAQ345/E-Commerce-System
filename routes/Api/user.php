@@ -25,6 +25,7 @@ Route::middleware(['throttle:api', 'locale', 'xss'])->group(function () {
         Route::post('/users/{user}/orders', [OrderController::class, 'store'])->middleware('same_user')->name('orders.store');
         Route::get('/users/{user}/locations', [UserLocationController::class, 'index'])->middleware('same_user')->name('locations.index');
         Route::post('/users/{user}/locations', [UserLocationController::class, 'store'])->middleware('same_user')->name('locations.store');
+        Route::post('/users/{user}/locations/{location}',[UserLocationController::class, 'update'])->middleware('same_user')->name('locations.update');
         Route::post('/users/{user}/categories',[UserInterestController::class,'store'])->middleware('same_user')->name('categories.store');
         Route::get('/users/{user}/categories', [UserInterestController::class, 'index'])->middleware('same_user')->name('categories.index');
         Route::get('/users/{user}/recommended', [UserInterestController::class, 'recommend'])->middleware('same_user')->name('interests.index');

@@ -64,7 +64,7 @@ class OrderController extends Controller
         $products = $validated['products'];
 
         try {
-            $this->orderService->createOrder(Auth::id(), $products);
+            $this->orderService->createOrder(Auth::id(), $products,$validated['location_id']);
 
             return response()->json([
                 'status' => true,

@@ -15,7 +15,7 @@ class OrderService
     /**
      * @throws \Throwable
      */
-    public function createOrder(int $userId, array $products): Order
+    public function createOrder(int $userId, array $products,$location_id): Order
     {
 
         try {
@@ -24,6 +24,7 @@ class OrderService
             $order = Order::create([
                 'user_id' => $userId,
                 'total' => 0, // Will calculate later
+                'location_id' => $location_id,
             ]);
 
             $suborders = [];
@@ -39,6 +40,7 @@ class OrderService
                 $suborders[$storeId] = $suborders[$storeId] ?? Suborder::create([
                     'order_id' => $order->id,
                     'store_id' => $storeId,
+                    'location_id' => $location_id,
                     'total' => 0,
                 ]);
 

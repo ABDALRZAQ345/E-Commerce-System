@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\OrderStatusEnum;
+use App\Models\Location;
 use App\Models\Order;
 use App\Models\Store;
 use Illuminate\Database\Migrations\Migration;
@@ -20,6 +21,7 @@ return new class extends Migration
             $table->enum('status', OrderStatusEnum::getAllStatus())->default(OrderStatusEnum::Pending);
             $table->unsignedBigInteger('total');
             $table->foreignIdFor(Store::class)->constrained();
+            $table->foreignIdFor(Location::class)->nullable()->constrained()->nullOnDelete();
             $table->timestamps();
         });
     }

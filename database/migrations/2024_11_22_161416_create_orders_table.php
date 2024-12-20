@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Location;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -16,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class)->constrained();
             $table->unsignedBigInteger('total');
+            $table->foreignIdFor(Location::class)->nullable()->constrained()->nullOnDelete();
             $table->timestamps();
         });
     }

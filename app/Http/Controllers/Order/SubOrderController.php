@@ -40,7 +40,7 @@ class SubOrderController extends Controller
     {
         $order = $user->orders()->findOrFail($order->id);
         $sub_order = $order->subOrders()->findOrFail($subOrder->id);
-
+        $sub_order->load('items');
         return response()->json([
             'status' => true,
             'message' => 'order retrieved successfully',
