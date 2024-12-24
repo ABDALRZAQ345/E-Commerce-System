@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Product;
 
 use App\Exceptions\ServerErrorException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ReviewRequest;
 use App\Models\Product;
 use App\Services\ProductService;
 use App\Services\ReviewService;
@@ -42,11 +41,9 @@ class ProductController extends Controller
 
             $user = Auth::user();
             foreach ($products as $product) {
-                $product->photo=$product->photos()->first() !=null?$product->photos()->first()->photo: null; ;
+                $product->photo = $product->photos()->first() != null ? $product->photos()->first()->photo : null;
                 $this->productService->get_the_user_info_for_product($product, $user);
             }
-
-
 
             return response()->json([
                 'status' => true,
@@ -65,11 +62,12 @@ class ProductController extends Controller
     public function show(Product $product): JsonResponse
     {
         try {
-            $product->load(['category','photos']);
+            $product->load(['category', 'photos']);
 
             $user = Auth::user();
             $this->productService->get_the_user_info_for_product($product, $user);
-            $product->photo=$product->photos()->first() !=null?$product->photos()->first()->photo: null;
+            $product->photo = $product->photos()->first() != null ? $product->photos()->first()->photo : null;
+
             return response()->json([
                 'status' => true,
                 'message' => 'product retrieved successfully',
@@ -90,6 +88,4 @@ class ProductController extends Controller
         ]);
 
     }
-
-
 }

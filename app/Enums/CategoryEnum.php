@@ -4,8 +4,6 @@ namespace App\Enums;
 
 enum CategoryEnum
 {
-
-
     public static function getCategories(): array
     {
 
@@ -20,7 +18,7 @@ enum CategoryEnum
             'Music',
             'Art',
             'Furniture',
-            'Scientific'
+            'Food',
         ];
     }
 }

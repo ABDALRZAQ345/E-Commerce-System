@@ -2,10 +2,6 @@
 
 namespace App\Services;
 
-use App\Exceptions\ServerErrorException;
-use App\Models\Product;
-use App\Models\Review;
-use App\Models\Store;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
@@ -16,24 +12,28 @@ class InterestService
         $user = User::findOrFail($userId);
         $user->interests()->syncWithoutDetaching([$categoryId => ['interest_level' => 0]]);
     }
-    public function increaseInterestLevel($userId, $categoryId,$value): void
+
+    public function increaseInterestLevel($userId, $categoryId, $value): void
     {
         DB::table('user_category_interests')
             ->where('user_id', $userId)
             ->where('category_id', $categoryId)
             ->increment('interest_level', $value);
     }
-    public function decreaseInterestLevel($userId, $categoryId,$value): void
+
+    public function decreaseInterestLevel($userId, $categoryId, $value): void
     {
         $this->increaseInterestLevel($userId, $categoryId, -1 * $value);
     }
+
     public function CheckUserInterest($userId, $categoryId): bool
     {
-      return  DB::table('user_category_interests')
+        return DB::table('user_category_interests')
             ->where('user_id', $userId)
             ->where('category_id', $categoryId)
             ->exists();
     }
+
     public function getRecommendedCategories($userId)
     {
         return User::find($userId)
@@ -41,6 +41,7 @@ class InterestService
             ->orderBy('pivot_interest_level', 'desc')
             ->get();
     }
+
     public function recommendProducts(int $userId): array
     {
         // Retrieve the user's interests with positive interest levels
@@ -60,6 +61,7 @@ class InterestService
         $categoriesWithProductCount = $interests->mapWithKeys(function ($interest) use ($totalInterest) {
             $percentage = $interest->interest_level / $totalInterest;
             $productCount = (int) ceil($percentage * 100); // Determine number of products for this category
+
             return [$interest->category_id => $productCount];
         });
 
@@ -78,13 +80,15 @@ class InterestService
 
         return $recommendedProducts;
     }
-    public function ChangeChecked($userId, $categoryId,$status): void
+
+    public function ChangeChecked($userId, $categoryId, $status): void
     {
         DB::table('user_category_interests')
             ->where('user_id', $userId)
             ->where('category_id', $categoryId)
-            ->update(['checked'=>$status]);
+            ->update(['checked' => $status]);
     }
+
     public function InterestStatus($userId, $categoryId)
     {
         return DB::table('user_category_interests')
@@ -92,5 +96,4 @@ class InterestService
             ->where('category_id', $categoryId)
             ->firstOrFail()->checked;
     }
-
 }

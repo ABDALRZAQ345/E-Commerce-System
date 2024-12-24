@@ -12,7 +12,8 @@ class Review extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
-    protected $hidden=['object_id','object_type'];
+
+    protected $hidden = ['object_id', 'object_type'];
 
     public function user(): BelongsTo
     {

@@ -2,16 +2,11 @@
 
 namespace App\Services;
 
-use App\Exceptions\ServerErrorException;
 use App\Models\Photo;
-use App\Models\Product;
-use App\Models\Store;
-use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 class PhotosService
 {
-
     /**
      * @throws \Throwable
      */
@@ -36,7 +31,6 @@ class PhotosService
             throw $exception;
         }
 
-
     }
 
     /**
@@ -54,12 +48,10 @@ class PhotosService
             $object->photos()->delete();
             $object->save();
             DB::commit();
-        }
-        catch (\Exception $exception) {
+        } catch (\Exception $exception) {
             DB::rollBack();
             throw $exception;
         }
-
 
     }
 }

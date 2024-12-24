@@ -2,7 +2,6 @@
 
 namespace App\Http\ManualOpenApi\Store;
 
-use App\Exceptions\ServerErrorException;
 use OpenApi\Annotations as OA;
 
 class StoreOrderController
@@ -91,10 +90,8 @@ class StoreOrderController
      *         )
      *     )
      * )
-     *
      */
     public function index() {}
-
 
     /**
      * @OA\Post(

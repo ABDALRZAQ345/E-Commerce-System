@@ -7,7 +7,6 @@ use App\Models\Product;
 use App\Models\Store;
 use App\Models\SubOrder;
 use App\Models\User;
-use Carbon\Carbon;
 
 class StatisticsController extends Controller
 {
@@ -29,7 +28,7 @@ class StatisticsController extends Controller
             for ($categoryId = 1; $categoryId <= $maxCategoryId; $categoryId++) {
                 $category = Category::find($categoryId);
 
-                if (!$category) {
+                if (! $category) {
                     continue;
                 }
 
@@ -40,7 +39,7 @@ class StatisticsController extends Controller
                 $percentage = $numOfStores > 0 ? (float) round(($rowCount / $numOfStores) * 100, 1) : 0;
                 $categoryStorePercentage[] = [
                     'category_name' => $category->name,
-                    'percentage' => $percentage
+                    'percentage' => $percentage,
                 ];
             }
 
@@ -54,7 +53,7 @@ class StatisticsController extends Controller
             for ($categoryId = 1; $categoryId <= $maxCategoryId; $categoryId++) {
                 $category = Category::find($categoryId);
 
-                if (!$category) {
+                if (! $category) {
                     continue;
                 }
 

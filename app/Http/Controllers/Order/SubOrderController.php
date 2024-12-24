@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 class SubOrderController extends Controller
 {
     //
-    public function all_orders(Request $request,User $user)
+    public function all_orders(Request $request, User $user)
     {
 
         $subOrders = $user->subOrders();
@@ -22,12 +22,14 @@ class SubOrderController extends Controller
             $subOrders->where('status', $request->status);
         }
         $paginatedSubOrders = $subOrders->paginate(20);
+
         return response()->json([
-            'status'=>true,
-            'message'=>'success',
-            'subOrders' => $paginatedSubOrders
+            'status' => true,
+            'message' => 'success',
+            'subOrders' => $paginatedSubOrders,
         ]);
     }
+
     public function index(Request $request, User $user, Order $order): JsonResponse
     {
 
@@ -55,6 +57,7 @@ class SubOrderController extends Controller
         $order = $user->orders()->findOrFail($order->id);
         $sub_order = $order->subOrders()->findOrFail($subOrder->id);
         $sub_order->load('items');
+
         return response()->json([
             'status' => true,
             'message' => 'order retrieved successfully',

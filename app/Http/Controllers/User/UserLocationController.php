@@ -12,7 +12,7 @@ class UserLocationController extends Controller
 {
     public function index(User $user): JsonResponse
     {
-        $locations = $user->locations()->select(['id','name', 'longitude', 'latitude','key'])->get();
+        $locations = $user->locations()->select(['id', 'name', 'longitude', 'latitude', 'key'])->get();
 
         return response()->json([
             'status' => true,
@@ -25,15 +25,13 @@ class UserLocationController extends Controller
     {
 
         $validated = $request->validate([
-           'longitude' => ['required', 'numeric', 'between:-180,180'],
+            'longitude' => ['required', 'numeric', 'between:-180,180'],
             'latitude' => ['required', 'numeric', 'between:-90,90'],
             'name' => ['required', 'string', 'max:50'],
             'key' => ['required', 'string', 'max:50'],
         ]);
 
-
-
-        $location=$user->locations()->create($validated);
+        $location = $user->locations()->create($validated);
 
         return response()->json([
             'status' => true,
@@ -41,9 +39,10 @@ class UserLocationController extends Controller
             'location' => $location,
         ]);
     }
-    public function update(Request $request, User $user,Location $location)
+
+    public function update(Request $request, User $user, Location $location)
     {
-        $location=$user->locations()->findOrFail($location->id);
+        $location = $user->locations()->findOrFail($location->id);
         $validated = $request->validate([
             'longitude' => ['required', 'numeric', 'between:-180,180'],
             'latitude' => ['required', 'numeric', 'between:-90,90'],
@@ -51,6 +50,7 @@ class UserLocationController extends Controller
             'key' => ['required', 'string', 'max:50'],
         ]);
         $location->update($validated);
+
         return response()->json([
             'status' => true,
             'message' => 'Location updated successfully',

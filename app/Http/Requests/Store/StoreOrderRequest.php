@@ -40,9 +40,9 @@ class StoreOrderRequest extends FormRequest
             },
 
             ],
-            'location_id'=> ['required',function ($attribute, $value, $fail) {
-                $locations=Auth::user()->locations()->pluck('id')->toArray();
-                if (!in_array($value, $locations)) {
+            'location_id' => ['required', function ($attribute, $value, $fail) {
+                $locations = Auth::user()->locations()->pluck('id')->toArray();
+                if (! in_array($value, $locations)) {
                     $fail('no such location exist for that user ');
                 }
             }],

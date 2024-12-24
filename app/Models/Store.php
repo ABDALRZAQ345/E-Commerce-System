@@ -29,7 +29,7 @@ class Store extends Model implements Auditable
 
     protected $guarded = ['id'];
 
-    protected $hidden = ['deleted_at','pivot'];
+    protected $hidden = ['deleted_at', 'pivot'];
 
     public function resolveUser(): User|\Illuminate\Contracts\Auth\Authenticatable|null
     {
@@ -80,8 +80,6 @@ class Store extends Model implements Auditable
     public function scopeFilter($query, $filter): void
     {
 
-
-
         if ($filter === 'latest') {
             $query->orderBy('created_at', 'desc');
         }
@@ -90,8 +88,7 @@ class Store extends Model implements Auditable
             $query->orderBy('rate', 'desc');
         } elseif ($filter === 'recommended') {
             /// todo
-        }
-        else if(Category::where('name', $filter)->exists()) {
+        } elseif (Category::where('name', $filter)->exists()) {
             $query->whereHas('categories', function ($query) use ($filter) {
                 $query->where('name', $filter);
             });

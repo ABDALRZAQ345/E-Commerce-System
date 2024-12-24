@@ -4,7 +4,6 @@ namespace App\Services\Order;
 
 use App\Models\Order;
 use App\Models\Product;
-
 use App\Models\SubOrder;
 use App\Services\InterestService;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +14,7 @@ class OrderService
     /**
      * @throws \Throwable
      */
-    public function createOrder(int $userId, array $products,$location_id): Order
+    public function createOrder(int $userId, array $products, $location_id): Order
     {
 
         try {
@@ -97,14 +96,14 @@ class OrderService
 
     public function EditInterests($products)
     {
-        $interestService=new InterestService();
-     foreach ($products as $product) {
-         $product = Product::findOrFail($product['id']);
-         $category=$product->category_id;
-         if(!$interestService->CheckUserInterest(Auth::id(), $category)){
-             $interestService->CreateUserInterest(Auth::id(),$category);
-         }
-         $interestService->increaseInterestLevel(Auth::id(), $category,1);
-     }
+        $interestService = new InterestService;
+        foreach ($products as $product) {
+            $product = Product::findOrFail($product['id']);
+            $category = $product->category_id;
+            if (! $interestService->CheckUserInterest(Auth::id(), $category)) {
+                $interestService->CreateUserInterest(Auth::id(), $category);
+            }
+            $interestService->increaseInterestLevel(Auth::id(), $category, 1);
+        }
     }
 }

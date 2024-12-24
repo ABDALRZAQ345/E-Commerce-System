@@ -6,7 +6,7 @@ enum OrderStatusEnum
 {
     const Pending = 'pending';
 
-    const Canceled   = 'canceled';
+    const Canceled = 'canceled';
 
     const Delivered = 'delivered';
 

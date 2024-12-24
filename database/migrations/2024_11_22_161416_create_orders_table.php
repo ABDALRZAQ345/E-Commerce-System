@@ -1,4 +1,5 @@
 <?php
+
 use App\Models\Location;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;

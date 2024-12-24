@@ -19,6 +19,7 @@ class OrderFactory extends Factory
     {
         $createdAt = $this->faker->dateTimeBetween('-1 year', 'now');
         $updatedAt = $this->faker->dateTimeBetween($createdAt, 'now');
+
         return [
             'user_id' => User::factory()->create(),
             'total' => $this->faker->randomFloat(2, 10, 100),

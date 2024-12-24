@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use Stripe\Stripe;
 use Stripe\PaymentIntent;
+use Stripe\Stripe;
 
 class StripeService
 {

@@ -20,7 +20,7 @@ class OrderItemFactory extends Factory
         $updatedAt = $this->faker->dateTimeBetween($createdAt, 'now');
         $quantity = $this->faker->numberBetween(1, 10);
         $price = $this->faker->randomFloat(2, 10, 100);
-        
+
         return [
             'sub_order_id' => \App\Models\SubOrder::inRandomOrder()->first()->id ?? \App\Models\SubOrder::factory(),
             'product_id' => $this->faker->numberBetween(1, 100),

@@ -15,9 +15,12 @@ use Illuminate\Support\Facades\Auth;
 class FavouriteStoreController extends Controller
 {
     protected StoreService $storeService;
-    public function __construct(StoreService $storeService){
+
+    public function __construct(StoreService $storeService)
+    {
         $this->storeService = $storeService;
     }
+
     /**
      * @throws ServerErrorException
      */
@@ -29,6 +32,7 @@ class FavouriteStoreController extends Controller
             foreach ($favourites as $store) {
                 $this->storeService->get_the_user_info_for_store($store, $user);
             }
+
             return response()->json([
                 'status' => true,
                 'message' => 'favourite list retrieved successfully',
@@ -51,9 +55,9 @@ class FavouriteStoreController extends Controller
             throw new BadRequestException('Store is already in your favourite list');
         }
 
-//        if ($user->favouriteStores()->count() == config('app.data.max_favourites')) {
-//            throw new BadRequestException('you cant add more than 100 favourite stores');
-//        }
+        //        if ($user->favouriteStores()->count() == config('app.data.max_favourites')) {
+        //            throw new BadRequestException('you cant add more than 100 favourite stores');
+        //        }
         try {
 
             $user->favouriteStores()->attach($store);

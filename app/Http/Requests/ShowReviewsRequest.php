@@ -22,7 +22,7 @@ class ShowReviewsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'rate' => ['nullable', 'integer', 'min:1', 'max:5']
+            'rate' => ['nullable', 'integer', 'min:1', 'max:5'],
         ];
     }
 }

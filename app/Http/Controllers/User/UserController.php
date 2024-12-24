@@ -33,7 +33,7 @@ class UserController extends Controller
         $users = $users->with('roles:name')->paginate(20);
         $users->getCollection()->transform(function ($user) {
             $user = $this->userService->FormatRoles($user);
-            $user->active = now()->subMinutes(5) <= $user->last_login ;
+            $user->active = now()->subMinutes(5) <= $user->last_login;
 
             return $user;
         });
@@ -65,10 +65,11 @@ class UserController extends Controller
     {
         $validated = $request->validated();
         try {
-            if($request->has('photo') && $validated['photo']!=null){
-                if($user->photo)
-                DeletePublicPhoto($user->photo);
-                $validated['photo']=NewPublicPhoto($validated['photo'],'profiles');
+            if ($request->has('photo') && $validated['photo'] != null) {
+                if ($user->photo) {
+                    DeletePublicPhoto($user->photo);
+                }
+                $validated['photo'] = NewPublicPhoto($validated['photo'], 'profiles');
             }
             $user->update($validated);
 

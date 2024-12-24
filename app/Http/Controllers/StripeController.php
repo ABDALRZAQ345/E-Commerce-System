@@ -4,13 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Store\StoreOrderRequest;
 use App\Models\Product;
-use Illuminate\Http\Request;
 use Stripe\PaymentIntent;
 use Stripe\Stripe;
 
 class StripeController extends Controller
 {
-
     public function createPaymentIntent(StoreOrderRequest $request): \Illuminate\Http\JsonResponse
     {
         $validated = $request->validated();

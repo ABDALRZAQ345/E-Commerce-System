@@ -9,7 +9,6 @@ use App\Models\FavouriteProduct;
 use App\Models\Product;
 use App\Services\InterestService;
 use App\Services\ProductService;
-use App\Services\ReviewService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -33,10 +32,9 @@ class FavouriteProductController extends Controller
             $favourites = $user->favouriteProducts()->paginate(20);
             //todo check its work
             foreach ($favourites as $product) {
-                $product->photo=$product->photos()->first() !=null?$product->photos()->first()->photo: null; ;
+                $product->photo = $product->photos()->first() != null ? $product->photos()->first()->photo : null;
                 $this->productService->get_the_user_info_for_product($product, $user);
             }
-
 
             return response()->json([
                 'status' => true,
@@ -59,10 +57,10 @@ class FavouriteProductController extends Controller
         if (FavouriteProduct::where('user_id', $user->id)->where('product_id', $product->id)->first()) {
             throw new BadRequestException('Product is already in your favourite list');
         }
-//        if ($user->favouriteProducts()->count() == config('app.data.max_favourites')) {
-//            throw new BadRequestException('you cant add more than 100 favourite stores');
-//        }
-        $this->EditInterests($product,1);
+        //        if ($user->favouriteProducts()->count() == config('app.data.max_favourites')) {
+        //            throw new BadRequestException('you cant add more than 100 favourite stores');
+        //        }
+        $this->EditInterests($product, 1);
         try {
             $user->favouriteProducts()->attach($product);
 
@@ -86,7 +84,8 @@ class FavouriteProductController extends Controller
             $user = Auth::user();
             $product = $user->favouriteProducts()->findOrFail($product->id);
             $user->favouriteProducts()->detach($product);
-            $this->EditInterests($product,-1);
+            $this->EditInterests($product, -1);
+
             return response()->json([
                 'status' => true,
                 'message' => 'Product removed from favourite list',
@@ -96,15 +95,16 @@ class FavouriteProductController extends Controller
         }
 
     }
-    public function EditInterests($product,$value): void
+
+    public function EditInterests($product, $value): void
     {
-        $interestService=new InterestService();
-            $product = Product::findOrFail($product['id']);
-            $category=$product->category_id;
-            if(!$interestService->CheckUserInterest(Auth::id(), $category)){
-                $interestService->CreateUserInterest(Auth::id(),$category);
-            }
-            $interestService->increaseInterestLevel(Auth::id(), $category,$value);
+        $interestService = new InterestService;
+        $product = Product::findOrFail($product['id']);
+        $category = $product->category_id;
+        if (! $interestService->CheckUserInterest(Auth::id(), $category)) {
+            $interestService->CreateUserInterest(Auth::id(), $category);
+        }
+        $interestService->increaseInterestLevel(Auth::id(), $category, $value);
 
     }
 }

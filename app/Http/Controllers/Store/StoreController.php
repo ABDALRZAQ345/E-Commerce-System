@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Store;
 
 use App\Exceptions\ServerErrorException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ReviewRequest;
 use App\Http\Requests\Store\StoreStoreRequest;
 use App\Http\Requests\Store\UpdateStoreRequest;
 use App\Models\Store;
@@ -19,7 +18,9 @@ use Illuminate\Support\Facades\Auth;
 class StoreController extends Controller
 {
     protected StoreService $storeService;
+
     protected PhotosService $photosService;
+
     protected ReviewService $rateService;
 
     public function __construct(StoreService $storeService, ReviewService $rateService, PhotosService $photosService)
@@ -107,9 +108,8 @@ class StoreController extends Controller
             }
             $data = Arr::except($validated, 'photos');
             $store = $user->store()->create($data);
-//            if ($validated['photos']!=null )
-//            $this->photosService->AddPhotos($validated['photos'], $store);
-
+            //            if ($validated['photos']!=null )
+            //            $this->photosService->AddPhotos($validated['photos'], $store);
 
             return response()->json([
                 'status' => true,
@@ -136,7 +136,7 @@ class StoreController extends Controller
             }
             $data = Arr::except($validated, 'photos');
             $store->update($data);
-            if ($validated['photos']!=null ) {
+            if ($validated['photos'] != null) {
                 $this->photosService->DeletePhotos($store);
                 $this->photosService->AddPhotos($validated['photos'], $store);
             }
@@ -160,7 +160,4 @@ class StoreController extends Controller
             'audits' => $audits,
         ]);
     }
-
-
-
 }

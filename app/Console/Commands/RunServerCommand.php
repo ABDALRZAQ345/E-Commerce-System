@@ -10,6 +10,7 @@ class RunServerCommand extends Command
     protected $signature = 'run-server';
 
     protected $description = 'command that run the server and MeiliSearch ';
+
     public function handle(): void
     {
 

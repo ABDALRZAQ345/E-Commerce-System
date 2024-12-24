@@ -4,16 +4,13 @@ namespace App\Http\Controllers\Store;
 
 use App\Enums\OrderStatusEnum;
 use App\Http\Controllers\Controller;
-use App\Models\Order;
 use App\Models\Store;
 use App\Models\SubOrder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use OpenApi\Annotations as OA;
 
 class StoreOrderController extends Controller
 {
-
     public function index(Request $request, Store $store): JsonResponse
     {
 
@@ -32,7 +29,6 @@ class StoreOrderController extends Controller
         return response()->json($subOrders);
 
     }
-
 
     public function update(Request $request, Store $store, SubOrder $order): JsonResponse
     {

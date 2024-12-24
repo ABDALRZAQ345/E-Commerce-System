@@ -9,7 +9,6 @@ use App\Observers\StoreObserver;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -69,7 +68,8 @@ class AppServiceProvider extends ServiceProvider
 
     public function rateLimiters(): void
     {
-        if ( app()->environment('production')) {}
+        if (app()->environment('production')) {
+        }
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(30)->by($request->user()?->id ?: $request->ip());
         });
@@ -86,8 +86,6 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('change_password', function (Request $request) {
             return Limit::perDay(5)->by($request->user()?->id);
         });
-
-
 
     }
 

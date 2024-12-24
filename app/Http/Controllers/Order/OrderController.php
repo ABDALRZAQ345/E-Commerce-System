@@ -8,7 +8,6 @@ use App\Http\Requests\Store\StoreOrderRequest;
 use App\Models\Order;
 use App\Models\User;
 use App\Services\Order\OrderService;
-use App\Services\StripeService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -66,7 +65,7 @@ class OrderController extends Controller
 
         try {
 
-            $this->orderService->createOrder(Auth::id(), $products,$validated['location_id']);
+            $this->orderService->createOrder(Auth::id(), $products, $validated['location_id']);
 
             return response()->json([
                 'status' => true,
@@ -77,6 +76,4 @@ class OrderController extends Controller
         }
 
     }
-
-
 }

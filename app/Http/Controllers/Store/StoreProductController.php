@@ -18,12 +18,15 @@ use Illuminate\Support\Facades\Auth;
 class StoreProductController extends Controller
 {
     protected ProductService $productService;
+
     protected PhotosService $photosService;
-    public function __construct(PhotosService $photosService,ProductService $productService)
+
+    public function __construct(PhotosService $photosService, ProductService $productService)
     {
         $this->photosService = $photosService;
-        $this->productService = $productService;;
+        $this->productService = $productService;
     }
+
     public function index(Request $request, Store $store): JsonResponse
     {
 
@@ -38,15 +41,15 @@ class StoreProductController extends Controller
         $query->filter($request->input('filter'));
         $products = $query->paginate(20);
 
-//        $search = $request->input('search');
-//
-//        $products = Product::search($search)
-//            ->where('store_id', $store->id)
-//            ->paginate(20);
-//
-        $user=Auth::user();
+        //        $search = $request->input('search');
+        //
+        //        $products = Product::search($search)
+        //            ->where('store_id', $store->id)
+        //            ->paginate(20);
+        //
+        $user = Auth::user();
         foreach ($products as $product) {
-            $product->photo=$product->photos()->first() !=null?$product->photos()->first()->photo: null;
+            $product->photo = $product->photos()->first() != null ? $product->photos()->first()->photo : null;
             $this->productService->get_the_user_info_for_product($product, $user);
         }
 
@@ -67,12 +70,12 @@ class StoreProductController extends Controller
 
         try {
 
-
             $data = Arr::except($validated, 'photos');
             $product = $store->products()->create($data);
 
-            if ($validated['photos']!=null )
-            $this->photosService->AddPhotos($validated['photos'], $product);
+            if ($validated['photos'] != null) {
+                $this->photosService->AddPhotos($validated['photos'], $product);
+            }
 
             return response()->json([
                 'status' => true,
@@ -97,10 +100,11 @@ class StoreProductController extends Controller
             $data = Arr::except($validated, 'photos');
             $product->update($data);
 
-            if ($validated['photos']!=null ) {
+            if ($validated['photos'] != null) {
                 $this->photosService->DeletePhotos($product);
                 $this->photosService->AddPhotos($validated['photos'], $product);
             }
+
             return response()->json([
                 'status' => true,
                 'message' => 'Product updated successfully.',

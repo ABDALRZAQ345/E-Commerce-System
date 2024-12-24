@@ -19,7 +19,8 @@ class Product extends Model implements Auditable
     use Searchable;
 
     protected $guarded = ['id'];
-    protected  $hidden=['pivot'];
+
+    protected $hidden = ['pivot'];
 
     public function toSearchableArray(): array
     {
@@ -40,8 +41,6 @@ class Product extends Model implements Auditable
     {
         return $this->belongsTo(Store::class);
     }
-
-
 
     public function reviews(): MorphMany
     {
@@ -78,15 +77,13 @@ class Product extends Model implements Auditable
         // filter as top rated products
         elseif ($filter === 'top_rated') {
             $query->orderBy('rate', 'desc');
-        }
-        else if(Category::where('name', $filter)->exists()){
+        } elseif (Category::where('name', $filter)->exists()) {
             $query->whereRelation('category', 'name', $filter);
-        }
-        elseif ($filter === 'recommended') {
+        } elseif ($filter === 'recommended') {
 
-            $interestService=new InterestService();
+            $interestService = new InterestService;
             $ids = collect($interestService->recommendProducts(Auth::id()))->pluck('id');
-            $query->wherein('id',$ids);
+            $query->wherein('id', $ids);
 
         }
 

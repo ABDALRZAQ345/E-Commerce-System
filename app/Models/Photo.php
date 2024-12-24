@@ -13,7 +13,9 @@ class Photo extends Model
     use SoftDeletes;
 
     protected $guarded = ['id'];
-    protected $hidden=['object_id','object_type'];
+
+    protected $hidden = ['object_id', 'object_type'];
+
     public function object(): MorphTo
     {
         return $this->morphTo();

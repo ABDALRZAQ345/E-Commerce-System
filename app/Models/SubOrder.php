@@ -12,7 +12,9 @@ class SubOrder extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+
     protected $table = 'sub_orders';
+
     public function store(): BelongsTo
     {
         return $this->belongsTo(Store::class);

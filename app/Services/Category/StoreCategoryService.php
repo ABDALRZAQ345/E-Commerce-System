@@ -17,7 +17,6 @@ class StoreCategoryService extends CategoryService
 
     /**
      * @throws \Exception|\Throwable
-     *
      */
     public function UpdateCategories(array $categoryIds): void
     {
@@ -37,7 +36,6 @@ class StoreCategoryService extends CategoryService
 
     /**
      * @throws \Exception|\Throwable
-     *
      */
     public function AddCategories(array $categoryIds): void
     {

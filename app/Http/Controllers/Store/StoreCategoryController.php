@@ -25,7 +25,6 @@ class StoreCategoryController extends Controller
 
     }
 
-
     /**
      * @throws ServerErrorException
      * @throws \Throwable

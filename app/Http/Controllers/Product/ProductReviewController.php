@@ -7,16 +7,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ReviewRequest;
 use App\Http\Requests\ShowReviewsRequest;
 use App\Models\Product;
-use App\Services\ProductService;
 use App\Services\ReviewService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ProductReviewController extends Controller
 {
     protected ReviewService $reviewService;
-
 
     public function __construct(ReviewService $reviewService)
     {
@@ -54,15 +51,14 @@ class ProductReviewController extends Controller
         $request->validated();
         try {
             $reviews = $this->reviewService->getReviews($product, $request->rate);
+
             return response()->json([
                 'status' => true,
-                'reviews' => $reviews
+                'reviews' => $reviews,
             ]);
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             throw new ServerErrorException($e->getMessage());
         }
-
 
     }
 }

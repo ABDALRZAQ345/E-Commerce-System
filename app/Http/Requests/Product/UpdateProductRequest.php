@@ -31,7 +31,7 @@ class UpdateProductRequest extends FormRequest
             'description' => ['required', 'string'],
             'expire_date' => ['nullable', 'date', 'after_or_equal:today'],
             'category_id' => ['nullable', 'integer', 'exists:categories,id'],
-            'photos' =>['nullable', 'array','max:5'],
+            'photos' => ['nullable', 'array', 'max:5'],
             'photos.*' => ['image', 'max:3072'],
         ];
     }

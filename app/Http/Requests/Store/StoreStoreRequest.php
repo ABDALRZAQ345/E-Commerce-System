@@ -32,7 +32,7 @@ class StoreStoreRequest extends FormRequest
             }],
             'description' => ['nullable'],
             'photo' => ['nullable', 'image', 'max:3072'],
-            'photos' => ['nullable', 'array','max:5'],
+            'photos' => ['nullable', 'array', 'max:5'],
             'photos.*' => ['required', 'image', 'max:3072'],
         ];
     }
