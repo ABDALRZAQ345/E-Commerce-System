@@ -74,25 +74,6 @@ class StoreController extends Controller
         ]);
     }
 
-    public function delete(Store $store): JsonResponse
-    {
-        try {
-            //Todo check there is no uncompleted orders
-
-            $store->delete();
-
-            return response()->json([
-                'message' => 'deleted successfully',
-            ]);
-
-        } catch (\Exception $exception) {
-            return response()->json([
-                'error' => $exception->getMessage(),
-            ]);
-        }
-
-    }
-
     /**
      * @throws ServerErrorException
      * @throws \Throwable
@@ -107,9 +88,7 @@ class StoreController extends Controller
                 $validated['photo'] = NewPublicPhoto($request->file('photo'), 'stores');
             }
             $data = Arr::except($validated, 'photos');
-            $store = $user->store()->create($data);
-            //            if ($validated['photos']!=null )
-            //            $this->photosService->AddPhotos($validated['photos'], $store);
+            $user->store()->create($data);
 
             return response()->json([
                 'status' => true,

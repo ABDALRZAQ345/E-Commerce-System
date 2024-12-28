@@ -4,11 +4,11 @@ namespace App\Enums;
 
 enum RoleEnum
 {
-
     const Admin = 'admin';
-    const User = 'user';
-    const Manager = 'manager';
 
+    const User = 'user';
+
+    const Manager = 'manager';
 
     public static function getAllRoles(): array
     {

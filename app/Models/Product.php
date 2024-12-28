@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Services\InterestService;
+use App\Services\Interest\InterestService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -67,11 +67,9 @@ class Product extends Model implements Auditable
 
         if ($filter === 'best_selling') {
             $query->orderBy('sales', 'desc');
-        }
-        elseif ($filter === 'latest') {
+        } elseif ($filter === 'latest') {
             $query->orderBy('created_at', 'desc');
-        }
-        elseif ($filter === 'top_rated') {
+        } elseif ($filter === 'top_rated') {
             $query->orderBy('rate', 'desc');
         } elseif (Category::where('name', $filter)->exists()) {
             $query->whereRelation('category', 'name', $filter);

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Store;
 
-use App\Exceptions\BadRequestException;
 use App\Exceptions\ServerErrorException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Contact\ContactRequest;
@@ -25,14 +24,8 @@ class ContactController extends Controller
         ]);
     }
 
-    /**
-     * @throws BadRequestException
-     */
     public function store(ContactRequest $request, Store $store): JsonResponse
     {
-        if ($store->contacts()->count() >= 5) {
-            throw new BadRequestException('you cant add more than 5  contacts ');
-        }
 
         $validated = $request->validated();
         $store->contacts()->create($validated);

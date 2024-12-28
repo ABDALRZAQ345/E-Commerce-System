@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 class SubOrderController extends Controller
 {
     //
-    public function all_orders(Request $request, User $user)
+    public function all_orders(Request $request, User $user): JsonResponse
     {
 
         $subOrders = $user->subOrders();

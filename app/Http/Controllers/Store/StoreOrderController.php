@@ -51,7 +51,7 @@ class StoreOrderController extends Controller
         if ($current_status >= $nex_status) {
             return response()->json([
                 'message' => 'Invalid status transition. Status cannot move backward.',
-            ], 400); // Bad Request
+            ], 400);
         }
         $order->status = $request->input('status');
         $order->save();

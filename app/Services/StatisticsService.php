@@ -10,42 +10,47 @@ use App\Models\Store;
 use App\Models\SubOrder;
 use App\Models\User;
 
-class StatisticsService {
-
+class StatisticsService
+{
     /**
      * @throws ServerErrorException
      */
     public function TotalSales()
     {
-        return  SubOrder::where('status', OrderStatusEnum::Delivered)->sum('total');
+        return SubOrder::where('status', OrderStatusEnum::Delivered)->sum('total');
     }
+
     public function NewStores(): int
     {
         return User::whereBetween('created_at', [now()->subDays(7), now()])->count();
     }
+
     public function TotalProducts(): int
     {
         return Product::sum('quantity');
     }
+
     public function ConversionRate(): float|int
     {
-        $deliveredOrders = SubOrder::where('status',OrderStatusEnum::Delivered)->count();
+        $deliveredOrders = SubOrder::where('status', OrderStatusEnum::Delivered)->count();
         $totalOrders = SubOrder::count();
+
         return $totalOrders > 0 ? round(($deliveredOrders / $totalOrders) * 100, 2) : 0;
     }
+
     public function CategoryStorePercentage(): array
     {
 
         $numOfStores = Store::count();
         $categoryStorePercentage = [];
-        $count=\DB::table('category_store')->count();
+        $count = \DB::table('category_store')->count();
         foreach (Category::all() as $category) {
 
             $rowCount = \DB::table('category_store')
                 ->where('category_id', $category->id)
                 ->count();
 
-            $percentage = $numOfStores > 0 ?  round(($rowCount / $count) * 100, 1) : 0;
+            $percentage = $numOfStores > 0 ? round(($rowCount / $count) * 100, 1) : 0;
 
             $categoryStorePercentage[] = [
                 'category_name' => $category->name,
@@ -57,15 +62,16 @@ class StatisticsService {
         usort($categoryStorePercentage, function ($a, $b) {
             return $b['percentage'] <=> $a['percentage'];
         });
+
         return $categoryStorePercentage;
     }
+
     public function CategoryProductPercentage(): array
     {
 
         $categoryProductPercentage = [];
-        $numOfProducts=\DB::table('products')->count();
+        $numOfProducts = \DB::table('products')->count();
         foreach (Category::all() as $category) {
-
 
             $rowCount = \DB::table('products')
                 ->where('category_id', $category->id)
@@ -80,8 +86,10 @@ class StatisticsService {
         usort($categoryProductPercentage, function ($a, $b) {
             return $b['percentage'] <=> $a['percentage'];
         });
+
         return $categoryProductPercentage;
     }
+
     public function MonthlySales(): array
     {
         $monthlySales = [];
@@ -102,7 +110,7 @@ class StatisticsService {
         }
 
         $monthlySales = array_reverse($monthlySales);
+
         return $monthlySales;
     }
-
 }

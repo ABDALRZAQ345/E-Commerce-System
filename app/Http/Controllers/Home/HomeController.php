@@ -15,7 +15,8 @@ class HomeController extends Controller
         $top_products = Product::filter('top_rated')->take(10)->get();
         $latest_stores = Store::filter('latest')->take(10)->get();
         $top_stores = Store::filter('top_rated')->take(10)->get();
-        $recommended_stores=Store::filter('recommended')->take(10)->get();
+        $recommended_stores = Store::filter('recommended')->take(10)->get();
+
         return response()->json([
             'recommended_products' => $recommended_products,
             'latest_products' => $latest_products,

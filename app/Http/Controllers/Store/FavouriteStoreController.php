@@ -55,9 +55,6 @@ class FavouriteStoreController extends Controller
             throw new BadRequestException('Store is already in your favourite list');
         }
 
-        //        if ($user->favouriteStores()->count() == config('app.data.max_favourites')) {
-        //            throw new BadRequestException('you cant add more than 100 favourite stores');
-        //        }
         try {
 
             $user->favouriteStores()->attach($store);

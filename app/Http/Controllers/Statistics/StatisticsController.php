@@ -2,20 +2,15 @@
 
 namespace App\Http\Controllers\Statistics;
 
-use App\Enums\OrderStatusEnum;
 use App\Exceptions\ServerErrorException;
 use App\Http\Controllers\Controller;
-use App\Models\Category;
-use App\Models\Product;
-use App\Models\Store;
-use App\Models\SubOrder;
-use App\Models\User;
 use App\Services\StatisticsService;
 use Illuminate\Http\JsonResponse;
 
 class StatisticsController extends Controller
 {
     protected StatisticsService $statisticsService;
+
     public function __construct(StatisticsService $statisticsService)
     {
         $this->statisticsService = $statisticsService;
@@ -31,9 +26,9 @@ class StatisticsController extends Controller
             $newUsers = $this->statisticsService->NewStores();
             $totalProducts = $this->statisticsService->TotalProducts();
             $conversionRate = $this->statisticsService->ConversionRate();
-            $categoryStorePercentage=$this->statisticsService->CategoryStorePercentage();
-            $categoryProductPercentage=$this->statisticsService->CategoryProductPercentage();
-            $monthlySales=$this->statisticsService->MonthlySales();
+            $categoryStorePercentage = $this->statisticsService->CategoryStorePercentage();
+            $categoryProductPercentage = $this->statisticsService->CategoryProductPercentage();
+            $monthlySales = $this->statisticsService->MonthlySales();
 
             return response()->json([
                 'success' => true,
@@ -48,7 +43,7 @@ class StatisticsController extends Controller
                 ],
             ]);
         } catch (\Exception $e) {
-           Throw new ServerErrorException("Something went wrong ");
+            throw new ServerErrorException('Something went wrong ');
         }
     }
 }

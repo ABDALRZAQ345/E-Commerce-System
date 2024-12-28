@@ -24,9 +24,8 @@ class UserLocationController extends Controller
                 'message' => 'locations retrieved successfully',
                 'locations' => $locations,
             ]);
-        }
-        catch (\Exception $exception){
-            Throw new Exception("Something went wrong");
+        } catch (\Exception $exception) {
+            throw new Exception('Something went wrong');
         }
 
     }

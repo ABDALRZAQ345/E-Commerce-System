@@ -29,20 +29,18 @@ class StripeController extends Controller
             }
             $totalAmount *= 100;
 
-
             $paymentIntent = PaymentIntent::create([
                 'amount' => $totalAmount,
                 'currency' => 'usd',
                 'payment_method_types' => ['card'],
             ]);
 
-
             return response()->json([
                 'status' => true,
                 'clientSecret' => $paymentIntent->client_secret,
             ]);
         } catch (\Exception $e) {
-            Throw new ServerErrorException("Some Thing Went Wrong");
+            throw new ServerErrorException('Some Thing Went Wrong');
         }
     }
 }

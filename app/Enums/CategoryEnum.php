@@ -19,7 +19,7 @@ enum CategoryEnum
             'Art',
             'Furniture',
             'Food',
-            'Other'
+            'Other',
         ];
     }
 }

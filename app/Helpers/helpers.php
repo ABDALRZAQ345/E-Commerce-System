@@ -3,11 +3,6 @@
 /**
  * get the minimum element not in the array
  */
-
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
-
-
 if (! function_exists('NewPublicPhoto')) {
     function NewPublicPhoto($photo, $folder = 'photos'): string
     {

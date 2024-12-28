@@ -5,7 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\UserCategoryRequest;
 use App\Models\User;
-use App\Services\InterestService;
+use App\Services\Interest\InterestService;
 use Illuminate\Http\JsonResponse;
 
 class UserInterestController extends Controller

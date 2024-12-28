@@ -37,6 +37,7 @@ class UserController extends Controller
         $users->getCollection()->transform(function ($user) {
             $user = $this->userService->FormatRoles($user);
             $user->active = now()->subMinutes(5) <= $user->last_login;
+
             return $user;
         });
 
