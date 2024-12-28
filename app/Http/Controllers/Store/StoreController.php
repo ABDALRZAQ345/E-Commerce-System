@@ -37,7 +37,7 @@ class StoreController extends Controller
     {
         try {
 
-            if ($request->has('search')) {
+            if ($request->has('search') && $request->search !=null ) {
                 $stores = Store::search($request->input('search'))->paginate(20);
             } else {
                 $stores = Store::filter($request->input('filter'))->paginate(20);

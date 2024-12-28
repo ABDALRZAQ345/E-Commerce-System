@@ -11,6 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Mockery\Exception;
+use function Laravel\Prompts\search;
 
 class ProductController extends Controller
 {
@@ -33,7 +34,7 @@ class ProductController extends Controller
 
             $query = Product::query();
 
-            if ($request->has('search')) {
+            if ($request->has('search') && $request->search!=null) {
                 $query->whereIn('id', Product::search($request->input('search'))->get()->pluck('id'));
             }
             $query->filter($request->input('filter'));

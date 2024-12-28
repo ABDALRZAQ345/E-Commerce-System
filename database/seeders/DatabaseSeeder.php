@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             LocationSeeder::class,
             CategorySeeder::class,
             ProductSeeder::class,
-            ReviewSeeder::class,
+
         ]);
 
     }

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Store;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
@@ -95,5 +96,46 @@ class InterestService
             ->where('user_id', $userId)
             ->where('category_id', $categoryId)
             ->firstOrFail()->checked;
+    }
+    public function recommendStores(int $userId): array
+    {
+        // Retrieve the user's interests with positive interest levels
+        $interests = DB::table('user_category_interests')
+            ->where('user_id', $userId)
+            ->where('interest_level', '>', 0)
+            ->get(['category_id', 'interest_level']);
+
+        if ($interests->isEmpty()) {
+            return []; // No recommendations if no positive interests
+        }
+
+        // Calculate the total interest level to determine percentages
+        $totalInterest = $interests->sum('interest_level');
+
+        // Calculate the number of products to recommend per category
+        $categoriesWithStoresCount = $interests->mapWithKeys(function ($interest) use ($totalInterest) {
+            $percentage = $interest->interest_level / $totalInterest;
+            $StoreCount = (int) ceil($percentage * 100); // Determine number of products for this category
+
+            return [$interest->category_id => $StoreCount];
+        });
+
+        // Fetch products for each category
+        $recommendedStores = [];
+        $recommendedStoreIds = [];
+        foreach ($categoriesWithStoresCount as $categoryId => $storeCount) {
+            if ($storeCount > 0) {
+                $stores = Store::whereNotin('id',$recommendedStoreIds)->
+                wherehas('categories', function ($query) use ($categoryId, $userId) {
+                    $query->where('categories.id',$categoryId);
+                })
+                    ->limit($storeCount)
+                    ->get();
+                $recommendedStores = array_merge($recommendedStores, $stores->toArray());
+                $recommendedStoreIds=array_merge($recommendedStoreIds,array_column($recommendedStores, 'id'));
+            }
+        }
+
+        return $recommendedStores;
     }
 }

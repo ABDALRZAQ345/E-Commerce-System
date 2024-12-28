@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Location;
-use App\Models\App\Models\Store;
+
 use Illuminate\Database\Seeder;
 
 class LocationSeeder extends Seeder

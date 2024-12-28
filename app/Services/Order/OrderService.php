@@ -83,6 +83,7 @@ class OrderService
     {
         $suborder->items()->create([
             'product_id' => $product->id,
+            'name' => Product::find($product->id)->name,
             'quantity' => $productData['quantity'],
             'price' => $product->price,
             'total' => $product->price * $productData['quantity'],

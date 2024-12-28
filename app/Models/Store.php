@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\InterestService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -87,7 +88,9 @@ class Store extends Model implements Auditable
         elseif ($filter === 'top_rated') {
             $query->orderBy('rate', 'desc');
         } elseif ($filter === 'recommended') {
-            /// todo
+            $interestService = new InterestService;
+            $ids = collect($interestService->recommendStores(Auth::id()))->pluck('id');
+            $query->wherein('id', $ids);
         } elseif (Category::where('name', $filter)->exists()) {
             $query->whereHas('categories', function ($query) use ($filter) {
                 $query->where('name', $filter);

@@ -33,7 +33,7 @@ class StoreSeeder extends Seeder
             ['name' => 'H&M', 'description' => 'Clothing retailer', 'photo' => 'storage/stores/h&m.png', 'user_id' => 10],
         ];
         foreach ($stores as $store) {
-            $store = Store::create($store);
+          Store::create($store);
         }
         Store::find(1)->categories()->attach([11]);
         Store::find(2)->categories()->attach([1,4]);
