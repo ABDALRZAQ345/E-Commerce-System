@@ -17,7 +17,7 @@ return new class extends Migration
     {
         Schema::create('sub_orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Order::class)->constrained();
+            $table->foreignIdFor(Order::class)->constrained()->cascadeOnDelete();
             $table->enum('status', OrderStatusEnum::getAllStatus())->default(OrderStatusEnum::Pending);
             $table->decimal('total', 10, 2)->comment('Total price for the sub-order');
             $table->foreignIdFor(Store::class)->constrained();

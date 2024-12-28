@@ -11,7 +11,7 @@ class VerificationCode extends Model
 
     protected $fillable = ['phone_number', 'code', 'created_at', 'expires_at'];
 
-    public function isExpired()
+    public function isExpired(): bool
     {
         return now()->greaterThan($this->expires_at);
     }

@@ -4,6 +4,7 @@ use App\Models\Category;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\User;
 
 return new class extends Migration
 {
@@ -14,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('user_category_interests', function (Blueprint $table) {
 
-            $table->foreignIdFor(\App\Models\User::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Category::class)->constrained()->cascadeOnDelete();
             $table->integer('interest_level')->default(0);
-            $table->boolean('checked')->default(false)->comment(' when the user check that category as his interests'); // when the user check that category as his interests
+            $table->boolean('checked')->default(false)->comment('When the user check that category as his interests');
             $table->primary(['user_id', 'category_id']);
             $table->timestamps();
         });

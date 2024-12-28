@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Contact;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserCategoryRequest extends FormRequest
+class ContactRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,8 @@ class UserCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'categories' => ['required', 'array'],
-            'categories.*' => ['required', 'exists:categories,id'],
+            'type' => ['string', 'required'],
+            'value' => ['string', 'required'],
         ];
     }
 }

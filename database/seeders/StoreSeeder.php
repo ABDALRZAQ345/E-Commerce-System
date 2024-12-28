@@ -2,9 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Category;
-use App\Models\Photo;
-use App\Models\Product;
 use App\Models\Store;
 use Illuminate\Database\Seeder;
 
@@ -16,9 +13,7 @@ class StoreSeeder extends Seeder
     public function run(): void
     {
 
-
         ///McDonald's
-
 
         $stores = [
             ['name' => 'McDonald\'s', 'description' => 'Global fast-food restaurant.', 'photo' => 'storage/stores/mc.png', 'user_id' => 1],
@@ -33,17 +28,17 @@ class StoreSeeder extends Seeder
             ['name' => 'H&M', 'description' => 'Clothing retailer', 'photo' => 'storage/stores/h&m.png', 'user_id' => 10],
         ];
         foreach ($stores as $store) {
-          Store::create($store);
+            Store::create($store);
         }
         Store::find(1)->categories()->attach([11]);
-        Store::find(2)->categories()->attach([1,4]);
+        Store::find(2)->categories()->attach([1, 4]);
         Store::find(3)->categories()->attach([1]);
-        Store::find(4)->categories()->attach([3,2]);
+        Store::find(4)->categories()->attach([3, 2]);
         Store::find(5)->categories()->attach([2]);
         Store::find(6)->categories()->attach([11]);
         Store::find(7)->categories()->attach([11]);
-        Store::find(8)->categories()->attach([3,2]);
-        Store::find(9)->categories()->attach([1,4]);
+        Store::find(8)->categories()->attach([3, 2]);
+        Store::find(9)->categories()->attach([1, 4]);
         Store::find(10)->categories()->attach([2]);
 
     }

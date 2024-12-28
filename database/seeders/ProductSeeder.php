@@ -99,7 +99,7 @@ class ProductSeeder extends Seeder
                         'discount' => 0,
                         'quantity' => rand(10, 100),
                         'description' => $productData['description'],
-                        'category_id' => rand(1,11),
+                        'category_id' => rand(1, 11),
                         'rate' => 0,
                         'sales' => 0,
                     ]);

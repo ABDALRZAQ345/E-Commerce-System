@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Statistics;
+namespace App\Http\Requests\Order;
 
+use App\Enums\OrderStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StatisticsRequest extends FormRequest
+class OrderStatusRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +23,7 @@ class StatisticsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            '' => '',
+            'status' => ['required', 'in:'.implode(',', OrderStatusEnum::getAllStatus())],
         ];
     }
 }

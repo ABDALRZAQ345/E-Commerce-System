@@ -1,15 +1,21 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Stripe;
 
+use App\Exceptions\ServerErrorException;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Store\StoreOrderRequest;
 use App\Models\Product;
+use Illuminate\Http\JsonResponse;
 use Stripe\PaymentIntent;
 use Stripe\Stripe;
 
 class StripeController extends Controller
 {
-    public function createPaymentIntent(StoreOrderRequest $request): \Illuminate\Http\JsonResponse
+    /**
+     * @throws ServerErrorException
+     */
+    public function createPaymentIntent(StoreOrderRequest $request): JsonResponse
     {
         $validated = $request->validated();
         $products = $validated['products'];
@@ -23,24 +29,20 @@ class StripeController extends Controller
             }
             $totalAmount *= 100;
 
-            // إنشاء PaymentIntent
+
             $paymentIntent = PaymentIntent::create([
-                'amount' => $totalAmount, // المبلغ بالـ "سنت"
-                'currency' => 'usd', // العملة
-                'payment_method_types' => ['card'], // نوع طريقة الدفع
+                'amount' => $totalAmount,
+                'currency' => 'usd',
+                'payment_method_types' => ['card'],
             ]);
 
-            // إرجاع Client Secret
+
             return response()->json([
                 'status' => true,
                 'clientSecret' => $paymentIntent->client_secret,
             ]);
         } catch (\Exception $e) {
-            // معالجة الخطأ
-            return response()->json([
-                'status' => false,
-                'error' => $e->getMessage(),
-            ], 500);
+            Throw new ServerErrorException("Some Thing Went Wrong");
         }
     }
 }

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Promotion;
 
 use App\Enums\RoleEnum;
 use App\Exceptions\BadRequestException;
 use App\Exceptions\ServerErrorException;
+use App\Http\Controllers\Controller;
 use App\Models\Promotion;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;

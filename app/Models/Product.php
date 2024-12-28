@@ -68,19 +68,14 @@ class Product extends Model implements Auditable
         if ($filter === 'best_selling') {
             $query->orderBy('sales', 'desc');
         }
-
-        // latest products
         elseif ($filter === 'latest') {
             $query->orderBy('created_at', 'desc');
         }
-
-        // filter as top rated products
         elseif ($filter === 'top_rated') {
             $query->orderBy('rate', 'desc');
         } elseif (Category::where('name', $filter)->exists()) {
             $query->whereRelation('category', 'name', $filter);
         } elseif ($filter === 'recommended') {
-
             $interestService = new InterestService;
             $ids = collect($interestService->recommendProducts(Auth::id()))->pluck('id');
             $query->wherein('id', $ids);

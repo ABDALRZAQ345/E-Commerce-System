@@ -6,7 +6,7 @@ use App\Exceptions\ServerErrorException;
 use App\Exceptions\VerificationCodeException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Password\ForgetPasswordRequest;
-use App\Http\Requests\ResetPasswordRequest;
+use App\Http\Requests\Password\ResetPasswordRequest;
 use App\Models\User;
 use App\Services\UserService;
 use App\Services\VerificationCodeService;

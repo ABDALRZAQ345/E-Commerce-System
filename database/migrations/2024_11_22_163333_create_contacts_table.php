@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('contacts', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Store::class)->constrained();
+            $table->foreignIdFor(Store::class)->constrained()->cascadeOnDelete();
             $table->string('type');
             $table->string('value');
             $table->softDeletes();

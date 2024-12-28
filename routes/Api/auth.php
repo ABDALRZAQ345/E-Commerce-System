@@ -3,8 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\VerificationCodeController;
-use App\Http\Controllers\PromotionController;
-use App\Http\Middleware\EnsureIsAdmin;
+use App\Http\Controllers\Promotion\PromotionController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['throttle:api', 'locale', 'xss'])->group(function () {
@@ -23,14 +22,18 @@ Route::middleware(['throttle:api', 'locale', 'xss'])->group(function () {
     });
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('password/reset', [PasswordController::class, 'reset'])->name('password.reset');
+
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
         Route::post('/promotions/create', [PromotionController::class, 'create'])->name('promotions.create');
 
     });
 
-    Route::middleware(['auth:sanctum', EnsureIsAdmin::class])->group(function () {
+    Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
         Route::post('/promotions/{promotion}/accept', [PromotionController::class, 'promote'])->name('promote');
+
         Route::get('/promotions', [PromotionController::class, 'index'])->name('Promotions.index');
+
         Route::post('/promotions/{promotion}/reject', [PromotionController::class, 'reject'])->name('reject');
 
     });

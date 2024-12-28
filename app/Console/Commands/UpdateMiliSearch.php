@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 
 class UpdateMiliSearch extends Command
 {
-    protected $signature = 'update-mili-search';
+    protected $signature = 'update-meili-search';
 
     protected $description = 'Update meilisearch data';
 

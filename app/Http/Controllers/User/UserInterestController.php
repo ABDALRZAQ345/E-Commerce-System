@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
-use App\Http\Requests\UserCategoryRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Category\UserCategoryRequest;
 use App\Models\User;
 use App\Services\InterestService;
+use Illuminate\Http\JsonResponse;
 
 class UserInterestController extends Controller
 {
@@ -15,16 +17,15 @@ class UserInterestController extends Controller
         $this->interestService = $interestService;
     }
 
-    public function store(User $user, UserCategoryRequest $request): \Illuminate\Http\JsonResponse
+    public function store(User $user, UserCategoryRequest $request): JsonResponse
     {
         $validated = $request->validated();
         $categories = $validated['categories'];
         foreach ($categories as $category) {
             if (! $this->interestService->CheckUserInterest($user->id, $category)) {
                 $this->interestService->CreateUserInterest($user->id, $category);
-                $this->interestService->increaseInterestLevel($user->id, $category, 10);
-                $this->interestService->ChangeChecked($user->id, $category, true);
-            } elseif (! $this->interestService->InterestStatus($user->id, $category)) {
+            }
+            if (! $this->interestService->InterestStatus($user->id, $category)) {
                 $this->interestService->increaseInterestLevel($user->id, $category, 10);
                 $this->interestService->ChangeChecked($user->id, $category, true);
             }
@@ -45,7 +46,7 @@ class UserInterestController extends Controller
         ]);
     }
 
-    public function index(User $user): \Illuminate\Http\JsonResponse
+    public function index(User $user): JsonResponse
     {
         return response()->json([
             'status' => true,

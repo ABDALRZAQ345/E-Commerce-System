@@ -5,20 +5,30 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\Location;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class UserLocationController extends Controller
 {
+    /**
+     * @throws Exception
+     */
     public function index(User $user): JsonResponse
     {
-        $locations = $user->locations()->select(['id', 'name', 'longitude', 'latitude', 'key'])->get();
+        try {
+            $locations = $user->locations()->select(['id', 'name', 'longitude', 'latitude', 'key'])->get();
 
-        return response()->json([
-            'status' => true,
-            'message' => 'locations retrieved successfully',
-            'locations' => $locations,
-        ]);
+            return response()->json([
+                'status' => true,
+                'message' => 'locations retrieved successfully',
+                'locations' => $locations,
+            ]);
+        }
+        catch (\Exception $exception){
+            Throw new Exception("Something went wrong");
+        }
+
     }
 
     public function store(Request $request, User $user): JsonResponse

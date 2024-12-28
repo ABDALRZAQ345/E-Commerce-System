@@ -39,6 +39,7 @@ class AppServiceProvider extends ServiceProvider
             'user.php',
             'category.php',
             'favourite.php',
+            'statistics.php'
         ];
 
         foreach ($apiRouteFiles as $routeFile) {
@@ -69,6 +70,7 @@ class AppServiceProvider extends ServiceProvider
     public function rateLimiters(): void
     {
         if (app()->environment('production')) {
+
         }
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(30)->by($request->user()?->id ?: $request->ip());

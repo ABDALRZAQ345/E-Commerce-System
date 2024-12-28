@@ -25,16 +25,18 @@ class UserController extends Controller
     public function index(Request $request): JsonResponse
     {
         $users = User::query();
+
         if ($request->filled('role') && in_array($request->role, RoleEnum::getAllRoles())) {
             $users->whereHas('roles', function ($query) use ($request) {
-                $query->where('name', $request->role); // Assuming roles are filtered by name
+                $query->where('name', $request->role);
             });
         }
+
         $users = $users->with('roles:name')->paginate(20);
+
         $users->getCollection()->transform(function ($user) {
             $user = $this->userService->FormatRoles($user);
             $user->active = now()->subMinutes(5) <= $user->last_login;
-
             return $user;
         });
 

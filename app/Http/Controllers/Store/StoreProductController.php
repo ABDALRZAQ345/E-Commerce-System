@@ -32,7 +32,7 @@ class StoreProductController extends Controller
 
         $query = Product::where('store_id', $store->id);
 
-        if ($request->has('search') && $request->search !=null) {
+        if ($request->has('search') && $request->search != null) {
             $searchResults = Product::search($request->input('search'));
             $productIds = $searchResults->get()->pluck('id');
             $query->whereIn('id', $productIds);
@@ -40,7 +40,6 @@ class StoreProductController extends Controller
 
         $query->filter($request->input('filter'));
         $products = $query->paginate(20);
-
 
         $user = Auth::user();
         foreach ($products as $product) {

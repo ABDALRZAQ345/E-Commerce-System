@@ -11,7 +11,7 @@ class ProductObserver
      */
     public function created(Product $product): void
     {
-        \Artisan::queue('update-mili-search');
+        \Artisan::queue('update-meili-search');
     }
 
     /**
@@ -19,7 +19,7 @@ class ProductObserver
      */
     public function updated(Product $product): void
     {
-        \Artisan::queue('update-mili-search');
+        \Artisan::queue('update-meili-search');
     }
 
     /**
@@ -27,7 +27,7 @@ class ProductObserver
      */
     public function deleted(Product $product): void
     {
-        \Artisan::queue('update-mili-search');
+        \Artisan::queue('update-meili-search');
     }
 
     /**
@@ -35,7 +35,7 @@ class ProductObserver
      */
     public function restored(Product $product): void
     {
-        \Artisan::queue('update-mili-search');
+        \Artisan::queue('update-meili-search');
     }
 
     /**

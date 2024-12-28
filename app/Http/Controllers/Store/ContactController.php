@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Store;
 use App\Exceptions\BadRequestException;
 use App\Exceptions\ServerErrorException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ContactRequest;
+use App\Http\Requests\Contact\ContactRequest;
 use App\Models\Contact;
 use App\Models\Store;
 use Illuminate\Http\JsonResponse;

@@ -1,9 +1,17 @@
 <?php
 
+use App\Http\Middleware\CanCreateStore;
+use App\Http\Middleware\CanEditStoreData;
+use App\Http\Middleware\LocaleMiddleware;
+use App\Http\Middleware\SameUser;
+use App\Http\Middleware\XssProtection;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
+use Spatie\Permission\Middleware\PermissionMiddleware;
+use Spatie\Permission\Middleware\RoleMiddleware;
+use Spatie\Permission\Middleware\RoleOrPermissionMiddleware;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -17,14 +25,14 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         //
         $middleware->alias([
-            'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
-            'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
-            'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
-            'locale' => \App\Http\Middleware\LocaleMiddleware::class,
-            'xss' => \App\Http\Middleware\XssProtection::class,
-            'store_owner' => \App\Http\Middleware\CanEditStoreData::class,
-            'can_create_store' => \App\Http\Middleware\CanCreateStore::class,
-            'same_user' => \App\Http\Middleware\SameUser::class,
+            'role' => RoleMiddleware::class,
+            'permission' => PermissionMiddleware::class,
+            'role_or_permission' => RoleOrPermissionMiddleware::class,
+            'locale' => LocaleMiddleware::class,
+            'xss' => XssProtection::class,
+            'store_owner' => CanEditStoreData::class,
+            'can_create_store' => CanCreateStore::class,
+            'same_user' => SameUser::class,
         ]);
 
     })

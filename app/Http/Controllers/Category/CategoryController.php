@@ -21,7 +21,7 @@ class CategoryController extends Controller
                     'categories' => Category::all(),
                 ]);
         } catch (\Exception $exception) {
-            throw new ServerErrorException($exception->getMessage());
+            throw new ServerErrorException("Some Thing Went Wrong");
         }
 
     }

@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Store;
 
 use App\Exceptions\ServerErrorException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ReviewRequest;
-use App\Http\Requests\ShowReviewsRequest;
+use App\Http\Requests\Review\ReviewRequest;
+use App\Http\Requests\Review\ShowReviewsRequest;
 use App\Models\Store;
 use App\Services\ReviewService;
 use Illuminate\Http\JsonResponse;

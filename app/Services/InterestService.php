@@ -97,6 +97,7 @@ class InterestService
             ->where('category_id', $categoryId)
             ->firstOrFail()->checked;
     }
+
     public function recommendStores(int $userId): array
     {
         // Retrieve the user's interests with positive interest levels
@@ -125,14 +126,14 @@ class InterestService
         $recommendedStoreIds = [];
         foreach ($categoriesWithStoresCount as $categoryId => $storeCount) {
             if ($storeCount > 0) {
-                $stores = Store::whereNotin('id',$recommendedStoreIds)->
-                wherehas('categories', function ($query) use ($categoryId, $userId) {
-                    $query->where('categories.id',$categoryId);
+                $stores = Store::whereNotin('id', $recommendedStoreIds)->
+                wherehas('categories', function ($query) use ($categoryId) {
+                    $query->where('categories.id', $categoryId);
                 })
                     ->limit($storeCount)
                     ->get();
                 $recommendedStores = array_merge($recommendedStores, $stores->toArray());
-                $recommendedStoreIds=array_merge($recommendedStoreIds,array_column($recommendedStores, 'id'));
+                $recommendedStoreIds = array_merge($recommendedStoreIds, array_column($recommendedStores, 'id'));
             }
         }
 

@@ -18,7 +18,7 @@ enum OrderStatusEnum
             self::Pending,
             self::Canceled,
             self::Delivered,
-            // Add other status as needed
+
         ];
     }
 }

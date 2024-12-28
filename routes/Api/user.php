@@ -4,32 +4,34 @@ use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\Order\OrderItemController;
 use App\Http\Controllers\Order\SubOrderController;
 use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\User\UserInterestController;
 use App\Http\Controllers\User\UserLocationController;
-use App\Http\Controllers\UserInterestController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['throttle:api', 'locale', 'xss'])->group(function () {
+Route::middleware(['throttle:api', 'locale', 'xss','auth:sanctum'])->prefix('/users')->name('users.')->group(function () {
 
-    Route::middleware('auth:sanctum')->group(function () {
+        Route::middleware('same_user')->prefix('/{user}')->group(function () {
 
-        Route::get('/users', [UserController::class, 'index'])->middleware('role:admin')->name('users.index');
-        Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
-        Route::post('/users/{user}/update', [UserController::class, 'update'])->middleware('same_user')->name('update');
+            Route::prefix('/orders')->name('orders.')->group(function () {
+                Route::get('', [OrderController::class, 'index'])->name('index');
+                Route::get('/{order}', [OrderController::class, 'show'])->name('show');
+                Route::get('/{order}/suborders/{sub_order}', [SubOrderController::class, 'show'])->name('suborder.show');
+                Route::get('/{order}/suborders', [SubOrderController::class, 'index'])->name('suborder.index');
+                Route::get('/{order}/suborders/{sub_order}/items', [OrderItemController::class, 'index'])->name('suborder.show');
+                Route::post('', [OrderController::class, 'store'])->name('store');
+            });
 
-        Route::get('/users/{user}/orders', [OrderController::class, 'index'])->middleware('same_user')->name('orders.index');
-        Route::get('/users/{user}/orders/{order}', [OrderController::class, 'show'])->middleware('same_user')->name('orders.show');
-        Route::get('/users/{user}/orders/{order}/suborders/{sub_order}', [SubOrderController::class, 'show'])->middleware('same_user')->name('orders.suborder.show');
-        Route::get('/users/{user}/orders/{order}/suborders', [SubOrderController::class, 'index'])->middleware('same_user')->name('orders.suborder.index');
-        Route::get('/users/{user}/orders/{order}/suborders/{sub_order}/items', [OrderItemController::class, 'index'])->middleware('same_user')->name('orders.suborder.show');
-        Route::post('/users/{user}/orders', [OrderController::class, 'store'])->middleware('same_user')->name('orders.store');
-        Route::get('/users/{user}/suborders', [SubOrderController::class, 'all_orders'])->middleware('same_user')->name('orders.suborder.index');
+            Route::post('/update', [UserController::class, 'update'])->name('update');
+            Route::get('/suborders', [SubOrderController::class, 'all_orders'])->name('orders.suborder.index');
+            Route::get('/locations', [UserLocationController::class, 'index'])->name('locations.index');
+            Route::post('/locations', [UserLocationController::class, 'store'])->name('locations.store');
+            Route::post('/locations/{location}', [UserLocationController::class, 'update'])->name('locations.update');
+            Route::post('/categories', [UserInterestController::class, 'store'])->name('categories.store');
+            Route::get('/categories', [UserInterestController::class, 'index'])->name('categories.index');
 
-        Route::get('/users/{user}/locations', [UserLocationController::class, 'index'])->middleware('same_user')->name('locations.index');
-        Route::post('/users/{user}/locations', [UserLocationController::class, 'store'])->middleware('same_user')->name('locations.store');
-        Route::post('/users/{user}/locations/{location}', [UserLocationController::class, 'update'])->middleware('same_user')->name('locations.update');
-        Route::post('/users/{user}/categories', [UserInterestController::class, 'store'])->middleware('same_user')->name('categories.store');
-        Route::get('/users/{user}/categories', [UserInterestController::class, 'index'])->middleware('same_user')->name('categories.index');
-        Route::get('/users/{user}/recommended', [UserInterestController::class, 'recommend'])->middleware('same_user')->name('interests.index');
-    });
+
+        });
+    Route::get('', [UserController::class, 'index'])->middleware('role:admin')->name('index');
+    Route::get('/{user}', [UserController::class, 'show'])->name('show');
 
 });
