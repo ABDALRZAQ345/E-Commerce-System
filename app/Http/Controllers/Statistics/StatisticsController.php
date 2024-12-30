@@ -22,13 +22,33 @@ class StatisticsController extends Controller
     public function get(): JsonResponse
     {
         try {
-            $totalSales = $this->statisticsService->TotalSales();
-            $newUsers = $this->statisticsService->NewStores();
-            $totalProducts = $this->statisticsService->TotalProducts();
-            $conversionRate = $this->statisticsService->ConversionRate();
-            $categoryStorePercentage = $this->statisticsService->CategoryStorePercentage();
-            $categoryProductPercentage = $this->statisticsService->CategoryProductPercentage();
-            $monthlySales = $this->statisticsService->MonthlySales();
+
+            $totalSales =   cache()->remember('total_sales',3600, function () {
+                return $this->statisticsService->TotalSales();
+            });
+
+            $newUsers =cache()->remember('newUsers','3600',function (){
+                return $this->statisticsService->NewStores();
+            });
+            $totalProducts =cache()->remember('total_products','3600',function (){
+                return $this->statisticsService->TotalProducts();
+            });
+            $conversionRate = cache()->remember('conversation','3600',function (){
+                return   $this->statisticsService->ConversionRate();
+            });
+
+            $categoryStorePercentage = cache()->remember('categoryStorePercentage','3600',function (){
+                return $this->statisticsService->CategoryStorePercentage();
+            });
+
+            $categoryProductPercentage = cache()->remember('CategoryProductPercentage','3600',function (){
+                return    $this->statisticsService->CategoryProductPercentage();
+            });
+
+            $monthlySales = cache()->remember('MonthlySales','3600',function (){
+                return $this->statisticsService->MonthlySales();
+            });
+
 
             return response()->json([
                 'success' => true,

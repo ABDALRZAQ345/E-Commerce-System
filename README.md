@@ -66,8 +66,8 @@ An **API-only** application built with **Laravel 11** for managing e-commerce se
 
 ---
 
-### **8. Notifications (Coming Soon)**
-- Notifications for various events will be integrated via **Firebase Cloud Messaging (FCM)** in future updates.
+### **8. Notifications **
+- Notifications for various events will be integrated via **Firebase Cloud Messaging (FCM)** .
 
 ---
 

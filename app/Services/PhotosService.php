@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Jobs\AddPhotos;
 use App\Models\Photo;
 use Illuminate\Support\Facades\DB;
 
@@ -10,14 +11,15 @@ class PhotosService
     /**
      * @throws \Throwable
      */
-    public function AddPhotos($images, $object): void
+    public function AddPhotos($images, $object,$folder='products_photos'): void
     {
         try {
-            //todo make it in job
+
+
             DB::beginTransaction();
             foreach ($images as $image) {
 
-                $path = NewPublicPhoto($image, 'products_photos');
+                $path = NewPublicPhoto($image, $folder);
                 Photo::create([
                     'photo' => $path,
                     'object_id' => $object->id,
@@ -38,7 +40,6 @@ class PhotosService
      */
     public function DeletePhotos($object): void
     {
-        // todo make it in job
         try {
             DB::beginTransaction();
             $oldPhotos = $object->photos;
