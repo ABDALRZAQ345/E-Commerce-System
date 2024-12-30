@@ -9,7 +9,8 @@ An **API-only** application built with **Laravel 11** for managing e-commerce se
 ## **Key Features**
 
 ### **1. Authentication**
-- User login/logout using **Laravel Sanctum**.
+- User login/logout/register .. using **Laravel Sanctum**.
+- Verification codes via telegram .
 - Password reset and change functionality.
 - All API endpoints are secured and protected against unauthorized access.
 
@@ -38,6 +39,8 @@ An **API-only** application built with **Laravel 11** for managing e-commerce se
     - Most popular stores.
     - Highest-rated stores.
     - Newly added stores.
+    - Suggested stores for users 
+    - stores by category
 
 ---
 
@@ -66,11 +69,19 @@ An **API-only** application built with **Laravel 11** for managing e-commerce se
 
 ---
 
-### **8. Notifications **
-- Notifications for various events will be integrated via **Firebase Cloud Messaging (FCM)** .
+### **8. Notifications**
+- Notifications for various events  via **Firebase Cloud Messaging (FCM)** .
+
+---
+### **9. Statistics**
+-  total sales , new users , active users , total products , conversation rate ,category store percentage , category product percentage and more .
 
 ---
 
+### **10. Payment **
+-  payment with stripe .
+
+---
 ## **Installation and Setup**
 
 ### **1. System Requirements**

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Store\StoreOrderRequest;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Stripe\PaymentIntent;
 use Stripe\Stripe;
 
@@ -33,6 +34,11 @@ class StripeController extends Controller
                 'amount' => $totalAmount,
                 'currency' => 'usd',
                 'payment_method_types' => ['card'],
+                'metadata' => [
+                    'user_id' => Auth::id(),
+                    'products' => json_encode($products),
+                    'location_id' => $validated['location_id'],
+                ],
             ]);
 
             return response()->json([
