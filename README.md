@@ -2,7 +2,7 @@
 # **E-Commerce Store API - Laravel 11**
 
 ## **Overview**
-An **API-only** application built with **Laravel 11** for managing e-commerce services. The application provides endpoints for store management, product listings, reviews, favorites, and advanced filtering with intelligent search using **MeiliSearch**.
+An **API-only** application built with **Laravel 11** for managing e-commerce services. The application provides endpoints for store management, product listings, reviews, favorites, and advanced filtering with intelligent search using **MeiliSearch** ,payment with stripe and notifications with firebase .
 
 ---
 
