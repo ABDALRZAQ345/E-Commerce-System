@@ -39,7 +39,7 @@ An **API-only** application built with **Laravel 11** for managing e-commerce se
     - Most popular stores.
     - Highest-rated stores.
     - Newly added stores.
-    - Suggested stores for users 
+    - Suggested stores for users
     - stores by category
 
 ---
@@ -96,7 +96,7 @@ An **API-only** application built with **Laravel 11** for managing e-commerce se
 ### **2. Installation Steps**
 
 1. **Clone the Project**
-  
+
 
 2. **Install Dependencies**
    ```bash
