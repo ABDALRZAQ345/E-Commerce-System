@@ -24,7 +24,7 @@ Route::middleware(['throttle:api', 'locale', 'xss', 'auth:sanctum'])->prefix('st
         Route::put('/categories', [StoreCategoryController::class, 'update'])->name('categories.update');
         Route::get('/orders', [StoreOrderController::class, 'index'])->name('orders.index');
         Route::post('/orders/{order}', [StoreOrderController::class, 'update'])->name('orders.update');
-        //Route::get('/audits', [StoreController::class, 'audits'])->name('audits');
+        // Route::get('/audits', [StoreController::class, 'audits'])->name('audits');
     });
 
     Route::prefix('/{store}')->group(function () {

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Order;
 
+use App\Enums\OrderStatusEnum;
 use App\Exceptions\ServerErrorException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Store\StoreOrderRequest;
+use App\Jobs\SendNotification;
 use App\Models\Order;
 use App\Models\User;
 use App\Services\Order\OrderService;
@@ -65,7 +67,10 @@ class OrderController extends Controller
 
         try {
 
-            $this->orderService->createOrder(Auth::id(), $products, $validated['location_id']);
+            $order = $this->orderService->createOrder(Auth::id(), $products, $validated['location_id']);
+            SendNotification::dispatch(Auth::user(), 'order placed', 'new order placed its status is '.OrderStatusEnum::Pending, [
+                'order_id' => $order->id,
+            ]);
 
             return response()->json([
                 'status' => true,

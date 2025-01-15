@@ -28,6 +28,7 @@ class LoginRequest extends FormRequest
         return [
             'password' => ['required', Password::defaults()],
             'phone_number' => ['required', new ValidPhoneNumber, 'exists:users,phone_number'],
+            'fcm_token' => ['nullable', 'string'],
         ];
     }
 

@@ -6,7 +6,6 @@ use App\Exceptions\ServerErrorException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Store\StoreStoreRequest;
 use App\Http\Requests\Store\UpdateStoreRequest;
-use App\Jobs\AddPhotos;
 use App\Models\Store;
 use App\Services\PhotosService;
 use App\Services\ReviewService;
@@ -89,16 +88,15 @@ class StoreController extends Controller
                 $validated['photo'] = NewPublicPhoto($request->file('photo'), 'stores');
             }
             $data = Arr::except($validated, 'photos');
-            $store=$user->store()->create($data);
+            $store = $user->store()->create($data);
             if ($validated['photos'] != null) {
-                $this->photosService->AddPhotos($validated['photos'],$store,'stores');
+                $this->photosService->AddPhotos($validated['photos'], $store, 'stores');
             }
-
-
 
             return response()->json([
                 'status' => true,
                 'message' => 'store created successfully',
+                'store' => $store,
             ], 201);
         } catch (\Exception $e) {
             throw new ServerErrorException($e->getMessage());

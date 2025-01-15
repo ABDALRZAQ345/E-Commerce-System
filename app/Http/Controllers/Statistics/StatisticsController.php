@@ -23,32 +23,31 @@ class StatisticsController extends Controller
     {
         try {
 
-            $totalSales =   cache()->remember('total_sales',3600, function () {
+            $totalSales = cache()->remember('total_sales', 3600, function () {
                 return $this->statisticsService->TotalSales();
             });
 
-            $newUsers =cache()->remember('newUsers','3600',function (){
+            $newUsers = cache()->remember('newUsers', '3600', function () {
                 return $this->statisticsService->NewStores();
             });
-            $totalProducts =cache()->remember('total_products','3600',function (){
+            $totalProducts = cache()->remember('total_products', '3600', function () {
                 return $this->statisticsService->TotalProducts();
             });
-            $conversionRate = cache()->remember('conversation','3600',function (){
-                return   $this->statisticsService->ConversionRate();
+            $conversionRate = cache()->remember('conversation', '3600', function () {
+                return $this->statisticsService->ConversionRate();
             });
 
-            $categoryStorePercentage = cache()->remember('categoryStorePercentage','3600',function (){
+            $categoryStorePercentage = cache()->remember('categoryStorePercentage', '3600', function () {
                 return $this->statisticsService->CategoryStorePercentage();
             });
 
-            $categoryProductPercentage = cache()->remember('CategoryProductPercentage','3600',function (){
-                return    $this->statisticsService->CategoryProductPercentage();
+            $categoryProductPercentage = cache()->remember('CategoryProductPercentage', '3600', function () {
+                return $this->statisticsService->CategoryProductPercentage();
             });
 
-            $monthlySales = cache()->remember('MonthlySales','3600',function (){
+            $monthlySales = cache()->remember('MonthlySales', '3600', function () {
                 return $this->statisticsService->MonthlySales();
             });
-
 
             return response()->json([
                 'success' => true,

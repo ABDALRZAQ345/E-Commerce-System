@@ -27,15 +27,15 @@ class CartItemStore extends FormRequest
             'quantity' => ['required', 'integer', 'min:1',
                 function ($attribute, $value, $fail) {
 
-                    $productId = $this->input("id");
+                    $productId = $this->input('id');
 
                     $product = Product::find($productId);
 
                     if ($product && $value > $product->quantity) {
                         $fail("The quantity for product ID $productId must not exceed the available stock ({$product->quantity}).");
                     }
-                }
-                ],
+                },
+            ],
         ];
     }
 }

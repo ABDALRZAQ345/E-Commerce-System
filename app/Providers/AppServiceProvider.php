@@ -40,7 +40,7 @@ class AppServiceProvider extends ServiceProvider
             'category.php',
             'favourite.php',
             'statistics.php',
-            'cart.php'
+            'cart.php',
         ];
 
         foreach ($apiRouteFiles as $routeFile) {

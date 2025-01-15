@@ -13,7 +13,7 @@ class StoreSeeder extends Seeder
     public function run(): void
     {
 
-        ///McDonald's
+        // /McDonald's
 
         $stores = [
             ['name' => 'McDonald\'s', 'description' => 'Global fast-food restaurant.', 'photo' => 'storage/stores/mc.png', 'user_id' => 1],

@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
             'first_name' => 'admin',
             'phone_number' => '0912345678',
             'password' => Hash::make('admin12A*'),
-        ])->assignRole('admin');
+        ])->assignRole(['admin', 'manager']);
 
     }
 }

@@ -29,6 +29,7 @@ class SignupRequest extends FormRequest
             'phone_number' => ['required', new ValidPhoneNumber, 'unique:users,phone_number'],
             'photo' => ['nullable', 'image', 'max:3072'],
             'code' => ['required', 'numeric', 'digits:6'],
+            'fcm_token' => ['nullable', 'string'],
         ];
     }
 

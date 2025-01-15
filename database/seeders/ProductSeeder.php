@@ -15,7 +15,7 @@ class ProductSeeder extends Seeder
     public function run(): void
     {
 
-        $path='storage/products';
+        $path = 'storage/products';
 
         $products = [
             'McDonald\'s' => [
@@ -63,14 +63,14 @@ class ProductSeeder extends Seeder
                 ['name' => 'H&M T-Shirt', 'price' => 20, 'description' => 'Casual and comfortable T-shirt.', 'image_extension' => 'jpg'],
                 ['name' => 'H&M Jeans', 'price' => 40, 'description' => 'Trendy denim jeans.', 'image_extension' => 'jpg'],
             ],
-];
+        ];
         // إنشاء المنتجات لكل متجر
         $stores = Store::all();
         foreach ($stores as $store) {
 
             if (isset($products[$store->name])) {
                 foreach ($products[$store->name] as $productData) {
-                    $product=Product::create([
+                    $product = Product::create([
                         'name' => $productData['name'],
                         'store_id' => $store->id,
                         'price' => $productData['price'],
@@ -82,7 +82,7 @@ class ProductSeeder extends Seeder
                         'sales' => 0,
                     ]);
                     DB::table('photos')->insert([
-                       'photo' => $path . '/' . $productData['name'] . '.' . $productData['image_extension'],
+                        'photo' => $path.'/'.$productData['name'].'.'.$productData['image_extension'],
                         'object_id' => $product->id,
                         'object_type' => 'App\Models\Product',
                     ]);

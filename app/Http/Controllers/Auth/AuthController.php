@@ -66,6 +66,7 @@ class AuthController extends Controller
                     'message' => 'Phone & Password do not match our record.',
                 ], 401);
             }
+            if($validatedData['fcm_token']!=null) $user->fcm_token=$validatedData['fcm_token'];
 
             return response()->json([
                 'status' => true,

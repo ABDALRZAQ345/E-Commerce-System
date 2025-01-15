@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Store;
 
 use App\Enums\OrderStatusEnum;
 use App\Http\Controllers\Controller;
+use App\Jobs\SendNotification;
 use App\Models\Store;
 use App\Models\SubOrder;
 use Illuminate\Http\JsonResponse;
@@ -53,8 +54,13 @@ class StoreOrderController extends Controller
                 'message' => 'Invalid status transition. Status cannot move backward.',
             ], 400);
         }
+
         $order->status = $request->input('status');
         $order->save();
+        SendNotification::dispatch($order->order()->user,'order status changer','you order is '.$order->status,[
+            'suborder_id' => $order->id,
+        ]);
+
 
         return response()->json([
             'status' => true,

@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Jobs\AddPhotos;
 use App\Models\Photo;
 use Illuminate\Support\Facades\DB;
 
@@ -11,10 +10,9 @@ class PhotosService
     /**
      * @throws \Throwable
      */
-    public function AddPhotos($images, $object,$folder='products_photos'): void
+    public function AddPhotos($images, $object, $folder = 'products_photos'): void
     {
         try {
-
 
             DB::beginTransaction();
             foreach ($images as $image) {

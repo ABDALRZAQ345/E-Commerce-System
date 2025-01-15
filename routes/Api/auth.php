@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\VerificationCodeController;
+use App\Http\Controllers\FcmTokenController;
 use App\Http\Controllers\Promotion\PromotionController;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +25,7 @@ Route::middleware(['throttle:api', 'locale', 'xss'])->group(function () {
         Route::post('password/reset', [PasswordController::class, 'reset'])->name('password.reset');
 
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+        Route::post('/send_fcm', [FcmTokenController::class, 'send']);
 
         Route::post('/promotions/create', [PromotionController::class, 'create'])->name('promotions.create');
 
