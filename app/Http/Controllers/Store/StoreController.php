@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Store;
 
+use App\Enums\OrderStatusEnum;
 use App\Exceptions\ServerErrorException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Store\StoreStoreRequest;
@@ -141,6 +142,14 @@ class StoreController extends Controller
 
         return response()->json([
             'audits' => $audits,
+        ]);
+    }
+
+    public function delete(Store $store): JsonResponse
+    {
+        $store->delete();
+        return response()->json([
+            'status' => true
         ]);
     }
 }

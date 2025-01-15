@@ -84,4 +84,12 @@ class UserController extends Controller
             throw new ServerErrorException($e->getMessage());
         }
     }
+
+    public function delete(User $user): JsonResponse
+    {
+        $user->delete();
+        return response()->json([
+            'status' => true,
+        ]);
+    }
 }

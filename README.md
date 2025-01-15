@@ -88,6 +88,7 @@ An **API-only** application built with **Laravel 11** for managing e-commerce se
 - **PHP** 8.2 or later
 - **Laravel** 11.x
 - **Composer**
+- **strip cli** (recommended for webhook)
 - **MeiliSearch** installed and running
 - **MySQL** or any supported database
 
