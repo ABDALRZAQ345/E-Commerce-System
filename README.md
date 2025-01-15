@@ -78,7 +78,7 @@ An **API-only** application built with **Laravel 11** for managing e-commerce se
 
 ---
 
-### **10. Payment **
+### **10. Payment**
 -  payment with stripe .
 
 ---
@@ -108,21 +108,29 @@ An **API-only** application built with **Laravel 11** for managing e-commerce se
       ```bash
       cp .env.example .env
       ```
-    - Configure database, MeiliSearch settings.
-
+    - Configure database, MeiliSearch settings , firebase  and stripe.
+   - put your firebase_credentials at the bath storage/app/firebase
+   - in .env file add that line 
+   ```
+   FIREBASE_CREDENTIALS=storage/app/firebase/firebase_credentials.json
+   ```
 4. **Generate Application Key**
    ```bash
    php artisan key:generate
    ```
-
-5. **Run Migrations and Seed Database**
-   ```bash
-   php artisan migrate --seed
+5. **Install Meilisearch and run it**
+    - installation link https://github.com/meilisearch/meilisearch/releases
+   - after installation just run it 
+   -  add this two lines to your .env
    ```
-
-6. **Run MeiliSearch**
+    SCOUT_DRIVER=meilisearch
+    MEILISEARCH_HOST=http://127.0.0.1:7700
+     ```
+   replace it with your app url if you are using another one 
+6. **Run Migrations and Seed Database**
    ```bash
-   ./meilisearch
+    php artisan migrate
+    php artisan db:seed
    ```
 
 7. **Start the Server**
@@ -130,7 +138,7 @@ An **API-only** application built with **Laravel 11** for managing e-commerce se
    php artisan serve
    ```
 
-8. **Run Queues for Background Jobs (Optional)**
+8. **Run Queues for Background Jobs **
    ```bash
    php artisan queue:work
    ```
