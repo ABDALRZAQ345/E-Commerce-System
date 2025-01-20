@@ -11,7 +11,7 @@ class CartItemController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $items = $user->cartItems()->with('product')->get();
+        $items = $user->cartItems()->with('product')->with('product.photo')->get();
 
         return response()->json([
             'status' => true,

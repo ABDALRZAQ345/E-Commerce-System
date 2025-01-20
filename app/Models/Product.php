@@ -51,7 +51,10 @@ class Product extends Model implements Auditable
     {
         return $this->morphMany(Photo::class, 'object');
     }
-
+    public function photo(): \Illuminate\Database\Eloquent\Relations\MorphOne
+    {
+        return $this->morphOne(Photo::class, 'object');
+    }
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);

@@ -68,7 +68,7 @@ class OrderController extends Controller
         try {
 
             $order = $this->orderService->createOrder(Auth::id(), $products, $validated['location_id']);
-            SendNotification::dispatch(Auth::user(), 'order placed', 'new order placed its status is '.OrderStatusEnum::Pending, [
+            SendNotification::dispatch(Auth::user(), 'i am abd and i am testing notifications', 'new order placed its status is '.OrderStatusEnum::Pending, [
                 'order_id' => $order->id,
             ]);
 

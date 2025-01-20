@@ -40,7 +40,7 @@ class SendNotification implements ShouldQueue
         $notification = Notification::create($this->title, $this->body);
         $deviceToken = $this->user->fcm_token;
         if ($deviceToken != null) {
-            $message = CloudMessage::withTarget('token', $deviceToken)
+            $message = CloudMessage::withTarget('token', $this->user->fcm_token)
                 ->withNotification($notification)->withData($this->data);
             $this->messaging->send($message);
         }

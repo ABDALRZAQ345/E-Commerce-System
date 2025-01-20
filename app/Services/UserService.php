@@ -14,6 +14,7 @@ class UserService
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'] ?? null,
             'password' => Hash::make($data['password']),
+            'fcm_token' => $data['fcm_token'] ?? null,
             'phone_number' => $data['phone_number'],
             'photo' => $data['photo'] != null ? NewPublicPhoto($data['photo'], 'profiles') : null,
         ]);

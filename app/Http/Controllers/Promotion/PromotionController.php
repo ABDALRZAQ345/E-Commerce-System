@@ -118,4 +118,14 @@ class PromotionController extends Controller
             throw new ServerErrorException($e->getMessage());
         }
     }
+
+    public function check(): JsonResponse
+    {
+        $user=Auth::user();
+        return response()->json([
+            'status'=>true,
+            'accepted' => $user->hasRole(RoleEnum::Manager),
+        ]);
+
+    }
 }

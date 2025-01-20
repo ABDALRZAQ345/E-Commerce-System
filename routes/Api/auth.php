@@ -28,7 +28,7 @@ Route::middleware(['throttle:api', 'locale', 'xss'])->group(function () {
         Route::post('/send_fcm', [FcmTokenController::class, 'send']);
 
         Route::post('/promotions/create', [PromotionController::class, 'create'])->name('promotions.create');
-
+        Route::post('/promotions/check', [PromotionController::class, 'check'])->name('promotions.check');
     });
 
     Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
