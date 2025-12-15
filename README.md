@@ -6,6 +6,16 @@ An **API-only** application built with **Laravel 11** for managing e-commerce se
 
 ---
 
+<p align="center">
+  <img src="images/photo_20_2025-12-15_23-29-27.jpg" width="300" style="margin-right:12px;" />
+  <img src="images/photo_16_2025-12-15_23-29-27.jpg" width="300" />
+</p>
+
+<p align="center">
+  <img src="images/photo_5_2025-12-15_23-29-27.jpg" width="300" style="margin-right:12px;" />
+  <img src="images/photo_14_2025-12-15_23-29-27.jpg" width="300" />
+</p>
+
 ## **Key Features**
 
 ### **1. Authentication**
